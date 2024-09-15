@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace TaxMaster
+namespace TaxMaster.UI
 {
     public static class MauiProgram
     {

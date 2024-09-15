@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace TaxMaster
+namespace TaxMaster.UI
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

@@ -1,4 +1,4 @@
-﻿namespace TaxMaster
+﻿namespace TaxMaster.UI
 {
     public partial class App : Application
     {
@@ -7,7 +7,6 @@
             InitializeComponent();
 
             MainPage = new AppShell();
-
             Routing.RegisterRoute(nameof(SelectReportType), typeof(SelectReportType));
             Routing.RegisterRoute(nameof(TaxAccountConfirmation), typeof(TaxAccountConfirmation));
             Routing.RegisterRoute(nameof(FirstActionSelectionView), typeof(FirstActionSelectionView));
@@ -21,7 +20,6 @@
             Routing.RegisterRoute(nameof(LifeInsuranceView), typeof(LifeInsuranceView));
             Routing.RegisterRoute(nameof(BirthAllowanceView), typeof(BirthAllowanceView));
             Routing.RegisterRoute(nameof(DonationsView), typeof(DonationsView));
-
         }
     }
 }

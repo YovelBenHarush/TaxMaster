@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace TaxMaster
+namespace TaxMaster.UI
 {
     [Application]
     public class MainApplication : MauiApplication
