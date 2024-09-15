@@ -14,11 +14,14 @@
         <!-- Main content area for the step -->
         <StackLayout Grid.Row="0" Padding="10">
             <VerticalStackLayout FlowDirection="RightToLeft">
-                <Label Text="{Binding DisclaimerModel.DisclaimerText}"      VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+                <Label Text="{Binding DisclaimerModel.DisclaimerText}" VerticalOptions="Center" HorizontalOptions="Center" />
                 <HorizontalStackLayout FlowDirection="RightToLeft">
                     <CheckBox IsChecked="{Binding DisclaimerModel.DisclaimerAproval}" VerticalOptions="Center"/>
-                    <Label Text="{Binding DisclaimerModel.DisclaimerAprovalText}" VerticalOptions="Center"/>
+                    <Label Text="{Binding DisclaimerModel.DisclaimerAprovalText}" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout FlowDirection="RightToLeft">
+                    <CheckBox IsChecked="{Binding DisclaimerModel.LogAproval}" VerticalOptions="Center"/>
+                    <Label Text="אשר כתיבת לוגים" VerticalOptions="Center" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </StackLayout>
