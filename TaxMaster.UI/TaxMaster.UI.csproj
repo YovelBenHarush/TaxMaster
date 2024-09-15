@@ -64,6 +64,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\TaxMaster.BL\TaxMaster.BL.csproj" />
+	  <ProjectReference Include="..\TaxMaster.Infra\TaxMaster.Infra.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
