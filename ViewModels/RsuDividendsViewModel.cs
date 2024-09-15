@@ -1,6 +1,6 @@
 ﻿namespace TaxMaster
 {
-    public class TaxAccountConfirmationViewModel : BaseViewModel
+    public class RsuDividendsViewModel : BaseViewModel
     {
         public override void OnNext()
         {

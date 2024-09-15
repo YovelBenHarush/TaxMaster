@@ -7,15 +7,44 @@
     <ContentPage.BindingContext>
         <local:DisclaimerPageViewModel />
     </ContentPage.BindingContext>
-    <VerticalStackLayout FlowDirection="RightToLeft">
-        <Label 
-            Text="{Binding DisclaimerModel.DisclaimerText}"
-            VerticalOptions="Center" 
+
+    <!-- Define the Grid layout -->
+    <Grid RowDefinitions="*, Auto">
+
+        <!-- Main content area for the step -->
+        <StackLayout Grid.Row="0" Padding="10">
+            <VerticalStackLayout FlowDirection="RightToLeft">
+                <Label Text="{Binding DisclaimerModel.DisclaimerText}"      VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <HorizontalStackLayout FlowDirection="RightToLeft">
-            <CheckBox IsChecked="{Binding DisclaimerModel.DisclaimerAproval}" VerticalOptions="Center"/>
-            <Label Text="{Binding DisclaimerModel.DisclaimerAprovalText}" VerticalOptions="Center"/>
-        </HorizontalStackLayout>
-        <Button Text="הבא" Command="{Binding NextCommand}" VerticalOptions="Center"  HorizontalOptions="End" />
-    </VerticalStackLayout>
+                <HorizontalStackLayout FlowDirection="RightToLeft">
+                    <CheckBox IsChecked="{Binding DisclaimerModel.DisclaimerAproval}" VerticalOptions="Center"/>
+                    <Label Text="{Binding DisclaimerModel.DisclaimerAprovalText}" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </StackLayout>
+
+        <!-- Button area for navigation -->
+        <Grid Grid.Row="1" Padding="10" ColumnDefinitions="Auto, Auto, *, Auto, Auto" FlowDirection="RightToLeft">
+            <!-- Previous button aligned to the left -->
+            <Button Text="הקודם" Command="{Binding PreviousCommand}" 
+                    Grid.Column="0" IsVisible="{Binding IsPreviousEnabled}"
+                    CornerRadius="20" Padding="10,5"/>
+
+            <!-- Spacer with fixed width (adjust width as needed) -->
+            <BoxView Grid.Column="1" WidthRequest="50" />
+
+            <!-- Empty space (fills the middle) -->
+            <BoxView Grid.Column="2" />
+
+            <!-- Spacer with fixed width (adjust width as needed) -->
+            <BoxView Grid.Column="3" WidthRequest="50" />
+
+            <!-- Next button aligned to the right -->
+            <Button Text="הבא" Command="{Binding NextCommand}" 
+                    Grid.Column="4"
+                    CornerRadius="20" 
+                    Padding="10,5"/>
+        </Grid>
+
+    </Grid>
 </ContentPage>
