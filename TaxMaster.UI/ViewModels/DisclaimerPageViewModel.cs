@@ -25,7 +25,7 @@
                 return;
             }
 
-            await Shell.Current.GoToAsync(nameof(SelectReportType));
+            await Shell.Current.GoToAsync(nameof(FirstActionSelectionView));
         }
     }
 }

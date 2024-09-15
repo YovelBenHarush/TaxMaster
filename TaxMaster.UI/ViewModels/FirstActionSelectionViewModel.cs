@@ -2,9 +2,17 @@
 {
     public class FirstActionSelectionViewModel : BaseViewModel
     {
-        public override void OnNext()
+
+        public Command AnnualReport { get; }
+
+        public FirstActionSelectionViewModel()
         {
-            throw new NotImplementedException();
+            AnnualReport = new Command(OnAnnualReport);
+        }
+
+        public async void OnAnnualReport()
+        {
+            await Shell.Current.GoToAsync(nameof(SelectReportType));
         }
     }
 }
