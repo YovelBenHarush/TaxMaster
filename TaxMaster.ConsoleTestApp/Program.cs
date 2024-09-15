@@ -1,4 +1,5 @@
 ﻿using TaxMaster.BL.CapitalGainTaxCaclulator;
+using TaxMaster.Infra;
 using TaxMaster.Infra.Interfaces;
 using TaxMaster.Infra.Parsers;
 
@@ -6,6 +7,11 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
+        var esppFidelityClient = new ESPPFidelityParser();
+        var CustomTransactionSummaryFilePath = "CustomTransactionsummary2021.pdf";
+        esppFidelityClient.ParseStockSalesTranscations(CustomTransactionSummaryFilePath);
+        esppFidelityClient.ParseDividend(CustomTransactionSummaryFilePath);
+
         var sellTransaction = new SellTransaction
         {
             ShareIndex = "MSFT",
