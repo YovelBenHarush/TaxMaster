@@ -2,9 +2,9 @@
 {
     public class TaxAccountConfirmationViewModel : BaseViewModel
     {
-        public override void OnNext()
+        public async override void OnNext()
         {
-            throw new NotImplementedException();
+            await Shell.Current.GoToAsync(nameof(PersonalDetailsView));
         }
     }
 }
