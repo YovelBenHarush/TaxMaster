@@ -1,34 +1,16 @@
 ﻿using TaxMaster.BL.CapitalGainTaxCaclulator;
-using TaxMaster.BL.CapitalGainTaxCaclulator.Interfaces;
-using TaxMaster.Infra;
+using TaxMaster.Infra.Interfaces;
+using TaxMaster.Infra.Parsers;
 
 public static class Program
 {
     public static async Task Main(string[] args)
     {
-        var esppFidelityClient = new ESPPFidelityParser();
-        esppFidelityClient.ParsePdf("C:\\Users\\lubalibu\\Documents\\fidlity\\1042s2023.pdf");
-
-        var exchangeCurrencyClient = new ExchangeCurrencyClient();
-
-        for (int i = 0; i < 10; i++)
-        {
-            try
-            {
-                double exchangeRate = await exchangeCurrencyClient.GetExchangeRate(DateTime.Now - TimeSpan.FromDays(-i));
-                Console.WriteLine($"Exchange rate: {exchangeRate}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to get exchange rate: {ex.Message}");
-            }
-        }
-
         var sellTransaction = new SellTransaction
         {
             ShareIndex = "MSFT",
-            PurchasePrice = 1000,
-            SellPrice = 1500,
+            PurchasePriceInUSD = 1000,
+            SellPriceInUSD = 1500,
             PurchaseDate = DateTime.Now - TimeSpan.FromDays(50),
             SellDate = DateTime.Now
         };
@@ -39,12 +21,15 @@ public static class Program
 
         Console.WriteLine(
             $"Share index: {sellTransactionWithTaxMetadata.ShareIndex}, " +
-            $"Purchase price: {sellTransactionWithTaxMetadata.PurchasePrice}, " +
-            $"Sell price: {sellTransactionWithTaxMetadata.SellPrice}, " +
+            $"Purchase price: {sellTransactionWithTaxMetadata.PurchasePriceInUSD}, " +
+            $"Sell price: {sellTransactionWithTaxMetadata.SellPriceInUSD}, " +
             $"Purchase date: {sellTransactionWithTaxMetadata.PurchaseDate}, " +
             $"Sell date: {sellTransactionWithTaxMetadata.SellDate}, " +
             $"Tax rate: {sellTransactionWithTaxMetadata.TaxRate}, " +
             $"Exchange rate: {sellTransactionWithTaxMetadata.ExchangeRate}, " +
-            $"Tax amount: {sellTransactionWithTaxMetadata.TaxAmount}");
+            $"Tax amount: {sellTransactionWithTaxMetadata.TaxAmountToPay}");
+
+        var parser = new Form1325Parser();
+        parser.Populate1325AndSaveToPdf("C:\\Users\\ybenharosh\\source\\repos\\TaxMaster\\TaxMaster.Infra\\Assets\\1325Form.xlsx", "C:\\Users\\ybenharosh\\Downloads\\1325FormSaved.pdf", [sellTransactionWithTaxMetadata, sellTransactionWithTaxMetadata, sellTransactionWithTaxMetadata]);
     }
 }
