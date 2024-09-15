@@ -1,12 +1,12 @@
-﻿namespace TaxMaster.BL.CapitalGainTaxCaclulator.Interfaces
+﻿namespace TaxMaster.Infra.Interfaces
 {
     public interface ISellTransaction
     {
         string ShareIndex { get; set; }
 
-        public double PurchasePrice { get; set; }
+        public double PurchasePriceInUSD { get; set; }
 
-        public double SellPrice { get; set; }
+        public double SellPriceInUSD { get; set; }
 
         public DateTime PurchaseDate { get; set; }
 
@@ -17,9 +17,9 @@
     {
         public string ShareIndex { get; set; }
 
-        public double PurchasePrice { get; set; }
+        public double PurchasePriceInUSD { get; set; }
 
-        public double SellPrice { get; set; }
+        public double SellPriceInUSD { get; set; }
 
         public DateTime PurchaseDate { get; set; }
 

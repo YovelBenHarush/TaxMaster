@@ -1,5 +1,5 @@
-﻿using TaxMaster.BL.CapitalGainTaxCaclulator.Interfaces;
-using TaxMaster.Infra;
+﻿using TaxMaster.Infra;
+using TaxMaster.Infra.Interfaces;
 
 namespace TaxMaster.BL.CapitalGainTaxCaclulator
 {
@@ -11,28 +11,22 @@ namespace TaxMaster.BL.CapitalGainTaxCaclulator
         {
             var result = new SellTransactionWithTaxMetadata(sellTransaction);
 
-            result.ExchangeRate = await CalculateExchangeRate(result.PurchaseDate, result.SellDate);
-            result.TaxAmount = CalculateTaxAmount(result, result.ExchangeRate);
+            result.ExchangeRate = await CalculateExchangeRate(result.PurchaseDate, result.SellDate, result);
 
             return result;
         }
 
-        private async Task<double> CalculateExchangeRate(DateTime purchaseDate, DateTime sellDate)
+        private async Task<double> CalculateExchangeRate(DateTime purchaseDate, DateTime sellDate, ISellTransactionWithTaxMetadata transaction)
         {
             var sellRate = await exchangeCurrencyClient.GetExchangeRate(sellDate);
             var purchaseRate = await exchangeCurrencyClient.GetExchangeRate(purchaseDate);
 
+            transaction.ExchangeCurrencyAtPurchaseDate = purchaseRate;
+            transaction.ExchangeCurrencyAtSellDate = sellRate;
+
             var rawExchangeRate = sellRate / purchaseRate;
 
             return rawExchangeRate < 1 ? 1 : rawExchangeRate;
-        }
-
-        private double CalculateTaxAmount(ISellTransactionWithTaxMetadata sellTransaction, double exchangeRate)
-        {
-            double adjustedProfit = (sellTransaction.SellPrice - sellTransaction.PurchasePrice * exchangeRate);
-            double taxAmount = adjustedProfit * sellTransaction.TaxRate;
-
-            return taxAmount;
         }
     }
 }
