@@ -1,6 +1,6 @@
 ﻿namespace TaxMaster
 {
-    public class SelectReportTypeViewModel
+    public class SelectReportTypeViewModel : BaseViewModel
     {
         public Command NewReport { get; }
         public Command OldReport { get; }
@@ -21,6 +21,11 @@
         {
             // Navigate to the next step
             await Shell.Current.GoToAsync(nameof(TaxAccountConfirmation));
+        }
+
+        public override void OnNext()
+        {
+            throw new NotImplementedException();
         }
     }
 }
