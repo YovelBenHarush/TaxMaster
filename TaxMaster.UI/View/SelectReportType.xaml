@@ -9,7 +9,7 @@
     </ContentPage.BindingContext>
     <VerticalStackLayout>
         <Label Text="אנא בחר איזה סוג דוח תרצה לבחור" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Button Text="דוח חדש" Command="{Binding NewReport}" />
-        <Button Text="דוח קיים" Command="{Binding OldReport}" />
+        <Button Text="דוח חדש" Command="{Binding NewReport}" HorizontalOptions="Center"  VerticalOptions="Center" Margin="10"/>
+        <Button Text="דוח קיים" Command="{Binding OldReport}" HorizontalOptions="Center"  VerticalOptions="Center" Margin="10"/>
     </VerticalStackLayout>
 </ContentPage>
