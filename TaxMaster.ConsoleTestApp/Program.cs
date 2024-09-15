@@ -1,11 +1,14 @@
 ﻿using TaxMaster.BL.CapitalGainTaxCaclulator;
 using TaxMaster.BL.CapitalGainTaxCaclulator.Interfaces;
-using TaxMaster.TaxMaster.Infra;
+using TaxMaster.Infra;
 
 public static class Program
 {
     public static async Task Main(string[] args)
     {
+        var esppFidelityClient = new ESPPFidelityParser();
+        esppFidelityClient.ParsePdf("C:\\Users\\lubalibu\\Documents\\fidlity\\1042s2023.pdf");
+
         var exchangeCurrencyClient = new ExchangeCurrencyClient();
 
         for (int i = 0; i < 10; i++)

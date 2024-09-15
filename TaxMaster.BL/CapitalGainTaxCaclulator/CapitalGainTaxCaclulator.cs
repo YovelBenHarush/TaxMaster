@@ -1,5 +1,5 @@
 ﻿using TaxMaster.BL.CapitalGainTaxCaclulator.Interfaces;
-using TaxMaster.TaxMaster.Infra;
+using TaxMaster.Infra;
 
 namespace TaxMaster.BL.CapitalGainTaxCaclulator
 {
