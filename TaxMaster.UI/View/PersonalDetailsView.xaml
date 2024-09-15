@@ -2,11 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxMaster.PersonalDetailsView"
+             xmlns:local="clr-namespace:TaxMaster"
              Title="PersonalDetailsView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.BindingContext>
+        <local:PersonalDetailsViewModel />
+    </ContentPage.BindingContext>
+    <ScrollView>
+        <StackLayout Padding="10" Margin="10" FlowDirection="RightToLeft">
+            <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Label  Text=" מצב משפחתי בשנת המס" FontAttributes="Bold" Margin="10" />
+                <Picker ItemsSource="{Binding FamilyStatus}" SelectedItem="{Binding SelectedFamilyStatus}" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Label  Text=" בחר את שנת המס עליה אתה מבקש להגיש דוח שנתי" FontAttributes="Bold" Margin="10" />
+                <Picker ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear}" />
+            </StackLayout>
+
+            <Grid FlowDirection="RightToLeft" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border StrokeThickness="3"  Margin="10">
+                    <StackLayout Grid.Column="0" Orientation="Vertical" FlowDirection="RightToLeft">
+                        <Label  Text="אכנס פרטי בן הזוג הרשום (מי שתיק במס הכנסה מוגדר של שמו)" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                        <Grid FlowDirection="RightToLeft"  RowDefinitions="*, *, *, *" ColumnDefinitions="Auto ,*" Margin="10">
+                            <Label Grid.Row="0" Text="שם פרטי:" Margin="10" />
+                            <Entry Grid.Row="0" Grid.Column="1" Text="{Binding PersonalInfo.TheRegisteredPartner.FirstName}" Margin="10" />
+
+                            <Label Grid.Row="1" Text="שם משפחה:" Margin="10"/>
+                            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding PersonalInfo.TheRegisteredPartner.LastName}" Margin="10" />
+
+                            <Label Grid.Row="2" Text="תעודת זהות:" Margin="10"/>
+                            <Entry Grid.Row="2" Grid.Column="1" Text="{Binding PersonalInfo.TheRegisteredPartner.ID}" Margin="10"/>
+
+                            <Label Grid.Row="3" Text="מין:" Margin="10"/>
+                            <Picker Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Genders}" SelectedItem="{Binding PersonalInfo.TheRegisteredPartner.Gender}" Margin="10"/>
+                        </Grid>
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                </Border>
+
+                <Border Grid.Column="1" StrokeThickness="3" IsVisible="{Binding IsMarried}"  Margin="10">
+                        <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
+                        <Label  Text="אכנס פרטי בן זוג" FontAttributes="Bold" Margin="10" TextDecorations="Underline"/>
+                        <Grid FlowDirection="RightToLeft"  Grid.Column="1" RowDefinitions="*, *, *, *"   ColumnDefinitions="Auto ,*" Margin="10" >
+                            <Label Text="שם פרטי:" Grid.Row="0" Margin="10"/>
+                            <Entry Grid.Row="0" Grid.Column="1" Text="{Binding PersonalInfo.Partner.FirstName}" Margin="10"/>
+
+                            <Label Text="שם משפחה:" Grid.Row="1" Margin="10"/>
+                            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding PersonalInfo.Partner.LastName}" Margin="10" />
+
+                            <Label Text="תעודת זהות:" Grid.Row="2" Margin="10"/>
+                            <Entry Grid.Row="2" Grid.Column="1" Text="{Binding PersonalInfo.Partner.ID}" Margin="10"/>
+
+                            <Label Grid.Row="3" Text="מין:" Margin="10"/>
+                            <Picker Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Genders}" SelectedItem="{Binding PersonalInfo.Partner.Gender}" Margin="10"/>
+                        </Grid>
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                </Border>
+
+            </Grid>
+
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
