@@ -16,6 +16,15 @@
 
         public override async void OnNext()
         {
+            if (!DisclaimerModel.DisclaimerAproval)
+            {
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("", "אנא אשר את תנאי המערכת", "Ok");
+                }
+                return;
+            }
+
             await Shell.Current.GoToAsync(nameof(SelectReportType));
         }
     }
