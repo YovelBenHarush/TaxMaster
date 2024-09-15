@@ -1,4 +1,6 @@
-﻿namespace TaxMaster
+﻿using TaxMaster.Infra;
+
+namespace TaxMaster
 {
     public class DisclaimerPageViewModel : BaseViewModel
     {
@@ -23,6 +25,12 @@
                     await Application.Current.MainPage.DisplayAlert("", "אנא אשר את תנאי המערכת", "Ok");
                 }
                 return;
+            }
+
+            if(DisclaimerModel.LogAproval)
+            {
+                // Save the user's approval
+                LoggerConfiguration.Logger = FileLogger.CreateLogger("logs");
             }
 
             await Shell.Current.GoToAsync(nameof(FirstActionSelectionView));
