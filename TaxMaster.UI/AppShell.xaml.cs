@@ -1,4 +1,4 @@
-﻿namespace TaxMaster
+﻿namespace TaxMaster.UI
 {
     public partial class AppShell : Shell
     {

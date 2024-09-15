@@ -2,7 +2,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 using System;
 
-namespace TaxMaster
+namespace TaxMaster.UI
 {
     internal class Program : MauiApplication
     {

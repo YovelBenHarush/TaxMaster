@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace TaxMaster
+namespace TaxMaster.UI
 {
     public class Program
     {
