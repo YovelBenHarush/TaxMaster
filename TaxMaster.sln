@@ -5,9 +5,11 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxMaster", "TaxMaster.csproj", "{1885620F-EE3C-4E0F-B712-295A0A868CA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxMaster.Infra", "TaxMaster.Infra\TaxMaster.Infra.csproj", "{A60F2093-1792-44D0-B340-6FCB356EC12D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxMaster.Infra", "TaxMaster.Infra\TaxMaster.Infra.csproj", "{A60F2093-1792-44D0-B340-6FCB356EC12D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxMaster.BL", "TaxMaster.BL\TaxMaster.BL.csproj", "{3C60D40F-3A06-46B4-8E1A-67B026D3FE71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxMaster.BL", "TaxMaster.BL\TaxMaster.BL.csproj", "{3C60D40F-3A06-46B4-8E1A-67B026D3FE71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxMaster.ConsoleTestApp", "TaxMaster.ConsoleTestApp\TaxMaster.ConsoleTestApp.csproj", "{E91487A2-B5DE-4DA7-B6FC-BA6B0EE98BE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{3C60D40F-3A06-46B4-8E1A-67B026D3FE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C60D40F-3A06-46B4-8E1A-67B026D3FE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C60D40F-3A06-46B4-8E1A-67B026D3FE71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E91487A2-B5DE-4DA7-B6FC-BA6B0EE98BE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E91487A2-B5DE-4DA7-B6FC-BA6B0EE98BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E91487A2-B5DE-4DA7-B6FC-BA6B0EE98BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E91487A2-B5DE-4DA7-B6FC-BA6B0EE98BE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
