@@ -63,6 +63,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\TaxMaster.BL\TaxMaster.BL.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="View\BirthAllowanceView.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
