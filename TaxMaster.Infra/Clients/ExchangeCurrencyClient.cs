@@ -8,7 +8,7 @@ public class ExchangeCurrencyClient
 {
     private static readonly HttpClient client = new HttpClient();
 
-    public async Task<double> GetExchangeRateAsync(DateTime date)
+    public async Task<double> GetExchangeRate(DateTime date)
     {
         int cntr = 0;
         HttpResponseMessage response;

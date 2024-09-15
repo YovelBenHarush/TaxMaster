@@ -9,4 +9,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaxMaster.Infra\TaxMaster.Infra.csproj" />
+  </ItemGroup>
 </Project>
