@@ -2,7 +2,7 @@
 using System.Net;
 using System.Xml.Linq;
 
-namespace TaxMaster.TaxMaster.Infra;
+namespace TaxMaster.Infra;
 
 public class ExchangeCurrencyClient
 {
