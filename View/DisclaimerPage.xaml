@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaxMaster.DisclaimerPage"
+             xmlns:local="clr-namespace:TaxMaster"
+             Title="DisclaimerPage">
+    <ContentPage.BindingContext>
+        <local:DisclaimerPageViewModel />
+    </ContentPage.BindingContext>
+    <VerticalStackLayout FlowDirection="RightToLeft">
+        <Label 
+            Text="{Binding DisclaimerModel.DisclaimerText}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <HorizontalStackLayout FlowDirection="RightToLeft">
+            <CheckBox IsChecked="{Binding DisclaimerModel.DisclaimerAproval}" VerticalOptions="Center"/>
+            <Label Text="{Binding DisclaimerModel.DisclaimerAprovalText}" VerticalOptions="Center"/>
+        </HorizontalStackLayout>
+        <Button Text="הבא" Command="{Binding NextCommand}" VerticalOptions="Center"  HorizontalOptions="End" />
+    </VerticalStackLayout>
+</ContentPage>
