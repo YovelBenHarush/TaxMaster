@@ -15,10 +15,7 @@
         </StackLayout>
 
         <!-- Button area for navigation -->
-        <Grid Grid.Row="1" Padding="10" ColumnDefinitions="2*,10*, 2*" FlowDirection="RightToLeft">
-            <Button Text="הקודם" Command="{Binding PreviousCommand}" Grid.Column="0" IsVisible="{Binding IsPreviousEnabled}" CornerRadius="20" Padding="10,5" Margin="10"/>
-            <Button Text="הבא" Command="{Binding NextCommand}" Margin="10" Grid.Column="2" CornerRadius="20" Padding="10,5"/>
-        </Grid>
+        <local:NavigationButtonsView Grid.Row="1" />
 
     </Grid>
 </ContentPage>
