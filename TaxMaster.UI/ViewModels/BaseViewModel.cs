@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TaxMaster.Infra;
 
 namespace TaxMaster
 {
@@ -13,6 +15,8 @@ namespace TaxMaster
         public Command PreviousCommand { get; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        public ILogger Logger => LoggerConfiguration.Logger;
 
         public BaseViewModel()
         {
