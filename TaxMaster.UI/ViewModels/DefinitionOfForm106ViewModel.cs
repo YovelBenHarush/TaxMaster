@@ -14,7 +14,7 @@
 
         public async override void OnNext()
         {
-            await Shell.Current.GoToAsync(nameof(EsppDividendsView));
+            await Shell.Current.GoToAsync(nameof(FidelityEsppView));
         }
     }
 }
