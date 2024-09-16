@@ -8,7 +8,8 @@
         <local:FirstActionSelectionViewModel />
     </ContentPage.BindingContext>
     <VerticalStackLayout>
-        <Label Text="אנא בחר איזה סוג דוח תרצה לבחור" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Button Text="דוח שנתי" Command="{Binding AnnualReport}" HorizontalOptions="Center"  VerticalOptions="Center"/>
+        <Label Text="אנא בחר איזה סוג דוח תרצה לבחור" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold" TextDecorations="Underline"/>
+        <Button Text="דוח שנתי" Command="{Binding AnnualReport}" HorizontalOptions="Center"  VerticalOptions="Center" WidthRequest="500" FontAttributes="Bold" Margin="20"/>
+        <Button Text="דוח חצי שנתי (מניות)" Command="{Binding StockHalfYearReport}" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="False" ToolTipProperties.Text="בקרוב" WidthRequest="500" FontAttributes="Bold" Margin="20"/>
     </VerticalStackLayout>
 </ContentPage>

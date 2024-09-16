@@ -8,8 +8,16 @@
         <local:SelectReportTypeViewModel />
     </ContentPage.BindingContext>
     <VerticalStackLayout>
-        <Label Text="אנא בחר איזה סוג דוח תרצה לבחור" VerticalOptions="Center" HorizontalOptions="Center" />
-        <Button Text="דוח חדש" Command="{Binding NewReport}" HorizontalOptions="Center"  VerticalOptions="Center" Margin="10"/>
-        <Button Text="דוח קיים" Command="{Binding OldReport}" HorizontalOptions="Center"  VerticalOptions="Center" Margin="10"/>
+        <Label Text="אנא בחר איזה סוג דוח תרצה לבחור" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" TextDecorations="Underline" />
+        <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft" Margin="20">
+            <Label  Text=" בחר את שנת המס עליה אתה מבקש להגיש דוח שנתי" FontAttributes="Bold" Margin="10" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+            <Picker ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear, Mode=TwoWay}"/>
+            <Button Text="דוח חדש" Command="{Binding NewReport}" HorizontalOptions="Center"  VerticalOptions="Center" Margin="10" IsVisible="{Binding SelectedYear, Converter={StaticResource StringToBooleanConverter}}"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft" Margin="20" IsVisible="{Binding ThereAreOldReports}">
+            <Label  Text="רשימת הדוחות הקיימים במערכת עבור השנה הנבחרת" FontAttributes="Bold" Margin="10" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+            <Picker ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport}" />
+            <Button Text="המשך דוח קיים" Command="{Binding OldReport}" HorizontalOptions="Center"  VerticalOptions="Center" Margin="10"/>
+        </StackLayout>
     </VerticalStackLayout>
 </ContentPage>

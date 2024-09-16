@@ -1,4 +1,5 @@
-﻿using TaxMaster.Infra;
+﻿using Microsoft.Extensions.Logging;
+using TaxMaster.Infra;
 using TaxMaster.Infra.Parsers;
 
 namespace TaxMaster.BL
@@ -16,6 +17,12 @@ namespace TaxMaster.BL
             try
             {
                 var taxBirthPaymentFile = _birthPaymentFileParser.ParseBirthPaymentFile(file);
+                if(taxBirthPaymentFile.Tax == 0 || taxBirthPaymentFile.Amount == 0)
+                {
+                    Logger.LogError("Birth payment file is invalid");
+                    throw new Exception("Birth payment file is invalid");
+                }
+
                 AnnualReportConfiguration.BirthPayment = taxBirthPaymentFile;
                 return taxBirthPaymentFile;
             }
