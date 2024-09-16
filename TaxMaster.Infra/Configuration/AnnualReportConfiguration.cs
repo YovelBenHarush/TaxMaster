@@ -11,5 +11,7 @@ namespace TaxMaster.Infra
         public static User RegisteredPartner { get; set; } = new User();
 
         public static User Partner { get; set; } = new User();
+
+        public static  TaxBirthPaymentFile BirthPayment { get; set; } = new TaxBirthPaymentFile();
     }
 }
