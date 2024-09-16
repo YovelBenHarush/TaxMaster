@@ -2,9 +2,19 @@
 {
     public class DefinitionOfForm106ViewModel : BaseViewModel
     {
-        public override void OnNext()
+        public DefinitionOfForm106ViewModel()
         {
-            throw new NotImplementedException();
+            IsPreviousEnabled = true;
+        }
+
+        public override void OnPrevious()
+        {
+            Shell.Current.GoToAsync("..");
+        }
+
+        public async override void OnNext()
+        {
+            await Shell.Current.GoToAsync(nameof(EsppDividendsView));
         }
     }
 }

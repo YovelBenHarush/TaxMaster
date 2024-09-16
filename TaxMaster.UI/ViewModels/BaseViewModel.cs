@@ -7,7 +7,7 @@ namespace TaxMaster
     {
         private string title = string.Empty;
 
-        private bool isPreviousEnabled = false;
+        private bool isPreviousEnabled = true;
 
         public Command NextCommand { get; }
         public Command PreviousCommand { get; }
@@ -51,7 +51,7 @@ namespace TaxMaster
 
         public virtual void OnPrevious()
         {
-            return;
+            Shell.Current.GoToAsync("..");
         }
 
         public void OnPropertyChanged([CallerMemberName]string? propertyName = null)

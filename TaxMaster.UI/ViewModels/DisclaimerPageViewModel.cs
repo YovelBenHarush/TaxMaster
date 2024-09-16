@@ -14,6 +14,8 @@ namespace TaxMaster
                 DisclaimerAprovalText = "I agree to the terms and conditions",
                 DisclaimerAproval = false
             };
+
+            IsPreviousEnabled = false;
         }
 
         public override async void OnNext()
