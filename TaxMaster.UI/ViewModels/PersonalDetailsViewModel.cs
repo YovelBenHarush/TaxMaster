@@ -1,12 +1,19 @@
-﻿using System.Collections.ObjectModel;
+﻿using iText.StyledXmlParser.Jsoup.Helper;
+using System.Collections.ObjectModel;
+using TaxMaster.Infra;
 using TaxMaster.Infra.Entities;
+using TaxMaster.UI;
 
 namespace TaxMaster
 {
     public class PersonalDetailsViewModel : BaseViewModel
     {
         private bool isMarried;
-        public PersonalInfo PersonalInfo { get; set; }
+
+        public UserModel TheRegisteredPartner { get; set; }
+
+        public UserModel Partner { get; set; }
+
 
         public ObservableCollection<int> Years { get; set; }
         private int _selectedYear;
@@ -23,7 +30,7 @@ namespace TaxMaster
             }
         }
 
-        public ObservableCollection<string> FamilyStatus { get; set; }
+        public ObservableCollection<string> FamilyStatues { get; set; }
         private string _selectedFamilyStatus;
         public string SelectedFamilyStatus
         {
@@ -54,17 +61,55 @@ namespace TaxMaster
         public PersonalDetailsViewModel()
         {
             Years = new ObservableCollection<int>(Enumerable.Range(DateTime.Now.Year - 6, 7).Reverse());
-            FamilyStatus = new ObservableCollection<string> { "רווק", "נשוי" };
+            FamilyStatues = new ObservableCollection<string> { "רווק", "נשוי" };
             Genders = new ObservableCollection<string> { "ז", "נ" };
 
-            SelectedFamilyStatus = FamilyStatus.First();
+            SelectedFamilyStatus = FamilyStatues.First();
             SelectedYear = Years.First();
 
+            TheRegisteredPartner = new UserModel();
+            Partner = new UserModel();
+
+            IsPreviousEnabled = true;
         }
 
-        public override void OnNext()
+        public async override void OnNext()
         {
-            throw new NotImplementedException();
+            if (!IsValidate())
+            {
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("", "אנא מלא את כל הפרטיים האישיים לפי המשך התהליך", "Ok");
+                }
+                return;
+            }
+
+            AnnualReportConfiguration.Year = SelectedYear;
+            AnnualReportConfiguration.FamilyStatus = isMarried ? FamilyStatus.Married : FamilyStatus.Single;
+            AnnualReportConfiguration.TheRegisteredPartner = TheRegisteredPartner.ToUser();
+            if (isMarried)
+            {
+                AnnualReportConfiguration.TheRegisteredPartner = Partner.ToUser();
+            }
+
+            await Shell.Current.GoToAsync(nameof(DefinitionOfForm106View));
+        }
+
+        private bool IsValidate()
+        {
+            if(string.IsNullOrEmpty(TheRegisteredPartner.FirstName) || string.IsNullOrEmpty(TheRegisteredPartner.LastName) || string.IsNullOrEmpty(TheRegisteredPartner.ID) || string.IsNullOrEmpty(TheRegisteredPartner.Gender))
+            {
+                return false;
+            }
+            if (IsMarried)
+            {
+                if (string.IsNullOrEmpty(Partner.FirstName) || string.IsNullOrEmpty(Partner.LastName) || string.IsNullOrEmpty(Partner.ID) || string.IsNullOrEmpty(Partner.Gender))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
