@@ -52,7 +52,7 @@ namespace TaxMaster
             // Implement logic to pick a local copy of the life insurance
         }
 
-        public override void OnNext()
+        public override async void OnNext()
         {
             await Shell.Current.GoToAsync(nameof(BirthAllowanceView));
         }
