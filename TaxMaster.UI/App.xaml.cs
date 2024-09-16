@@ -12,7 +12,7 @@
             Routing.RegisterRoute(nameof(FirstActionSelectionView), typeof(FirstActionSelectionView));
             Routing.RegisterRoute(nameof(PersonalDetailsView), typeof(PersonalDetailsView));
             Routing.RegisterRoute(nameof(DefinitionOfForm106View), typeof(DefinitionOfForm106View));
-            Routing.RegisterRoute(nameof(EsppDividendsView), typeof(EsppDividendsView));
+            Routing.RegisterRoute(nameof(FidelityEsppView), typeof(FidelityEsppView));
             Routing.RegisterRoute(nameof(EsppSaleOfSharesView), typeof(EsppSaleOfSharesView));
             Routing.RegisterRoute(nameof(MainRSUView), typeof(MainRSUView));
             Routing.RegisterRoute(nameof(RsuDividendsView), typeof(RsuDividendsView));
