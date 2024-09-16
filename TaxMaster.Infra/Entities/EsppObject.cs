@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaxMaster.Infra.Entities
 {
-    public class EsppObjetc
+    public class EsppObject
     {
         public string FirstHalfOfYearStockSaleReport { get; set; }
         public string SecondHalfOfYearStockSaleReport { get; set; }

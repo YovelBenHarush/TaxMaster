@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxMaster.Infra;
 using TaxMaster.Infra.Entities;
+using TaxMaster.Infra.Parsers;
 
 namespace TaxMaster.BL
 {
@@ -15,13 +17,23 @@ namespace TaxMaster.BL
 
         }
 
-        public EsppObjetc EsppFidelity(string tax1042sFilePath, string customTransactionSummaryFilePath)
+        public async Task<EsppObject> EsppFidelityAsync(string tax1042sFilePath, string customTransactionSummaryFilePath)
         {
-            return new EsppObjetc
+            SaveToOutputDir(tax1042sFilePath);
+            var esppFidelityClient = new ESPPFidelityParser();
+            var sellTransactions = esppFidelityClient.ParseStockSalesTranscations(customTransactionSummaryFilePath);
+            var esppDivident = esppFidelityClient.ParseDividend(customTransactionSummaryFilePath);
+
+            var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
+            var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
+            var parser = new Form1325Parser();
+            var outputPath = parser.Generate1325Form(sellTransactionsWithTaxMetadata , GetOutputDir());
+
+            return new EsppObject
             {
-                FirstHalfOfYearStockSaleReport = "FirstHalfOfYearStockSaleReport",
-                SecondHalfOfYearStockSaleReport = "SecondHalfOfYearStockSaleReport",
-                Dividend = 1000
+                FirstHalfOfYearStockSaleReport = outputPath,
+                SecondHalfOfYearStockSaleReport = outputPath,
+                Dividend = esppDivident
             };
         }
     }
