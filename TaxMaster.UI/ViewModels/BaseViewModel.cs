@@ -62,5 +62,29 @@ namespace TaxMaster
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public async Task<string> PickPdfFile()
+        {
+            try
+            {
+                // FilePicker options to filter for PDF files
+                var result = await FilePicker.PickAsync(new PickOptions
+                {
+                    FileTypes = FilePickerFileType.Pdf,
+                    PickerTitle = "Select a PDF file"
+                });
+
+                if (result != null)
+                {
+                    return result.FullPath;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Error picking file: {ex.Message}");
+            }
+
+            return string.Empty;
+        }
     }
 }
