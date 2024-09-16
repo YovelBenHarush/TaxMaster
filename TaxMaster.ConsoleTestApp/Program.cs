@@ -7,10 +7,10 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
-        var esppFidelityClient = new ESPPFidelityParser();
-        var CustomTransactionSummaryFilePath = "CustomTransactionsummary2021.pdf";
-        esppFidelityClient.ParseStockSalesTranscations(CustomTransactionSummaryFilePath);
-        esppFidelityClient.ParseDividend(CustomTransactionSummaryFilePath);
+        //var esppFidelityClient = new ESPPFidelityParser();
+        //var CustomTransactionSummaryFilePath = "CustomTransactionsummary2021.pdf";
+        //var transactions = esppFidelityClient.ParseStockSalesTranscations(CustomTransactionSummaryFilePath);
+        //esppFidelityClient.ParseDividend(CustomTransactionSummaryFilePath);
 
         var sellTransaction = new SellTransaction
         {
@@ -36,6 +36,6 @@ public static class Program
             $"Tax amount: {sellTransactionWithTaxMetadata.TaxAmountToPay}");
 
         var parser = new Form1325Parser();
-        parser.Populate1325AndSaveToPdf("C:\\Users\\ybenharosh\\source\\repos\\TaxMaster\\TaxMaster.Infra\\Assets\\1325Form.xlsx", "C:\\Users\\ybenharosh\\Downloads\\1325FormSaved.pdf", [sellTransactionWithTaxMetadata, sellTransactionWithTaxMetadata, sellTransactionWithTaxMetadata]);
+        parser.Generate1325Form([sellTransactionWithTaxMetadata, sellTransactionWithTaxMetadata, sellTransactionWithTaxMetadata]);
     }
 }
