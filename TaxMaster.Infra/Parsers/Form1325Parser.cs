@@ -21,23 +21,25 @@ namespace TaxMaster.Infra.Parsers
         private const string SellPriceInILSCol = "J";
         private const string TaxableProfitInILSCol = "K";
         private const string LossinILSCol = "L";
-        private const string TotalTaxableProfitCol = "K17";
-        private const string TotalSellPriceCol = "K18";
+        private const string TotalTaxableProfitCol = "K27";
+        private const string TotalSellPriceCol = "K28";
         private const string NameCol = "E2";
         private const string IDCol = "G2";
 
         private const string Form1325Path = "Assets\\1325Form.xlsx";
-        private const string Pdf1325PathTemaplate = "{0}_Generated1325Form.pdf";
+        private const string Pdf1325PathTemaplate = "{0}_1325_{1}.pdf";
 
-        public string Generate1325Form(IEnumerable<ISellTransactionWithTaxMetadata> transactions, string outputDir)
+        public (string FirstHalfFormPath, string SecondHlfFormPath)Generate1325Forms(IEnumerable<ISellTransactionWithTaxMetadata> transactions, string outputDir)
         {
-            return Populate1325AndSaveToPdf(Path.Combine(Directory.GetCurrentDirectory(), Form1325Path), outputDir, transactions);
+            var firstHalfTransactions = transactions.Where(trx => trx.SellDate.Month <= 6);
+            var secondHalfTransactions = transactions.Where(trx => trx.SellDate.Month > 6);
+
+            return (Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, AnnualReportConfiguration.RegisteredPartner.ID, 1)), firstHalfTransactions), Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, AnnualReportConfiguration.RegisteredPartner.ID, 2)), secondHalfTransactions));
         }
 
-        public string Populate1325AndSaveToPdf(string xlsxFilePath, string outputDir, IEnumerable<ISellTransactionWithTaxMetadata> transactions)
+        public string Populate1325Form(string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions)
         {
-            var workbook = LoadXlWorkbook(xlsxFilePath);
-            var pdfFilePath = Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate,AnnualReportConfiguration.RegisteredPartner.ID));
+            var workbook = LoadXlWorkbook(Path.Combine(Directory.GetCurrentDirectory(), Form1325Path));
             PopulateXlWorkbook(workbook, pdfFilePath, transactions);
             SaveXlWorkbookToPdf(workbook, pdfFilePath);
             return pdfFilePath;

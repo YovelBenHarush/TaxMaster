@@ -27,12 +27,12 @@ namespace TaxMaster.BL
             var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
             var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
             var parser = new Form1325Parser();
-            var outputPath = parser.Generate1325Form(sellTransactionsWithTaxMetadata , GetOutputDir());
+            var outputPath = parser.Generate1325Forms(sellTransactionsWithTaxMetadata , GetOutputDir());
 
             return new EsppObject
             {
-                FirstHalfOfYearStockSaleReport = outputPath,
-                SecondHalfOfYearStockSaleReport = outputPath,
+                FirstHalfOfYearStockSaleReport = outputPath.FirstHalfFormPath,
+                SecondHalfOfYearStockSaleReport = outputPath.SecondHlfFormPath,
                 Dividend = esppDivident
             };
         }
