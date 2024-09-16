@@ -23,6 +23,16 @@ namespace TaxMaster.Infra.Parsers
         private const string LossinILSCol = "L";
         private const string TotalTaxableProfitCol = "K17";
         private const string TotalSellPriceCol = "K18";
+        private const string NameCol = "E2";
+        private const string IDCol = "G2";
+
+        private const string Form1325Path = "Assets\\1325Form.xlsx";
+        private const string Pdf1325Path = "Assets\\Generated1325Form.pdf";
+
+        public void Generate1325Form(IEnumerable<ISellTransactionWithTaxMetadata> transactions)
+        {
+            Populate1325AndSaveToPdf(Path.Combine(Directory.GetCurrentDirectory(), Form1325Path), Path.Combine(Directory.GetCurrentDirectory(), Pdf1325Path), transactions);
+        }
 
         public void Populate1325AndSaveToPdf(string xlsxFilePath, string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions)
         {
@@ -76,6 +86,9 @@ namespace TaxMaster.Infra.Parsers
 
             sheet.Range[Col(TotalTaxableProfitCol)].NumberValue = transactions.Sum(t => t.TaxableProfitInILS);
             sheet.Range[Col(TotalSellPriceCol)].NumberValue = transactions.Sum(t => t.SellPriceInILS);
+
+            sheet.Range[Col(NameCol)].Text = $"{AnnualReportConfiguration.RegisteredPartner.FirstName} {AnnualReportConfiguration.RegisteredPartner.LastName}";
+            sheet.Range[Col(IDCol)].Text = $"{AnnualReportConfiguration.RegisteredPartner.ID}";
         }
 
         public void SaveXlWorkbookToPdf(Workbook workbook, string pdfFilePath)

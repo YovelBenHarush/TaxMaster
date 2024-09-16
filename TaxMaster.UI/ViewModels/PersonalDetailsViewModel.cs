@@ -86,10 +86,10 @@ namespace TaxMaster
 
             AnnualReportConfiguration.Year = SelectedYear;
             AnnualReportConfiguration.FamilyStatus = isMarried ? FamilyStatus.Married : FamilyStatus.Single;
-            AnnualReportConfiguration.TheRegisteredPartner = TheRegisteredPartner.ToUser();
+            AnnualReportConfiguration.RegisteredPartner = TheRegisteredPartner.ToUser();
             if (isMarried)
             {
-                AnnualReportConfiguration.TheRegisteredPartner = Partner.ToUser();
+                AnnualReportConfiguration.RegisteredPartner = Partner.ToUser();
             }
 
             await Shell.Current.GoToAsync(nameof(DefinitionOfForm106View));

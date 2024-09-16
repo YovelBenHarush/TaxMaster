@@ -1,12 +1,23 @@
 ﻿using TaxMaster.Infra.Interfaces;
 using TaxMaster.Infra;
-using TaxMaster.Infra.Interfaces;
 
 namespace TaxMaster.BL.CapitalGainTaxCaclulator
 {
     public class CapitalGainTaxCaclulator
     {
         private static ExchangeCurrencyClient exchangeCurrencyClient = new();
+
+        public async Task<IEnumerable<ISellTransactionWithTaxMetadata>> CalculateTax(IEnumerable<ISellTransaction> sellTransactions)
+        {
+            var result = sellTransactions.Select(async sellTransaction =>
+            {
+                var transaction = new SellTransactionWithTaxMetadata(sellTransaction);
+                transaction.ExchangeRate = await CalculateExchangeRate(transaction.PurchaseDate, transaction.SellDate, transaction);
+                return transaction;
+            });
+
+            return await Task.WhenAll(result);
+        }
 
         public async Task<ISellTransactionWithTaxMetadata> CalculateTax(ISellTransaction sellTransaction)
         {
