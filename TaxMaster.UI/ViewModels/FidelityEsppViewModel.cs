@@ -101,8 +101,7 @@ namespace TaxMaster
                 IsCalculating = true;
             });
 
-            esppWorker.EsppFidelity(Tax1024File, CustomTransactionSummaryFile);
-            await Task.Delay(10000);
+            await esppWorker.EsppFidelityAsync(Tax1024File, CustomTransactionSummaryFile);
 
             Application.Current.Dispatcher.Dispatch(() =>
             {
@@ -112,9 +111,9 @@ namespace TaxMaster
             CalcualteError = (DateTime.Now.Millisecond % 2 == 0) ? "יש שגיאה נא לתקן" : string.Empty;
         }
 
-        public override void OnNext()
+        public override async void OnNext()
         {
-            throw new NotImplementedException();
+            await Shell.Current.GoToAsync(nameof(LifeInsuranceView));
         }
 
         private async Task PickPdfFile(object parameter)
