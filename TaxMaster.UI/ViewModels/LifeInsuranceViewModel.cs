@@ -54,7 +54,7 @@ namespace TaxMaster
 
         public override void OnNext()
         {
-            throw new NotImplementedException();
+            await Shell.Current.GoToAsync(nameof(BirthAllowanceView));
         }
     }
 
