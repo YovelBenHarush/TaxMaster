@@ -2,9 +2,15 @@
 {
     public class DisclaimerModel : BaseModel
     {
-        public string DisclaimerText { get; set; }
-        public string DisclaimerAprovalText { get; set; }
-        public bool DisclaimerAproval { get; set; }
-        public bool LogAproval { get; set; }
+        public string DisclaimerText
+        {
+            get => "אפליקציה זו היא תוצר נסיוני של הקתון פנימי של צוות Accelerators בILDC.\r\nהאפליקציה, הצוות,  או מי מטעמם אינם בעלי רישיון כהגדרתו בחוק ואין בשימוש באפליקציה משום ייעוץ ו/או המלצה ו/או הדרכה ו/או חוות דעת ואין בו משום תחליף לשירותים כאמור המתחשבים בנתונים ובצרכים מיוחדים של כל אדם. מומלץ להעזר בשירותיו של יועץ מס בעל רישיון. \r\nהצוות ובעלי האפליקציה רשאים בכל עת להפסיק את פעילותה ללא התראה מראש, ע\"פ שיקול דעתם הבלעדי. \r\nאפליקציה זו היא נסיונית, ואין הצוות ובעלי האפליקציה אחראים על כל נזק טכני ו/או כלכלי ו/או פגיעה בפרטיות ו/או כל נזק אחר שעלול להגרם עקב השימוש בה.\r\n השימוש באפליקציה הוא באחריות המשתמש בלבד.\r\n \r\nעצם השימוש באפליקציה זו מהווה הסכמה לתנאים.";
+        }
+        public string DisclaimerEmail
+        {
+            get => "shai.blum@microsoft.com";
+        }
+        public bool DisclaimerApproval { get; set; }
+        public bool LogsApproval { get; set; }
     }
 }

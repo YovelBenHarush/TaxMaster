@@ -24,7 +24,7 @@ namespace TaxMaster
             PreviousCommand = new Command(OnPrevious);
         }
 
-        public string Title
+        public virtual string Title
         {
             get => title;
             set
