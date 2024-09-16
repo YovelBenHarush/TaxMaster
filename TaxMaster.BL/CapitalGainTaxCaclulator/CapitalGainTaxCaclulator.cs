@@ -1,7 +1,7 @@
 ﻿using TaxMaster.Infra.Interfaces;
 using TaxMaster.Infra;
 
-namespace TaxMaster.BL.CapitalGainTaxCaclulator
+namespace TaxMaster.BL
 {
     public class CapitalGainTaxCaclulator
     {

@@ -27,18 +27,20 @@ namespace TaxMaster.Infra.Parsers
         private const string IDCol = "G2";
 
         private const string Form1325Path = "Assets\\1325Form.xlsx";
-        private const string Pdf1325Path = "Assets\\Generated1325Form.pdf";
+        private const string Pdf1325PathTemaplate = "{0}_Generated1325Form.pdf";
 
-        public void Generate1325Form(IEnumerable<ISellTransactionWithTaxMetadata> transactions)
+        public string Generate1325Form(IEnumerable<ISellTransactionWithTaxMetadata> transactions, string outputDir)
         {
-            Populate1325AndSaveToPdf(Path.Combine(Directory.GetCurrentDirectory(), Form1325Path), Path.Combine(Directory.GetCurrentDirectory(), Pdf1325Path), transactions);
+            return Populate1325AndSaveToPdf(Path.Combine(Directory.GetCurrentDirectory(), Form1325Path), outputDir, transactions);
         }
 
-        public void Populate1325AndSaveToPdf(string xlsxFilePath, string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions)
+        public string Populate1325AndSaveToPdf(string xlsxFilePath, string outputDir, IEnumerable<ISellTransactionWithTaxMetadata> transactions)
         {
             var workbook = LoadXlWorkbook(xlsxFilePath);
+            var pdfFilePath = Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate,AnnualReportConfiguration.RegisteredPartner.ID));
             PopulateXlWorkbook(workbook, pdfFilePath, transactions);
             SaveXlWorkbookToPdf(workbook, pdfFilePath);
+            return pdfFilePath;
         }
         public Workbook LoadXlWorkbook(string xlsxFilePath)
         {
