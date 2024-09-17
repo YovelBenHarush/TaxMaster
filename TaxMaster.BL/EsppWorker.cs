@@ -19,7 +19,7 @@ namespace TaxMaster.BL
 
         public async Task<EsppObject> EsppFidelityAsync(string tax1042sFilePath, string customTransactionSummaryFilePath)
         {
-            var tax1042sFileName = AnnualReportConfiguration.RegisteredPartner.ID + "_" + "1042s";
+            var tax1042sFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + "1042s";
             SaveToOutputDir(tax1042sFilePath, tax1042sFileName);
             var esppFidelityClient = new ESPPFidelityParser();
             var sellTransactions = esppFidelityClient.ParseStockSalesTranscations(customTransactionSummaryFilePath);

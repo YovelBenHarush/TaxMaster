@@ -12,36 +12,19 @@ namespace TaxMaster.BL
 
         public string GetOutputDir()
         {
-            return Path.Combine(baseOutputDir, AnnualReportConfiguration.RegisteredPartner.ID, AnnualReportConfiguration.Year.ToString(),"AnnualReport");
+            return ReportSettings.GetOutputDir();
         }
 
         public string GetOutputFilePath(string fileName)
         {
-            return Path.Combine(GetOutputDir(), fileName);
+            return ReportSettings.GetOutputFilePath(fileName);
         }
 
 
-        protected void SaveToOutputDir(string SourcefilePath, string fileName)
+        protected void SaveToOutputDir(string sourcefilePath, string filePath)
         {
-            try
-            {
-                // Ensure that the source file exists
-                if (!File.Exists(SourcefilePath))
-                {
-                    throw new FileNotFoundException("Source file not found", SourcefilePath);
-                }
-
-                // Copy the file to the destination
-                File.Copy(SourcefilePath, GetOutputFilePath(fileName));
-
-                Console.WriteLine("File copied successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-            }
+            ReportSettings.SaveToOutputDir(sourcefilePath, filePath);
         }
-
     }
 }
 

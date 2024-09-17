@@ -7,7 +7,9 @@
     <ContentPage.BindingContext>
         <local:LifeInsuranceViewModel />
     </ContentPage.BindingContext>
-    <ScrollView>
+    <Grid RowDefinitions="9*, 1*">
+
+    <ScrollView Grid.Row="0">
         <StackLayout Padding="20">
 
             <!-- Placeholder for short explanation about life insurance -->
@@ -19,7 +21,7 @@
                 <!-- User Section -->
                 <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" WidthRequest="600">
                     <StackLayout>
-                        <Label Text="ביטוחי חיים" FontSize="Large" FontAttributes="Bold" FlowDirection="RightToLeft"/>
+                            <Label Text="עבור תשלום שנתי של פוליסת ביטוח חיים ניתן לקבל 25% החזר כחלק מהדוח השנתי. לצורך כך, יש להזין את הפרמיה השנתית ששולמה בשנת המס  וכן לצרף את הטופס מחברת הביטוח (המערכת מבצעת את החישוב של ה25%).  המידע מיועד לחלק פירוט ההכנסות בדוח השנתי." FontSize="Large" FontAttributes="Bold" FlowDirection="RightToLeft"/>
 
                         <!-- ListView for multiple insurances -->
                         <ListView x:Name="UserInsuranceList" ItemsSource="{Binding UserInsurances}">
@@ -47,7 +49,7 @@
                         </ListView>
 
                         <!-- Add new insurance button -->
-                        <Button Text="Add Insurance" Command="{Binding AddInsuranceCommand}" CommandParameter="User"/>
+                        <Button Text="הוספת ביטוח נוסף" Command="{Binding AddInsuranceCommand}" CommandParameter="User"/>
                     </StackLayout>
                 </Frame>
 
@@ -85,9 +87,13 @@
                         <Button Text="Add Insurance" Command="{Binding AddInsuranceCommand}" CommandParameter="Partner"/>
                     </StackLayout>
                 </Frame>
-
             </StackLayout>
-
         </StackLayout>
     </ScrollView>
+
+        <!-- Button area for navigation -->
+        <local:NavigationButtonsView Grid.Row="1" />
+
+    </Grid>
+
 </ContentPage>
