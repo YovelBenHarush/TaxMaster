@@ -7,9 +7,8 @@
             InitializeComponent();
 
             MainPage = new AppShell();
-            Routing.RegisterRoute(nameof(SelectReportType), typeof(SelectReportType));
             Routing.RegisterRoute(nameof(TaxAccountConfirmation), typeof(TaxAccountConfirmation));
-            Routing.RegisterRoute(nameof(FirstActionSelectionView), typeof(FirstActionSelectionView));
+            Routing.RegisterRoute(nameof(ReportSelectionView), typeof(ReportSelectionView));
             Routing.RegisterRoute(nameof(PersonalDetailsView), typeof(PersonalDetailsView));
             Routing.RegisterRoute(nameof(DefinitionOfForm106View), typeof(DefinitionOfForm106View));
             Routing.RegisterRoute(nameof(FidelityEsppView), typeof(FidelityEsppView));
