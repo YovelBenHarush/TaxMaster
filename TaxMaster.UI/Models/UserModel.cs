@@ -32,7 +32,7 @@ namespace TaxMaster.UI
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Id = user.ID,
-                Gender = user.Gender == Infra.Entities.Gender.Male ? "ז" : "נ",
+                Gender = user.Gender == Infra.Entities.Gender.Male ? "זכר" : "נקבה",
             };
         }
     }

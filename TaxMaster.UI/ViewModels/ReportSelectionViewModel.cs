@@ -135,6 +135,10 @@ namespace TaxMaster
                 ReportSettings.ClearConfiguration();
             }
 
+            ReportSettings.Configuration.Year = int.Parse(SelectedYear);
+
+            base.OnNext();
+
             await Shell.Current.GoToAsync(nameof(TaxAccountConfirmation));
         }
     }

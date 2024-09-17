@@ -14,41 +14,39 @@
 
             <!-- Placeholder for short explanation about life insurance -->
             <Label Text="נתוני ביטחי חיים" FontSize="Medium" HorizontalOptions="Center" Margin="0,0,0,20" FlowDirection="RightToLeft"/>
+                <Label Text="עבור תשלום שנתי של פוליסת ביטוח חיים ניתן לקבל 25% החזר כחלק מהדוח השנתי. לצורך כך, יש להזין את הפרמיה השנתית ששולמה בשנת המס  וכן לצרף את הטופס מחברת הביטוח (המערכת מבצעת את החישוב של ה25%).  המידע מיועד לחלק פירוט ההכנסות בדוח השנתי." FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Padding="50"/>
 
-            <!-- Horizontal layout for User and Partner sections -->
+                <!-- Horizontal layout for User and Partner sections -->
             <StackLayout Orientation="Horizontal" Spacing="40" FlowDirection="RightToLeft">
 
                 <!-- User Section -->
-                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" WidthRequest="600">
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" MinimumWidthRequest="650">
                     <StackLayout>
-                            <Label Text="עבור תשלום שנתי של פוליסת ביטוח חיים ניתן לקבל 25% החזר כחלק מהדוח השנתי. לצורך כך, יש להזין את הפרמיה השנתית ששולמה בשנת המס  וכן לצרף את הטופס מחברת הביטוח (המערכת מבצעת את החישוב של ה25%).  המידע מיועד לחלק פירוט ההכנסות בדוח השנתי." FontSize="Large" FontAttributes="Bold" FlowDirection="RightToLeft"/>
+                            <Label Text="ביטוחי החיים שלי" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
 
                         <!-- ListView for multiple insurances -->
-                        <ListView x:Name="UserInsuranceList" ItemsSource="{Binding UserInsurances}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <ViewCell.View>
-                                            <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
-                                                <!-- Choose insurance company -->
-                                                <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft"/>
+                            <CollectionView x:Name="UserInsuranceList" ItemsSource="{Binding UserInsurances}" Margin="10">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
+                                            <!-- Choose insurance company -->
+                                            <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft" WidthRequest="200" Margin="5"/>
 
-                                                <!-- Annual amount paid for the insurance -->
-                                                <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" WidthRequest="150"/>
+                                            <!-- Annual amount paid for the insurance -->
+                                            <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" WidthRequest="200" Margin="5"/>
 
-                                                <!-- Option to pick a local copy of the life insurance -->
-                                                <Button Text="העלאת העתק של הפוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" WidthRequest="200"/>
+                                            <!-- Option to pick a local copy of the life insurance -->
+                                            <Button Text="העלאת העתק של הפוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" WidthRequest="200" Margin="5"/>
 
-                                                <!-- Remove button -->
-                                                <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference UserInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="10" WidthRequest="20"/>
-                                            </StackLayout>
-                                        </ViewCell.View>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                            <!-- Remove button -->
+                                            <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference UserInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="10" WidthRequest="20" Margin="5"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
-                        <!-- Add new insurance button -->
+
+                            <!-- Add new insurance button -->
                         <Button Text="הוספת ביטוח נוסף" Command="{Binding AddInsuranceCommand}" CommandParameter="User"/>
                     </StackLayout>
                 </Frame>
@@ -56,34 +54,31 @@
                 <!-- Partner Section -->
                 <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" WidthRequest="600" IsVisible="{Binding IsNotSingle}">
                     <StackLayout>
-                        <Label Text="ביטוחי חיים של בן\בת זוג" FontSize="Large" FontAttributes="Bold" />
+                            <Label Text="ביטוחי החיים של בן\בת הזוג" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
 
-                        <!-- ListView for multiple insurances -->
-                        <ListView x:Name="PartnerInsuranceList" ItemsSource="{Binding PartnerInsurances}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <ViewCell.View>
-                                            <StackLayout Orientation="Horizontal" Spacing="10" Padding="5">
-                                                <!-- Choose insurance company -->
-                                                <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft"/>
+                            <!-- ListView for multiple insurances -->
+                            <CollectionView x:Name="PartnerInsuranceList" ItemsSource="{Binding PartnerInsurances}" Margin="30">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
+                                            <!-- Choose insurance company -->
+                                            <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft"/>
 
-                                                <!-- Annual amount paid for the insurance -->
-                                                <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" WidthRequest="150"/>
+                                            <!-- Annual amount paid for the insurance -->
+                                            <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" WidthRequest="150"/>
 
-                                                <!-- Option to pick a local copy of the life insurance -->
-                                                <Button Text="העלאת העתק של הפוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" WidthRequest="200"/>
+                                            <!-- Option to pick a local copy of the life insurance -->
+                                            <Button Text="העלאת העתק של הפוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" WidthRequest="200"/>
 
-                                                <!-- Remove button -->
-                                                <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlexLayout.AlignSelf="End"/>
-                                            </StackLayout>
-                                        </ViewCell.View>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                                            <!-- Remove button -->
+                                            <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="10" WidthRequest="20"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
-                        <!-- Add new insurance button -->
+
+                            <!-- Add new insurance button -->
                         <Button Text="Add Insurance" Command="{Binding AddInsuranceCommand}" CommandParameter="Partner"/>
                     </StackLayout>
                 </Frame>
