@@ -2,11 +2,111 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxMaster.LifeInsuranceView"
+             xmlns:local="clr-namespace:TaxMaster"
              Title="LifeInsuranceView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ContentPage.BindingContext>
+        <local:LifeInsuranceViewModel />
+    </ContentPage.BindingContext>
+    <ScrollView>
+        <StackLayout Padding="20">
+
+            <!-- Placeholder for short explanation about life insurance -->
+            <Label Text="Short explanation about life insurance goes here."
+                   FontSize="Medium"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,20"/>
+
+            <!-- Horizontal layout for User and Partner sections -->
+            <StackLayout Orientation="Horizontal" Spacing="40">
+
+                <!-- User Section -->
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" WidthRequest="600">
+                    <StackLayout>
+                        <Label Text="User's Life Insurance" FontSize="Large" FontAttributes="Bold" />
+
+                        <!-- ListView for multiple insurances -->
+                        <ListView x:Name="UserInsuranceList" ItemsSource="{Binding UserInsurances}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.View>
+                                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                                <!-- Choose insurance company -->
+                                                <Picker Title="Choose Insurance Company" SelectedItem="{Binding Company}">
+                                                    <Picker.ItemsSource>
+                                                        <x:Array Type="{x:Type x:String}">
+                                                            <x:String>הפניקס</x:String>
+                                                            <x:String>מגדל</x:String>
+                                                            <x:String>כלל</x:String>
+                                                        </x:Array>
+                                                    </Picker.ItemsSource>
+                                                </Picker>
+
+                                                <!-- Annual amount paid for the insurance -->
+                                                <Entry Placeholder="Annual Amount Paid" Keyboard="Numeric" WidthRequest="100" Text="{Binding AnnualAmount}"/>
+
+                                                <!-- Option to pick a local copy of the life insurance -->
+                                                <Button Text="Pick Local Copy" />
+
+                                                <!-- Remove button -->
+                                                <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference UserInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="10" WidthRequest="20"/>
+                                            </StackLayout>
+                                        </ViewCell.View>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <!-- Add new insurance button -->
+                        <Button Text="Add Insurance" Command="{Binding AddInsuranceCommand}" CommandParameter="User"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Partner Section -->
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" WidthRequest="600">
+                    <StackLayout>
+                        <Label Text="Partner's Life Insurance" FontSize="Large" FontAttributes="Bold" />
+
+                        <!-- ListView for multiple insurances -->
+                        <ListView x:Name="PartnerInsuranceList" ItemsSource="{Binding PartnerInsurances}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.View>
+                                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                                <!-- Choose insurance company -->
+                                                <Picker Title="Choose Insurance Company">
+                                                    <Picker.ItemsSource>
+                                                        <x:Array Type="{x:Type x:String}">
+                                                            <x:String>הפניקס</x:String>
+                                                            <x:String>מגדל</x:String>
+                                                            <x:String>כלל</x:String>
+                                                        </x:Array>
+                                                    </Picker.ItemsSource>
+                                                </Picker>
+
+                                                <!-- Annual amount paid for the insurance -->
+                                                <Entry Placeholder="Annual Amount Paid" Keyboard="Numeric" WidthRequest="100"/>
+
+                                                <!-- Option to pick a local copy of the life insurance -->
+                                                <Button Text="Pick Local Copy" />
+
+                                                <!-- Remove button -->
+                                                <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlexLayout.AlignSelf="End"/>
+                                            </StackLayout>
+                                        </ViewCell.View>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <!-- Add new insurance button -->
+                        <Button Text="Add Insurance" Command="{Binding AddInsuranceCommand}" CommandParameter="Partner"/>
+                    </StackLayout>
+                </Frame>
+
+            </StackLayout>
+
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

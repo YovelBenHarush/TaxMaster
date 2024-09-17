@@ -8,11 +8,57 @@
         <local:BirthAllowanceViewModel />
     </ContentPage.BindingContext>
     <Grid RowDefinitions="9*, 1*">
+        <Grid RowDefinitions="10*, 5*, 5*" >
+            <StackLayout Grid.Row="0" Padding="5">
+                <Label Margin="5" Text="בשלב זה נטען את טופס דמי הלידה לחישוב מס, אם לא היה בשנה האחרונ דמי לידה ניתן לדלג." HorizontalOptions="End" />
+                <Label Margin="5" Text="דמי הלידה מכילים שני ערכים שאותם צריכים בדוח: סכום ברוטו ששולם ומס שנוכה מאותו הסכום, שני ערכים אילו צריכים להיות משוקפים בהגשת בדוח." HorizontalOptions="End" />
+                <StackLayout Grid.Row="0" Padding="10" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <Label Text="אם שולמו דמי לידה בשנת המס, אנא בחרו למי הם שולמו: " VerticalOptions="Center" HorizontalOptions="Center" Margin="5,0,20,0" TextDecorations="Underline"/>
+                    <Picker ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}" />
+                </StackLayout>
+                <Label Text="הסבר איך מורידים את הקובץ : " VerticalOptions="Center" HorizontalOptions="Center" />
+                <ScrollView>
+                    <WebView Source="{Binding BirthAllowanceGuide}" HeightRequest="500" Margin="40,10,40,10" />
+                </ScrollView>
+            </StackLayout>
 
-        <!-- Main content area for the step -->
-        <StackLayout Grid.Row="0" Padding="10">
-            <Label Text="Welcome to .NET MAUI!" VerticalOptions="Center" HorizontalOptions="Center" />
-        </StackLayout>
+            <StackLayout Grid.Row="1" Padding="5">
+                <Label Margin="5" Text="אנא טען את קובץ דמי הלידה" HorizontalOptions="End" />
+                <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10">
+                    <Button Text="בחר את מסמך דמי הלידה" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="BirthAllowance"/>
+                    <Label Text="{Binding BirthAllowanceFile}" Margin="5" HorizontalOptions="End" />
+                    <Button Command="{Binding ResetFileCommand}"  CommandParameter="1024" IsVisible="{Binding BirthAllowanceFile, Converter={StaticResource StringToBooleanConverter}}">
+                        <Button.ImageSource>
+                            <FontImageSource Glyph="&#xE894;" FontFamily="Segoe Fluent Icons" Size="20" Color="Red" />
+                        </Button.ImageSource>
+                    </Button>
+                </StackLayout>
+                <Button Margin="10" Text="חשב" Command="{Binding CalcualteCommand}" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="{Binding IsCalculating, Converter={StaticResource InvertedBoolConverter}}"/>
+                <ActivityIndicator Margin="10" IsRunning="{Binding IsCalculating}" IsVisible="{Binding IsCalculating}" HorizontalOptions="Center" VerticalOptions="Center" />
+                <Label Text="{Binding CalcualteError}" Margin="5" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Red" IsVisible="{Binding CalcualteError, Converter={StaticResource StringToBooleanConverter}}"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="2" Padding="5" IsVisible="{Binding ShouldDisplayValues}">
+                <Border StrokeThickness="3"  Margin="10">
+                    <StackLayout Grid.Row="0" Padding="10" Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalOptions="Center">
+                    <Label Text="גמלאות אמהות ברוטו" VerticalOptions="End" HorizontalOptions="Center" Margin="5,0,10,0" TextDecorations="Underline" />
+                    <Label Text="{Binding Amount} " VerticalOptions="End" HorizontalOptions="Center" />
+                </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                </Border>
+                <Border StrokeThickness="3"  Margin="10">
+                    <StackLayout Grid.Row="0" Padding="10" Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalOptions="Center">
+                        <Label Text="נוכה מס הכנסה בסך" VerticalOptions="End" HorizontalOptions="Center" Margin="5,0,10,0" TextDecorations="Underline"/>
+                        <Label Text="{Binding Tax} " VerticalOptions="End" HorizontalOptions="Center" />
+                    </StackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                </Border>
+            </StackLayout>
+        </Grid>
 
         <!-- Button area for navigation -->
         <Grid Grid.Row="1" Padding="10" ColumnDefinitions="2*,10*, 2*" FlowDirection="RightToLeft">
