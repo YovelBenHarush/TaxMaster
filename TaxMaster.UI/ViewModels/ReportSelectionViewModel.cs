@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using TaxMaster.BL;
 
 namespace TaxMaster
@@ -9,7 +10,11 @@ namespace TaxMaster
 
         public ReportType ReportType { get; set; }
 
+        public Command<ReportType> ToggleReportTypeCommand { get; }
+
         public ReportAction ReportAction { get; set; }
+
+        public Command<ReportAction> ToggleReportActionCommand { get; }
 
         private string _selectedYear = "";
         public string SelectedYear
@@ -80,6 +85,18 @@ namespace TaxMaster
             ReportType = ReportType.AnnualReport;
             ReportAction = ReportAction.New;
             SelectedYear = Years[0];
+
+            ToggleReportTypeCommand = new Command<ReportType>((reportType) =>
+            {
+                ReportType = reportType;
+                OnPropertyChanged(nameof(ReportType));
+            });
+
+            ToggleReportActionCommand = new Command<ReportAction>((reportAction) =>
+            {
+                ReportAction = reportAction;
+                OnPropertyChanged(nameof(ReportAction));
+            });
         }
 
         public override string Title
