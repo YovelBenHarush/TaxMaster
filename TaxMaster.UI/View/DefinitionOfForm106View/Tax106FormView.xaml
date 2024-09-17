@@ -1,75 +1,48 @@
-<!--<?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TaxMaster.Tax106FormView">
-    <ContentView.BindingContext>
-        <local:Tax106FileViewModel />
-    </ContentView.BindingContext>
-    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" BorderColor="Gray" Margin="5" WidthRequest="350">
-        <StackLayout BindableLayout.ItemsSource="{Binding Tax106Fields}">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <Label Text="{Binding Name}" />
-                        <Entry Text="{Binding Value}" IsEnabled="False" />
-                    </StackLayout>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>
-    </Frame>
-</ContentView>-->
-
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxMaster.Tax106FormView">
     <ContentView.Resources>
         <Style x:Key="MaterialLabelStyle" TargetType="Label">
-            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontSize" Value="13" />
             <Setter Property="TextColor" Value="#616161" />
             <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="FlowDirection" Value="RightToLeft" />
         </Style>
         <Style x:Key="MaterialEntryStyle" TargetType="Entry">
             <Setter Property="FontSize" Value="13" />
             <Setter Property="TextColor" Value="#212121" />
             <Setter Property="BackgroundColor" Value="#FAFAFA" />
-            <Setter Property="Margin" Value="0,2,0,4" />
-            <Setter Property="HeightRequest" Value="20" />
+            <Setter Property="Margin" Value="0,0,0,0" />
+            <Setter Property="HeightRequest" Value="25" />
             <Setter Property="PlaceholderColor" Value="#9E9E9E" />
-        </Style>
-        <Style TargetType="Frame">
-            <Setter Property="HasShadow" Value="True" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="20" />
-            <Setter Property="Margin" Value="10" />
-            <Setter Property="WidthRequest" Value="350" />
+            <Setter Property="FlowDirection" Value="RightToLeft" />
         </Style>
     </ContentView.Resources>
 
-    <Frame BackgroundColor="White" BorderColor="#E0E0E0">
-        <StackLayout>
-            <!-- Field 158-172 -->
-            <Label Text="Field 158-172" Style="{StaticResource MaterialLabelStyle}" />
-            <Entry Text="{Binding Field_158_172, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 158-172" Style="{StaticResource MaterialEntryStyle}" />
+    <StackLayout FlowDirection="RightToLeft">
+        <Label Text="{Binding Name}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="14" FlowDirection="RightToLeft"></Label>
+        <!-- Field 158-172 -->
+        <Label Text='(158-172) סה"כ ' Style="{StaticResource MaterialLabelStyle}" />
+        <Entry Text="{Binding Tax106File.Field_158_172, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 158-172" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
 
-            <!-- Field 042 -->
-            <Label Text="Field 042" Style="{StaticResource MaterialLabelStyle}" />
-            <Entry Text="{Binding Field_042, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 042" Style="{StaticResource MaterialEntryStyle}" />
+        <!-- Field 042 -->
+        <Label Text='(042) סה"כ ניכויי מס' Style="{StaticResource MaterialLabelStyle}" />
+        <Entry Text="{Binding Tax106File.Field_042, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 042" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
 
-            <!-- Field 244-245 -->
-            <Label Text="Field 244-245" Style="{StaticResource MaterialLabelStyle}" />
-            <Entry Text="{Binding Field_244_245, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 244-245" Style="{StaticResource MaterialEntryStyle}" />
+        <!-- Field 244-245 -->
+        <Label Text="(244/245) הכנסה מבוטחת" Style="{StaticResource MaterialLabelStyle}" />
+        <Entry Text="{Binding Tax106File.Field_244_245, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 244-245" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
 
-            <!-- Field 218-219 -->
-            <Label Text="Field 218-219" Style="{StaticResource MaterialLabelStyle}" />
-            <Entry Text="{Binding Field_218_219, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 218-219" Style="{StaticResource MaterialEntryStyle}" />
+        <!-- Field 218-219 -->
+        <Label Text="(218/219) בסיס להשתלמות" Style="{StaticResource MaterialLabelStyle}" />
+        <Entry Text="{Binding Tax106File.Field_218_219, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 218-219" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
 
-            <!-- Field 086-045 -->
-            <Label Text="Field 086-045" Style="{StaticResource MaterialLabelStyle}" />
-            <Entry Text="{Binding Field_086_045, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 086-045" Style="{StaticResource MaterialEntryStyle}" />
+        <!-- Field 086-045 -->
+        <Label Text='(086/045) הפקדות העובד לקופ"ג לקצבה' Style="{StaticResource MaterialLabelStyle}" />
+        <Entry Text="{Binding Tax106File.Field_086_045, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 086-045" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
 
-            <!-- Field 248-249 -->
-            <Label Text="Field 248-249" Style="{StaticResource MaterialLabelStyle}" />
-            <Entry Text="{Binding Field_248_249, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 248-249" Style="{StaticResource MaterialEntryStyle}" IsEnabled="False" />
-        </StackLayout>
-    </Frame>
+        <!-- Field 248-249 -->
+        <Label Text="(248/249) סכום הפרשות המעביד לקופות גמל לקצבה" Style="{StaticResource MaterialLabelStyle}" />
+        <Entry Text="{Binding Tax106File.Field_248_249, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 248-249" Style="{StaticResource MaterialEntryStyle}" IsEnabled="{Binding IsNotSubmitted}" MinimumHeightRequest="33" />
+    </StackLayout>
 </ContentView>

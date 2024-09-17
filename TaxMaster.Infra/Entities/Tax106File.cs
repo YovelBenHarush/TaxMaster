@@ -21,4 +21,9 @@
                    $"_248_249 = {_248_249}";
         }
     }
+    public class Tax106Files
+    {
+        public Tax106File? User106 { get; set; } = null;
+        public Tax106File? Partner106 { get; set; } = null;
+    }
 }

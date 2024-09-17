@@ -13,8 +13,16 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <Style TargetType="Frame">
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="20" />
+                <Setter Property="Margin" Value="10,10,10,0" />
+                <Setter Property="WidthRequest" Value="400" />
+            </Style>
             <Style x:Key="MaterialButtonStyle" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="#2196F3" /> <!-- Material Blue -->
+                <Setter Property="BackgroundColor" Value="#2196F3" />
+                <!-- Material Blue -->
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="CornerRadius" Value="5" />
                 <Setter Property="Padding" Value="15,5" />
@@ -54,7 +62,16 @@
             <VerticalStackLayout Grid.Column="0" Grid.ColumnSpan="{Binding ShouldShowPartner, Converter={StaticResource BooleanToColumnSpanConverter}}" VerticalOptions="Center">
                 <Button Text="Load 106 File - Filler" Command="{Binding PickFileCommandFiller}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" />
                 <StackLayout IsVisible="{Binding ShouldShowTax106FileDetailsFiller}">
-                    <local:Tax106FormView BindingContext="{Binding Tax106FileFiller}" HorizontalOptions="Center" />
+                    <Frame BackgroundColor="White" BorderColor="#E0E0E0">
+                        <Grid RowDefinitions="9*, 1*">
+                            <local:Tax106FormView BindingContext="{Binding Tax106FileFillerWrapper}" HorizontalOptions="FillAndExpand" />
+                            <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,13,0,0">
+                                <ActivityIndicator IsRunning="{Binding IsSubmittingFiller}" IsVisible="{Binding IsSubmittingFiller}" />
+                                <Button Text="{Binding SubmitButtonTextFiller}" Command="{Binding SubmitFileFiller}" HorizontalOptions="Center" 
+                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsNotSubmittingFiller} "/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
                 </StackLayout>
             </VerticalStackLayout>
 
@@ -62,7 +79,16 @@
             <VerticalStackLayout Grid.Column="1" IsVisible="{Binding ShouldShowPartner}" VerticalOptions="Center">
                 <Button Text="Load 106 File - Partner" Command="{Binding PickFileCommandPartner}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" />
                 <StackLayout IsVisible="{Binding ShouldShowTax106FileDetailsPartner}">
-                    <local:Tax106FormView BindingContext="{Binding Tax106FilePartner}" HorizontalOptions="Center" />
+                    <Frame BackgroundColor="White" BorderColor="#E0E0E0">
+                        <Grid RowDefinitions="9*, 1*">
+                            <local:Tax106FormView Grid.Row="0" BindingContext="{Binding Tax106FilePartnerWrapper}" HorizontalOptions="FillAndExpand" />
+                            <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,13,0,0">
+                                <ActivityIndicator IsRunning="{Binding IsSubmittingPartner}" IsVisible="{Binding IsSubmittingPartner}" />
+                                <Button Text="{Binding SubmitButtonTextPartner}" Command="{Binding SubmitFilePartner}" HorizontalOptions="Center" 
+                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsNotSubmittingPartner} "/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
                 </StackLayout>
             </VerticalStackLayout>
         </Grid>

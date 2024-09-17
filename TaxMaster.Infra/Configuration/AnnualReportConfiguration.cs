@@ -33,6 +33,13 @@ namespace TaxMaster.Infra
                     throw new FileNotFoundException("Source file not found", sourcefilePath);
                 }
 
+                // Ensure the destination directory exists
+                var destinationDir = Path.GetDirectoryName(GetOutputFilePath(fileName));
+                if (!Directory.Exists(destinationDir))
+                {
+                    Directory.CreateDirectory(destinationDir);
+                }
+
                 // Copy the file to the destination
                 File.Copy(sourcefilePath, GetOutputFilePath(fileName));
 
@@ -94,7 +101,9 @@ namespace TaxMaster.Infra
 
         public LifeInsurences LifeInsurences { get; set; } = new LifeInsurences();
 
-        public  EsppObject EsppObject { get; set; } = new EsppObject();
+        public EsppObject EsppObject { get; set; } = new EsppObject();
+
+        public Tax106Files Tax106Files { get; set; } = new Tax106Files();
 
         public string Serialize()
         {
