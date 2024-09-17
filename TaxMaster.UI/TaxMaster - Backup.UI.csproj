@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AppxWinMdCacheEnabled>false</AppxWinMdCacheEnabled>
-		<WindowsPackageType>None</WindowsPackageType>
+    <AppxWinMdCacheEnabled>false</AppxWinMdCacheEnabled>
+    <WindowsPackageType>None</WindowsPackageType>
 		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
@@ -88,7 +88,7 @@
 	  <Compile Update="View\BirthAllowanceView.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
-	  <Compile Update="View\DefinitionOfForm106View\DefinitionOfForm106View.xaml.cs">
+	  <Compile Update="View\DefinitionOfForm106View.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
 	  <Compile Update="View\DefinitionOfForm106View\Tax106FormView.xaml.cs">

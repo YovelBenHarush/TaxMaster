@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TaxMaster"
+             x:Class="TaxMaster.DefinitionOfForm106View"
+             Title="DefinitionOfForm106View">
+    <ContentPage.BindingContext>
+        <local:DefinitionOfForm106ViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="9*, 1*">
+        <!-- Main content area for the step -->
+        <StackLayout Grid.Row="0" Padding="10">
+            <!-- New Grid for the two buttons in the middle -->
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" HorizontalOptions="Center">
+                <Button Text="Load 106 File - Filler" Command="{Binding PickFileCommandFiller}" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"></Button>
+                <Button Text="Load 106 File - Partner" Command="{Binding PickFileCommandPartner}" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"></Button>
+
+                <!-- Reuse the grayed out form -->
+                <local:Tax106FormView Grid.Column="0" Grid.Row="1" BindingContext="{Binding Tax106FileFiller}" />
+                <local:Tax106FormView Grid.Column="1" Grid.Row="1" BindingContext="{Binding Tax106FilePartner}" />
+            </Grid>
+        </StackLayout>
+
+        <!-- Button area for navigation -->
+        <local:NavigationButtonsView Grid.Row="1" />
+
+    </Grid>
+    
+</ContentPage>
