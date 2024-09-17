@@ -50,7 +50,7 @@ public class ESPPFidelityParser
                     string[] columns = transcationLine.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
                     sellTransaction.SellDate = DateTime.Parse(columns[0]);
                     sellTransaction.PurchaseDate = DateTime.Parse(columns[1]);
-                    sellTransaction.PurchasePriceInUSD = double.Parse(columns[3].Replace("$", ""));
+                    sellTransaction.PurchasePriceInUSD = double.Parse(columns[3].Replace("$", ""))*10/9;
                     sellTransaction.SellPriceInUSD = double.Parse(columns[4].Replace("$", ""));
                     transactions.Add(sellTransaction);
                     j++;
