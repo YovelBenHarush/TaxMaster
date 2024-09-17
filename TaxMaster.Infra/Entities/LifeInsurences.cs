@@ -8,7 +8,18 @@ public class LifeInsurences
 
 public class InsuranceEntry
 {
-    public string Company { get; set; }
-    public string AnnualAmount { get; set; }
-    public string PolicyPath { get; set; }
+    public InsuranceEntry()
+    {
+    }
+
+    public string Company { get; set; } = string.Empty;
+    public string AnnualAmount { get; set; } = string.Empty;
+    public string PolicyPath { get; set; } = string.Empty;
+
+    public InsuranceEntry(InsuranceEntry other)
+    {
+        Company = other.Company;
+        AnnualAmount = other.AnnualAmount;
+        PolicyPath = other.PolicyPath;
+    }
 }
