@@ -24,5 +24,16 @@ namespace TaxMaster.UI
                 Gender = Gender == "זכר" ? Infra.Entities.Gender.Male : Infra.Entities.Gender.Female,
             };
         }
+
+        public static UserModel FromUser(User user)
+        {
+            return new UserModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Id = user.ID,
+                Gender = user.Gender == Infra.Entities.Gender.Male ? "ז" : "נ",
+            };
+        }
     }
 }

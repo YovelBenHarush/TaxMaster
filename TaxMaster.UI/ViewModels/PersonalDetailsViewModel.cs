@@ -38,7 +38,7 @@ namespace TaxMaster
             }
         }
 
-        private bool _isMarried = false;
+        private bool _isMarried = ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married;
         public bool IsMarried => _isMarried;
 
         public string SelectedYear => ReportSettings.Configuration.Year.ToString();
@@ -50,10 +50,9 @@ namespace TaxMaster
             MaritalStatuses = new ObservableCollection<string> { "רווק", "נשוי" };
             Genders = new ObservableCollection<string> { "זכר", "נקבה" };
 
-            SelectedMaritalStatus = MaritalStatuses.First();
-
-            RegisteredPartner = new UserModel();
-            Partner = new UserModel();
+            SelectedMaritalStatus = ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married ? "נשוי" : "רווק";
+            RegisteredPartner = UserModel.FromUser(ReportSettings.Configuration.RegisteredPartner);
+            Partner = UserModel.FromUser(ReportSettings.Configuration.Partner);
         }
 
         public override string Title
