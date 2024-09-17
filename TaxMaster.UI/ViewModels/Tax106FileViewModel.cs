@@ -86,6 +86,11 @@ public class Tax106FileViewModel : INotifyPropertyChanged
         }
     }
 
+    public Tax106FileViewModel(Tax106File? tax106File)
+    {
+        InternalTax106File = tax106File;
+    }
+
     // INotifyPropertyChanged implementation
     public event PropertyChangedEventHandler? PropertyChanged;
 

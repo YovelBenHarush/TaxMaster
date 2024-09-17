@@ -9,7 +9,7 @@
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:DefinitionOfForm106View}"
+        ContentTemplate="{DataTemplate local:DisclaimerPage}"
         Route="MainPage" />
 
 </Shell>

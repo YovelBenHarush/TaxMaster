@@ -202,25 +202,31 @@ namespace TaxMaster
 
         public DefinitionOfForm106ViewModel()
         {
-            //ReportSettings.Configuration.FamilyStatus = FamilyStatus.Married;
-            ReportSettings.Configuration.RegisteredPartner.FirstName = "Saar";
-            ReportSettings.Configuration.RegisteredPartner.LastName = "Ofek";
             IsPreviousEnabled = true;
             _tax106FileParser = new Tax106FileParser();
             _tax106FileWorker = new Tax106FileWorker();
 
 
-            Tax106FileFillerWrapper = new Tax106FormViewModelWrapper(new Tax106FileViewModel(), ReportSettings.Configuration.RegisteredPartner.DisplayName, true);
+            Tax106FileFillerWrapper = new Tax106FormViewModelWrapper(new Tax106FileViewModel(ReportSettings.Configuration.Tax106Files.User106), ReportSettings.Configuration.RegisteredPartner.DisplayName, true);
             PickFileCommandFiller = new Command(() => Handle106Form(Tax106FileFillerWrapper));
             SubmitFileFiller = new Command(async () => await Submit106FormFiller());
+            if (ReportSettings.Configuration.Tax106Files.User106 != null)
+            {
+                ShouldShowTax106FileDetailsFiller = true;
+            }
 
             if (ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married)
             {
 
                 ShouldShowPartner = true;
-                Tax106FilePartnerWrapper = new Tax106FormViewModelWrapper(new Tax106FileViewModel(), ReportSettings.Configuration.Partner.DisplayName, true);
+                Tax106FilePartnerWrapper = new Tax106FormViewModelWrapper(new Tax106FileViewModel(ReportSettings.Configuration.Tax106Files.Partner106), ReportSettings.Configuration.Partner.DisplayName, true);
                 PickFileCommandPartner = new Command(() => Handle106Form(Tax106FilePartnerWrapper));
                 SubmitFilePartner = new Command(async () => await Submit106FormPartner());
+
+                if (ReportSettings.Configuration.Tax106Files.Partner106 != null)
+                {
+                    ShouldShowTax106FileDetailsPartner = true;
+                }
             }
 
         }
@@ -270,7 +276,7 @@ namespace TaxMaster
                 return;
             }
 
-            _tax106FileWorker.Submit(_fillerFormPath, Tax106FileFillerWrapper.Tax106File.InternalTax106File!, isFiller: false);
+            _tax106FileWorker.Submit(_fillerFormPath, Tax106FileFillerWrapper.Tax106File.InternalTax106File!, isFiller: true);
 
             try
             {
@@ -280,7 +286,6 @@ namespace TaxMaster
                 // Simulate a delay for the loading animation
                 await Task.Delay(1000);
 
-                _tax106FileWorker.Submit(_fillerFormPath, Tax106FileFillerWrapper.Tax106File.InternalTax106File!, isFiller: false);
                 IsFillerSubmmited = true;
 
                 SubmitButtonTextFiller = "Submitted!";
@@ -313,7 +318,6 @@ namespace TaxMaster
                 // Simulate a delay for the loading animation
                 await Task.Delay(1000);
 
-                _tax106FileWorker.Submit(_partnerFormPath, Tax106FilePartnerWrapper.Tax106File.InternalTax106File!, isFiller: false);
                 IsPartnerSubmmited = true;
 
                 SubmitButtonTextPartner = "Submitted!";
