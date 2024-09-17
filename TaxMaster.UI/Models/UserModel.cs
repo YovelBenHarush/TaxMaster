@@ -10,7 +10,7 @@ namespace TaxMaster.UI
 
         public string LastName { get; set; }
 
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         public string DisplayName => $"{FirstName} {LastName}";
 
@@ -20,8 +20,8 @@ namespace TaxMaster.UI
             {
                 FirstName = FirstName,
                 LastName = LastName,
-                ID = ID,
-                Gender = Gender == "ז" ? Infra.Entities.Gender.Male : Infra.Entities.Gender.Female,
+                ID = Id,
+                Gender = Gender == "זכר" ? Infra.Entities.Gender.Male : Infra.Entities.Gender.Female,
             };
         }
     }

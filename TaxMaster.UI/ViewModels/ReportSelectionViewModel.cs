@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TaxMaster.BL;
+using TaxMaster.Infra;
 
 namespace TaxMaster
 {
@@ -124,6 +125,12 @@ namespace TaxMaster
                 return;
             }
 
+            // set report configuration
+            ReportSettings.Configuration.Year = int.Parse(SelectedYear);
+
+            // TODO: Load annual report here
+
+            base.OnNext();
             await Shell.Current.GoToAsync(nameof(TaxAccountConfirmation));
         }
     }
