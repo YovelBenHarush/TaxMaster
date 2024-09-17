@@ -3,16 +3,15 @@ using TaxMaster.BL;
 
 namespace TaxMaster
 {
-    public class SelectReportTypeViewModel : BaseViewModel
+    public class ReportSelectionViewModel : BaseViewModel
     {
         private AnnualReportWorker _annualReportWorker;
 
-        public Command NewReport { get; }
-        public Command OldReport { get; }
+        public ReportType ReportType { get; set; }
 
-        public ObservableCollection<string> Years { get; set; }
+        public ReportAction ReportAction { get; set; }
 
-        private string _selectedYear;
+        private string _selectedYear = "";
         public string SelectedYear
         {
             get => _selectedYear;
@@ -27,7 +26,9 @@ namespace TaxMaster
             }
         }
 
-        public ObservableCollection<string> _reports;
+        public ObservableCollection<string> Years { get; set; }
+
+        private ObservableCollection<string> _reports = new ObservableCollection<string>();
         public ObservableCollection<string> Reports
         {
             get => _reports;
@@ -41,7 +42,7 @@ namespace TaxMaster
             }
         }
 
-        private string _selectedReport;
+        private string _selectedReport = "";
         public string SelectedReport
         {
             get => _selectedReport;
@@ -50,46 +51,63 @@ namespace TaxMaster
                 if (_selectedReport != value)
                 {
                     _selectedReport = value;
+                    YearHasReports = _selectedReport != "";
                     OnPropertyChanged();
                 }
             }
         }
 
-        public bool ThereAreOldReports => Reports == null ? false : Reports.Count > 0;
+        private bool _yearHasReports = false;
+        public bool YearHasReports
+        {
+            get => _yearHasReports;
+            set
+            {
+                if (_yearHasReports != value)
+                {
+                    _yearHasReports = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
-        public SelectReportTypeViewModel()
+        public ReportSelectionViewModel()
         {
             _annualReportWorker = new AnnualReportWorker();
-            NewReport = new Command(OnNewReport);
-            OldReport = new Command(OnOldReport);
 
-            // Replace the problematic line with the following
             Years = new ObservableCollection<string>(Enumerable.Range(DateTime.Now.Year - 6, 7).Reverse().Select(year => year.ToString()));
+
+            ReportType = ReportType.AnnualReport;
+            ReportAction = ReportAction.New;
+            SelectedYear = Years[0];
+        }
+
+        public override string Title
+        {
+            get => "פעולות";
+            set => base.Title = value;
         }
 
         private void OnSelectedYearChanged()
         {
             var reports = _annualReportWorker.GetExistingAnnualReports(int.Parse(SelectedYear));
-            SelectedReport = null;
             Reports = (reports == null || reports.Count == 0) ? new ObservableCollection<string>() : new ObservableCollection<string>(reports.Select(r => r.DisplayName));
-            OnPropertyChanged(nameof(ThereAreOldReports));
+            OnPropertyChanged(nameof(Reports));
+            SelectedReport = Reports.Count == 0 ? "" : Reports[0];
         }
 
-        private async void OnNewReport()
+        public override async void OnNext()
         {
-            // Navigate to the next step
+            if (ReportAction == ReportAction.Existing && SelectedReport == "")
+            {
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("", "לא קיים דוח עבור השנה הנבחרת. יש לבחור שנה עם דוח קיים או דוח חדש", "OK");
+                }
+                return;
+            }
+
             await Shell.Current.GoToAsync(nameof(TaxAccountConfirmation));
-        }
-
-        private async void OnOldReport()
-        {
-            // Navigate to the next step
-            await Shell.Current.GoToAsync(nameof(TaxAccountConfirmation));
-        }
-
-        public override void OnNext()
-        {
-            throw new NotImplementedException();
         }
     }
 }

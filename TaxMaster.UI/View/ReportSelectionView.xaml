@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaxMaster.ReportSelectionView"
+              xmlns:local="clr-namespace:TaxMaster">
+    <Shell.TitleView>
+        <local:PageTitle />
+    </Shell.TitleView>
+    <ContentPage.BindingContext>
+        <local:ReportSelectionViewModel />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <local:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+            <local:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!-- Define the Grid layout -->
+    <Grid RowDefinitions="9*, 1*">
+        <Grid Grid.Row="0" ColumnDefinitions="1*, 1*" FlowDirection="RightToLeft" Padding="10,5" Margin="10">
+            <Grid RowDefinitions="Auto,*" ZIndex="1">
+                <Border Grid.Row="0" StrokeThickness="3" Margin="10">
+                    <VerticalStackLayout Padding="20,10,0,10">
+                        <Label Text="בחר/י את שנת המס" VerticalOptions="Center" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                        <Picker ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear, Mode=TwoWay}" Margin="10" WidthRequest="200" HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                </Border>
+                <Border Grid.Row="1" StrokeThickness="3" Margin="10">
+                    <VerticalStackLayout Padding="20,10,0,0">
+                        <Label Text="בחר/י סוג דוח" VerticalOptions="Center" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                        <HorizontalStackLayout FlowDirection="RightToLeft">
+                            <RadioButton IsChecked="{Binding ReportType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ReportType.AnnualReport}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportType"/>
+                            <Label Text="דוח שנתי" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleAnnualReportCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout FlowDirection="RightToLeft">
+                            <RadioButton IsChecked="{Binding ReportType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ReportType.HalfAnnualReport}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportType"/>
+                            <Label Text="דוח חצי שנתי (מניות)" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleAnnualReportCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                </Border>
+            </Grid>
+
+            <Border Grid.Column="1" StrokeThickness="3" IsVisible="{Binding IsMarried}"  Margin="10">
+                <VerticalStackLayout Padding="20,10,0,0">
+                    <Label Text="בחר/י פעולה" VerticalOptions="Center" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                    <HorizontalStackLayout FlowDirection="RightToLeft">
+                        <RadioButton IsChecked="{Binding ReportAction, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ReportAction.New}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportPersistancyType"/>
+                        <Label Text="דוח חדש" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleAnnualReportCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout FlowDirection="RightToLeft">
+                        <RadioButton IsChecked="{Binding ReportAction, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ReportAction.Existing}, Mode=TwoWay}" x:Name="ExistingReportRadioButton" VerticalOptions="Center" GroupName="ReportPersistancyType"/>
+                        <Label Text="דוח קיים" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleAnnualReportCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                    <VerticalStackLayout IsVisible="{Binding YearHasReports, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Label Text="רשימת הדוחות הקיימים במערכת עבור השנה הנבחרת:" Margin="10" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                           IsVisible="{Binding Source={x:Reference ExistingReportRadioButton}, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Picker ItemsSource="{Binding Reports}" SelectedItem="{Binding SelectedReport}" Margin="10" WidthRequest="300" HorizontalOptions="Start"
+                           IsVisible="{Binding Source={x:Reference ExistingReportRadioButton}, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout IsVisible="{Binding YearHasReports, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                        <Label Text="לא קיימים דוחות עבור השנה הנבחרת" Margin="10" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                               IsVisible="{Binding Source={x:Reference ExistingReportRadioButton}, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+            </Border>
+        </Grid>
+
+        <!-- Button area for navigation -->
+        <local:NavigationButtonsView Grid.Row="1" />
+
+    </Grid>
+
+</ContentPage>
