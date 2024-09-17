@@ -82,8 +82,8 @@
 	  <Compile Update="View\DonationsView.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
-	  <Compile Update="View\FidelityEsppView.xaml.cs">
-	    <DependentUpon>FidelityEsppView.xaml</DependentUpon>
+	  <Compile Update="View\EsppDividendsView.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
 	  <Compile Update="View\EsppSaleOfSharesView.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
@@ -133,7 +133,7 @@
 	  <MauiXaml Update="View\DonationsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\FidelityEsppView.xaml">
+	  <MauiXaml Update="View\EsppDividendsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\EsppSaleOfSharesView.xaml">
@@ -169,13 +169,6 @@
 	  <None Update="Guides\fidelity_espp_guide.pdf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Icons\reset.jpg">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Icons\" />
 	</ItemGroup>
 
 </Project>

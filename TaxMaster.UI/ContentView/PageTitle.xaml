@@ -4,7 +4,7 @@
              x:Class="TaxMaster.PageTitle">
     <StackLayout>
         <Label Text="{Binding Title}"
-                   Padding="10"
+                   Padding="0,10,0,0"
                    FontSize="24"
                    FontAttributes="Bold"
                    VerticalOptions="Center" HorizontalOptions="Center" TextColor="#AC99EA"/>

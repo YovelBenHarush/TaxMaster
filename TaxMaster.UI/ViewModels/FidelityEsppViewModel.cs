@@ -101,7 +101,7 @@ namespace TaxMaster
                 IsCalculating = true;
             });
 
-            esppWorker.EsppFidelity(Tax1024File, CustomTransactionSummaryFile);
+            //esppWorker.EsppFidelity(Tax1024File, CustomTransactionSummaryFile);
             await Task.Delay(10000);
 
             Application.Current.Dispatcher.Dispatch(() =>

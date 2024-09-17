@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaxMaster.FirstActionSelectionViewTal"
+             xmlns:local="clr-namespace:TaxMaster">
+    <Shell.TitleView>
+        <local:PageTitle />
+    </Shell.TitleView>
+    <ContentPage.BindingContext>
+        <local:FirstActionSelectionViewModelTal />
+    </ContentPage.BindingContext>
+
+    <!-- Define the Grid layout -->
+    <Grid RowDefinitions="1*, 9*, 1*">
+        <Label Grid.Row="0" Text="אנא בחר/י סוג דוח " HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+        <Grid Grid.Row="1" ColumnDefinitions="1*, 1*" FlowDirection="RightToLeft" Padding="10,5" Margin="10">
+            <Border Grid.Column="0" StrokeThickness="3" Margin="10">
+                <VerticalStackLayout Padding="20,10,0,0">
+                    <HorizontalStackLayout FlowDirection="RightToLeft">
+                        <RadioButton IsChecked="{Binding AnnualReport}" VerticalOptions="Center"/>
+                        <Label Text="דוח שנתי" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleAnnualReportCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+            </Border>
+
+            <Border Grid.Column="1" StrokeThickness="3" IsVisible="{Binding IsMarried}"  Margin="10">
+                <VerticalStackLayout Padding="20,10,0,0">
+                    <HorizontalStackLayout FlowDirection="RightToLeft">
+                        <RadioButton IsChecked="{Binding AnnualReport}" VerticalOptions="Center" GroupName="ReportType"/>
+                        <Label Text="דוח חדש" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleAnnualReportCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout FlowDirection="RightToLeft">
+                        <RadioButton IsChecked="{Binding AnnualReport}" VerticalOptions="Center" GroupName="ReportType"/>
+                        <Label Text="דוח קיים" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleAnnualReportCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+            </Border>
+        </Grid>
+
+        <!-- Button area for navigation -->
+        <local:NavigationButtonsView Grid.Row="2" />
+
+    </Grid>
+    
+</ContentPage>
