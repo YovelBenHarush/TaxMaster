@@ -2,76 +2,98 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxMaster.TaxAccountConfirmation"
-             xmlns:local="clr-namespace:TaxMaster"
-             Title="Tax Account Confirmation">
+             xmlns:local="clr-namespace:TaxMaster">
+    <Shell.TitleView>
+        <local:PageTitle />
+    </Shell.TitleView>
     <ContentPage.BindingContext>
         <local:TaxAccountConfirmationViewModel />
     </ContentPage.BindingContext>
-    <Grid RowDefinitions="9*, 1*">
-        <ScrollView Grid.Row="0">
-            <StackLayout  Padding="10" FlowDirection="RightToLeft">
-                <Label Text="האם יש לך תיק מסוג 92 ומעלה במס הכנסה? אם כן אנא המשך." VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" />
-                <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft" VerticalOptions="Center" HorizontalOptions="Center">
-                    <Label Text="ניתן לוודא סוג תיק" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                    <Button Text="כאן"
-                        Command="{Binding OpenLinkCommand}"
-                        CommandParameter="https://secapp.taxes.gov.il/sr-ezor-ishi/main/myDetailes"
-                        TextColor="BlueViolet"
-                        BackgroundColor="Transparent"
-                        FontAttributes="Bold"
-                        Padding="0"
-                        BorderWidth="0" />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto, 9*, 1*" Margin="10">
+        <VerticalStackLayout Grid.Row="0" FlowDirection="RightToLeft" Margin="0,0,10,0">
+            <HorizontalStackLayout>
+                <Label Text="האם יש לך תיק מסוג 92 ומעלה במס הכנסה?" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" FontAttributes="Bold" TextDecorations="Underline" />
+                <Label Text="בדיקת סוג תיק" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" TextColor="#AC99EA" Margin="10,0,0,0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenLinkCommand}" CommandParameter="https://secapp.taxes.gov.il/sr-ezor-ishi/main/myDetailes" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout FlowDirection="RightToLeft" Margin="0,10,0,0">
+                <RadioButton VerticalOptions="Center" GroupName="ReportType" IsChecked="True"/>
+                <Label Text="כן" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout FlowDirection="RightToLeft">
+                <RadioButton VerticalOptions="Center" GroupName="ReportType" x:Name="NoTaxAccountRadioButton" />
+                <Label Text="לא" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        <Border Grid.Row="1" StrokeThickness="3" Margin="10,0,10,10" IsVisible="{Binding Source={x:Reference NoTaxAccountRadioButton}, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}" >
+            <ScrollView Margin="10">
+                <StackLayout Padding="10" FlowDirection="RightToLeft">
+                    <Label Text="אם אין ברשותך תיק מסוג 92 או 93:" TextDecorations="Underline" VerticalOptions="Center" HorizontalOptions="Start" Margin="0,0,0,10"/>
+                    <Label Text="לצורך הגשת דוח שנתי, נדרש שיהיה תיק פעיל במס הכנסה. " VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5" />
+                    <Label Text="לרוב עובדי מיקרוסופט, אשר בעלי הכנסות מחול (מניות) מתאים תיק מסוג 93." VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>
+                    <Label Text="אפליקציה זו מניחה כי קיים ברשותכם תיק 92 או 93, והשימוש בה אינו מתאים עבור: שכירים עם הכנסה נוספת, עצמאיים, בעלי שליטה." VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>
+                    <Label Text="לצורך פתיחת תיק מסוג 93, יש לעקוב אחרי השלבים הבאים:" TextDecorations="Underline" VerticalOptions="Center" HorizontalOptions="Start" Margin="5,20,5,5"/>
+                    
+                    <Label VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="1.  יש למלא טופס 5329 "/>
+                                <Span Text="שניתן להורדה כאן" TextColor="#AC99EA"/>
+                                <Span Text=" (ניתן למלא דיגיטלית באמצעות עורך הPDF המובנה בEdge)"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenLinkCommand}" CommandParameter="https://www.gov.il/BlobFolder/service/itc5329/he/Service_Pages_Income_tax_itc5329.pdf" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="-  עבור עובדי מיקרוסופט, לרוב, יש למלא בעיקר את סעיף (א), (ה), (ח), (ט) עבור שני בני הזוג, במידה והם נשואים ו/או ידועים בציבור" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+
+                    <Label Text="2. לשמור את הטופס." VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>
+                    
+                    <Label VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="3.  יש לפנות למערכת הפניות של "/>
+                                <Span Text="רשות המיסים (מפל)" TextColor="#AC99EA"/>
+                                <Span Text=" ולמלא נושא ראשי, משני ופירוט נושא בצורה הבאה:"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenLinkCommand}" CommandParameter="https://secapp.taxes.gov.il/sr-crm-pniyot/main/newIncident" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text="נושא ראשי: מס הכנסה" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                    <Label Text="נושא משני: פתיחת או סגירת תיק ועדכון פרטים" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                    <Label Text="פירוט נושא: פתיחת תיק במס הכנסה" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                    <Label Text="* ייתכן ותדרשו להזדהות במערכת הזיהוי הממשלית" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+
+                    <Label Text="4. בתוכן הפנייה, לכתוב:" VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>
+                    <Label Text="שלום רב," VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                    <Label Text="לאור הכנסות מהמעסיק (מיקרוסופט), וכן הכנסות מחול, אבקש לפתוח לי תיק מסוג 93 לצורך הגשת דוח מס. , " VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                    <Label Text="בברכה," VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                    <Label Text="** השם שלכם **" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+
+                    <Label Text="5. לצרף את טופס 5329 החתום על ידכם. " VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>
+
+                    <Label Text="6. לשלוח" VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>
                 </StackLayout>
-                <Label Text="אם אין ברשותך תיק מסוג 92 או 93:" TextDecorations="Underline" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="0,0,0,10"/>
-                <Label Text="לצורך הגשת דוח שנתי, נדרש שיהיה תיק פעיל במס הכנסה. " VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="10,0,5,5" />
-                <Label Text="לרוב עובדי מיקרוסופט, אשר בעלי הכנסות מחול (מניות) מתאים תיק מסוג 93." VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="10,0,5,5"/>
-                <Label Text="אפליקציה זו מניחה כי קיים ברשותכם תיק 92 או 93, והשימוש בה אינו מתאים עבור: שכירים עם הכנסה נוספת, עצמאיים, בעלי שליטה." VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="10,0,5,5"/>
-                <Label Text="לצורך פתיחת תיק מסוג 93, יש לעקוב אחרי השלבים הבאים:" TextDecorations="Underline" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="5,20,5,5"/>
-                <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft" VerticalOptions="Center" HorizontalOptions="Start" Margin="20,0,0,0">
-                    <Label Text="1.  יש למלא טופס 5329 שניתן להורדה" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                    <Button Text="כאן"
-                    Command="{Binding OpenLinkCommand}"
-                    CommandParameter="https://www.gov.il/BlobFolder/service/itc5329/he/Service_Pages_Income_tax_itc5329.pdf"
-                    TextColor="BlueViolet"
-                    BackgroundColor="Transparent"
-                    FontAttributes="Bold"
-                    Padding="0"
-                    BorderWidth="0" />
-                    <Label Text="(ניתן למלא דיגיטלית באמצעות עורך הPDF המובנה בEdge)" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                </StackLayout>
-                <Label Text="-  עבור עובדי מיקרוסופט, לרוב, יש למלא בעיקר את סעיף (א), (ה), (ח), (ט) עבור שני בני הזוג, במידה והם נשואים ו/או ידועים בציבור" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"  Margin="40,0,0,5"/>
-                <Label Text="2. לשמור את הטופס." VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="20,0,5,5"/>
-                <StackLayout Orientation="Vertical" Margin="20,0,0,0">
-                    <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft" VerticalOptions="Center" HorizontalOptions="Start" >
-                        <Label Text="3.  יש לפנות למערכת הפניות של רשות המיסים (מפל) בלינק הבא" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                        <Button Text="כאן"
-                        Command="{Binding OpenLinkCommand}"
-                        CommandParameter="https://secapp.taxes.gov.il/sr-crm-pniyot/main/newIncident"
-                        TextColor="BlueViolet"
-                        BackgroundColor="Transparent"
-                        FontAttributes="Bold"
-                        Padding="0"
-                        BorderWidth="0" />
-                        <Label Text="ולמלא נושא ראשי, משני ופירוט נושא בצורה הבאה:" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                    </StackLayout>
-                    <Label Text="נושא ראשי: מס הכנסה" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="20,0,5,5"/>
-                    <Label Text="נושא משני: פתיחת או סגירת תיק ועדכון פרטים" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="20,0,5,5"/>
-                    <Label Text="פירוט נושא: פתיחת תיק במס הכנסה" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="20,0,5,5"/>
-                    <Label Text="* ייתכן ותדרשו להזדהות במערכת הזיהוי הממשלית" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="20,0,5,5"/>
-                </StackLayout>
-                <Label Text="4. בתוכן הפנייה, לכתוב:" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="20,0,5,5"/>
-                <Label Text="שלום רב," VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="50,0,5,5"/>
-                <Label Text="לאור הכנסות מהמעסיק (מיקרוסופט), וכן הכנסות מחול, אבקש לפתוח לי תיק מסוג 93 לצורך הגשת דוח מס. , " VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="50,0,5,5"/>
-                <Label Text="בברכה," VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="50,0,5,5"/>
-                <Label Text="**השם שלכם **" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="50,0,5,5"/>
-                <Label Text="5. לצרף את טופס 5329 החתום על ידכם. " VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="20,0,5,5"/>
-                <Label Text="6. לשלוח" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="20,0,5,5"/>
-                <Label Text="" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="5"/>
-                <Label Text="" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Margin="5"/>
-            </StackLayout>
-        </ScrollView>
+            </ScrollView>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20" />
+            </Border.StrokeShape>
+        </Border>
+
         <!-- Button area for navigation -->
-        <local:NavigationButtonsView Grid.Row="1" />
+        <local:NavigationButtonsView Grid.Row="2" />
 
     </Grid>
 </ContentPage>
