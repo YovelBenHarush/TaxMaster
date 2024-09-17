@@ -108,7 +108,7 @@ namespace TaxMaster
 
         private void OnSelectedYearChanged()
         {
-            var reports = _annualReportWorker.GetExistingAnnualReports(int.Parse(SelectedYear));
+            var reports = _annualReportWorker.GetExistingAnnualReports(SelectedYear);
             Reports = (reports == null || reports.Count == 0) ? new ObservableCollection<string>() : new ObservableCollection<string>(reports.Select(r => r.DisplayName));
             OnPropertyChanged(nameof(Reports));
             SelectedReport = Reports.Count == 0 ? "" : Reports[0];
@@ -125,12 +125,16 @@ namespace TaxMaster
                 return;
             }
 
-            // set report configuration
-            ReportSettings.Configuration.Year = int.Parse(SelectedYear);
+            if (ReportAction == ReportAction.Existing && SelectedReport != string.Empty)
+            {
+                ReportSettings.LoadConfiguration(SelectedReport);
+            }
 
-            // TODO: Load annual report here
+            if (ReportAction == ReportAction.New)
+            {
+                ReportSettings.ClearConfiguration();
+            }
 
-            base.OnNext();
             await Shell.Current.GoToAsync(nameof(TaxAccountConfirmation));
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Data.SqlTypes;
 using TaxMaster.Infra.Entities;
 
 namespace TaxMaster.Infra
@@ -9,6 +10,7 @@ namespace TaxMaster.Infra
         public static AnnualReportConfiguration Configuration = new();
 
         private static string baseOutputDir = Path.Combine(Directory.GetCurrentDirectory(), "Output");
+        private static string configFileName = "config.json";
 
         public static string GetOutputDir()
         {
@@ -44,14 +46,37 @@ namespace TaxMaster.Infra
 
         public static void SaveConfiguration()
         {
-            var file = new FileInfo(GetOutputFilePath("config.json"));
+            var file = new FileInfo(GetOutputFilePath(configFileName));
             file.Directory.Create(); // If the directory already exists, this method does nothing.
-            File.WriteAllText(GetOutputFilePath("config.json"), Configuration.Serialize());
+            File.WriteAllText(GetOutputFilePath(configFileName), Configuration.Serialize());
         }
 
-        public static void LoadConfiguration()
+        public static void LoadConfiguration(string configDirRelativePath)
         {
-            Configuration = AnnualReportConfiguration.Deserialize(File.ReadAllText(GetOutputFilePath("config.json")));
+            Configuration = AnnualReportConfiguration.Deserialize(File.ReadAllText(Path.Combine(baseOutputDir, configDirRelativePath, configFileName)));
+        }
+
+        public static void ClearConfiguration()
+        {
+            Configuration = new();
+        }
+
+        public static List<string> ListPersistentConfigurations(string year, string reportType)
+        {
+            var reports = new List<string>();
+            var baseDir = new DirectoryInfo(baseOutputDir);
+            if (baseDir.Exists)
+            {
+                foreach (var dir in baseDir.GetDirectories("*", SearchOption.AllDirectories))
+                {
+                    if (dir.FullName.Contains(Path.Combine(year, reportType), StringComparison.OrdinalIgnoreCase))
+                    {
+                        reports.Add(dir.FullName);
+                    }
+                }
+            }
+
+            return reports;
         }
     }
 
