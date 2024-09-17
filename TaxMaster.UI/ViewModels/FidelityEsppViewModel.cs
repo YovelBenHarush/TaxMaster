@@ -93,6 +93,12 @@ namespace TaxMaster
             esppWorker = new EsppWorker();
         }
 
+        public override string Title
+        {
+            get => "Fidelity ESPP";
+            set => base.Title = value;
+        }
+
         private async void Calcualte()
         {
             Application.Current.Dispatcher.Dispatch(() =>
