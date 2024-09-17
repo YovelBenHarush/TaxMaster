@@ -11,9 +11,7 @@
         <ScrollView Grid.Row="0">
             <Grid RowDefinitions="10*, 5*, 5*" >
                 <StackLayout Grid.Row="0" Padding="5">
-                    <Label Margin="5" Text="בשלב זה נבצע חישוב על מניות ESPP שאתה מחזיק ב fidelity, אם אין לך מניות אנא דלג לשל הבא." HorizontalOptions="End" />
-                    <Label Margin="5" Text="כל דוח מס מכיל ערך מס עבור הדיבדינטים שקיבלת השנה ובשלב זה נציג את הערך זה. בנוסף אם ביצעת מכירה של ESPP השנה עליך לצרף לדוח השני מסמך 1325 שמגיד את ערך הקנייה/מכירה ובו מחשוב את רווח או ההפדר ממכירת המנייה, בשלב זה נפיק את המסמך." HorizontalOptions="End" />
-                    <Label Margin="5" Text="לשם הפקת המסמך עליך להשתמש במדריך המצורף ולהוריד שני קבצים האתר של fidelity, את קבצים אלו המערכת תקבל ותבצע את החישוב, לאחריו יוצגו התוצאות ואתצטרך לאשר אותן." HorizontalOptions="End" />
+                    <Label Margin="5" Text="שלב זה אינו מתאים לבעלי אזרחות אמריקאית.\n\rהמניות בתוכנית ESPP של מיקרוסופט נקנות עי Fidelity באמצעות תלוש השכר בהנחה.\n\rעבור ההנחה, משולם מס פירותי באמצעות השכר. \n\rבמקרה של מכירת מניות בשנת המס, יש לשלם מס רווחי הון (25%) מהרווח.\n\rבמקרה של אחזקת מניות, יש לדווח על דיבידנדים שחולקו.\n\rבסיום שלב זה יופקו טופסי 1325 (אחד לכל חצי שנה) עבור רשות המיסים.\n\r \n\rהמידע קיים בטפסי Custom transaction summary ו1042S אותם יש לצרף בעזרת ההנחיות המצורפות." HorizontalOptions="Start" FlowDirection="RightToLeft" />
                     <ScrollView>
                         <WebView Source="{Binding EsppFidelityGuide}" HeightRequest="500" Margin="40,10,40,10" />
                     </ScrollView>

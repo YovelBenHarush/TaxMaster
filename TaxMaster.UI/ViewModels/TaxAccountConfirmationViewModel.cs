@@ -11,6 +11,12 @@ namespace TaxMaster
             OpenLinkCommand = new Command<string>(OpenLink);
         }
 
+        public override string Title
+        {
+            get => "תיק במס הכנסה";
+            set => base.Title = value;
+        }
+
         private async void OpenLink(string url)
         {
             if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
