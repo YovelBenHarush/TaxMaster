@@ -73,7 +73,6 @@ namespace TaxMaster
         }
 
         private readonly EsppWorker esppWorker;
-
         public ICommand CalcualteCommand { get; }
         public Command<object> PickFileCommand { get; }
         public Command<object> ResetFileCommand { get; }
@@ -101,8 +100,8 @@ namespace TaxMaster
                 IsCalculating = true;
             });
 
-            //esppWorker.EsppFidelity(Tax1024File, CustomTransactionSummaryFile);
-            await Task.Delay(10000);
+
+            var results = await esppWorker.EsppFidelityAsync(Tax1024File, CustomTransactionSummaryFile);
 
             Application.Current.Dispatcher.Dispatch(() =>
             {
@@ -112,52 +111,37 @@ namespace TaxMaster
             CalcualteError = (DateTime.Now.Millisecond % 2 == 0) ? "יש שגיאה נא לתקן" : string.Empty;
         }
 
-        public override void OnNext()
+        public async override void OnNext()
         {
-            throw new NotImplementedException();
+            await Shell.Current.GoToAsync(nameof(MainRSUView));
         }
 
         private async Task PickPdfFile(object parameter)
         {
-            try
+            if (parameter is string fileType)
             {
-                // FilePicker options to filter for PDF files
-                var result = await FilePicker.PickAsync(new PickOptions
-                {
-                    FileTypes = FilePickerFileType.Pdf,
-                    PickerTitle = "Select a PDF file"
-                });
-
-                if (result != null)
-                {
-                    string fileType = parameter as string;
-                    if (fileType.Equals("1024"))
-                    {
-                        Tax1024File = result.FullPath;
-                    }
-                    else if (fileType.Equals("CustomTransactionSummary"))
-                    {
-                        CustomTransactionSummaryFile = result.FullPath;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle errors (e.g., user cancels file picker or permission denied)
-                Console.WriteLine($"Error picking file: {ex.Message}");
+                string file = await PickPdfFile();
+                UpdateValue(fileType, file);
             }
         }
 
         private void ResetSelection(object parameter)
         {
-            string fileType = parameter as string;
+            if (parameter is string fileType)
+            {
+                UpdateValue(fileType, string.Empty);
+            }
+        }
+
+        private void UpdateValue(string fileType, string value)
+        {
             if (fileType.Equals("1024"))
             {
-                Tax1024File = string.Empty;
+                Tax1024File = value;
             }
             else if (fileType.Equals("CustomTransactionSummary"))
             {
-                CustomTransactionSummaryFile = string.Empty;
+                CustomTransactionSummaryFile = value;
             };
         }
     }

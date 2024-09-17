@@ -18,5 +18,6 @@
         public string LastName { get; set; } = string.Empty;
         public string ID { get; set; } = string.Empty;
         public Gender Gender { get; set; }
+        public string DisplayName => $"{FirstName} {LastName}";
     }
 }
