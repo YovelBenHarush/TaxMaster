@@ -96,7 +96,7 @@ namespace TaxMaster
                 LoggerConfiguration.Logger = FileLogger.CreateLogger("logs");
             }
 
-            await Shell.Current.GoToAsync(nameof(FirstActionSelectionView));
+            await Shell.Current.GoToAsync(nameof(ReportSelectionView));
         }
     }
 }

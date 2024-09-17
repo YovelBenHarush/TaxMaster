@@ -21,9 +21,25 @@ namespace TaxMaster.Infra
         }
 
 
-        public static void SaveToOutputDir(string filePath)
+        public static void SaveToOutputDir(string sourcefilePath, string fileName)
         {
+            try
+            {
+                // Ensure that the source file exists
+                if (!File.Exists(sourcefilePath))
+                {
+                    throw new FileNotFoundException("Source file not found", sourcefilePath);
+                }
 
+                // Copy the file to the destination
+                File.Copy(sourcefilePath, GetOutputFilePath(fileName));
+
+                Console.WriteLine("File copied successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
 
         public static void SaveConfiguration()

@@ -21,9 +21,9 @@ namespace TaxMaster.BL
         }
 
 
-        protected void SaveToOutputDir(string filePath)
+        protected void SaveToOutputDir(string sourcefilePath, string filePath)
         {
-            ReportSettings.SaveToOutputDir(filePath);
+            ReportSettings.SaveToOutputDir(sourcefilePath, filePath);
         }
     }
 }
