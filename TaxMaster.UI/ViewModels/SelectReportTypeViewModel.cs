@@ -89,7 +89,7 @@ namespace TaxMaster
 
         public override void OnNext()
         {
-            throw new NotImplementedException();
+            base.OnNext();
         }
     }
 }

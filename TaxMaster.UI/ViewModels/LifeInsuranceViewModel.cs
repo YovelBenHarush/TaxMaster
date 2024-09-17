@@ -16,7 +16,7 @@ namespace TaxMaster
 
         public ICommand PickFileCommand { get; }
 
-        public bool IsNotSingle => AnnualReportConfiguration.FamilyStatus != Infra.Entities.FamilyStatus.Single;
+        public bool IsNotSingle => ReportSettings.Configuration.FamilyStatus != Infra.Entities.FamilyStatus.Single;
 
         public LifeInsuranceViewModel()
         {
@@ -61,15 +61,12 @@ namespace TaxMaster
 
         public override async void OnNext()
         {
+            ReportSettings.Configuration.LifeInsurences.UserInsurances = UserInsurances.ToList();
+            ReportSettings.Configuration.LifeInsurences.PartnerInsurances = PartnerInsurances.ToList();
+
+            base.OnNext();
+
             await Shell.Current.GoToAsync(nameof(BirthAllowanceView));
         }
     }
-
-    public class InsuranceEntry
-    {
-        public string Company { get; set; }
-        public string AnnualAmount { get; set; }
-        public string PolicyPath { get; set; }
-    }
-
 }

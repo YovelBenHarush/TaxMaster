@@ -50,7 +50,7 @@ namespace TaxMaster
 
         public virtual void OnNext()
         {
-            return;
+            ReportSettings.SaveConfiguration();
         }
 
         public virtual void OnPrevious()

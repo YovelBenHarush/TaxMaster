@@ -12,18 +12,18 @@ namespace TaxMaster.BL
 
         public string GetOutputDir()
         {
-            return Path.Combine(baseOutputDir, AnnualReportConfiguration.RegisteredPartner.ID, AnnualReportConfiguration.Year.ToString(),"AnnualReport");
+            return ReportSettings.GetOutputDir();
         }
 
         public string GetOutputFilePath(string fileName)
         {
-            return Path.Combine(GetOutputDir(), fileName);
+            return ReportSettings.GetOutputFilePath(fileName);
         }
 
 
         protected void SaveToOutputDir(string filePath)
         {
-
+            ReportSettings.SaveToOutputDir(filePath);
         }
     }
 }

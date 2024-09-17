@@ -7,7 +7,9 @@
     <ContentPage.BindingContext>
         <local:LifeInsuranceViewModel />
     </ContentPage.BindingContext>
-    <ScrollView>
+    <Grid RowDefinitions="9*, 1*">
+
+    <ScrollView Grid.Row="0">
         <StackLayout Padding="20">
 
             <!-- Placeholder for short explanation about life insurance -->
@@ -85,9 +87,13 @@
                         <Button Text="Add Insurance" Command="{Binding AddInsuranceCommand}" CommandParameter="Partner"/>
                     </StackLayout>
                 </Frame>
-
             </StackLayout>
-
         </StackLayout>
     </ScrollView>
+
+        <!-- Button area for navigation -->
+        <local:NavigationButtonsView Grid.Row="1" />
+
+    </Grid>
+
 </ContentPage>

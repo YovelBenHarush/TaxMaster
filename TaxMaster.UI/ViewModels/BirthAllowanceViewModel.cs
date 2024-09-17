@@ -121,8 +121,8 @@ namespace TaxMaster
 
         public BirthAllowanceViewModel()
         {
-            Users = [AnnualReportConfiguration.RegisteredPartner.DisplayName];
-            if(AnnualReportConfiguration.FamilyStatus == Infra.Entities.FamilyStatus.Married) Users.Add(AnnualReportConfiguration.Partner.DisplayName);
+            Users = [ReportSettings.Configuration.RegisteredPartner.DisplayName];
+            if(ReportSettings.Configuration.FamilyStatus == Infra.Entities.FamilyStatus.Married) Users.Add(ReportSettings.Configuration.Partner.DisplayName);
 
             PickFileCommand = new Command(PickBirthAllowanceFile);
             ResetFileCommand = new Command(ResetSelection);
@@ -138,6 +138,7 @@ namespace TaxMaster
 
         public async override void OnNext()
         {
+            base.OnNext();
             await Shell.Current.GoToAsync(nameof(DonationsView));
         }
 

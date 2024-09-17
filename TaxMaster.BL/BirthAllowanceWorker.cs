@@ -23,7 +23,7 @@ namespace TaxMaster.BL
                     throw new Exception("Birth payment file is invalid");
                 }
 
-                AnnualReportConfiguration.BirthPayment = taxBirthPaymentFile;
+                ReportSettings.Configuration.BirthPayment = taxBirthPaymentFile;
                 return taxBirthPaymentFile;
             }
             catch (Exception)

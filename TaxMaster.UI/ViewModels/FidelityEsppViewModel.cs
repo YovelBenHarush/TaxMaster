@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using TaxMaster.BL;
+using TaxMaster.Infra;
 
 namespace TaxMaster
 {
@@ -113,6 +114,7 @@ namespace TaxMaster
 
         public async override void OnNext()
         {
+            ReportSettings.SaveConfiguration();
             await Shell.Current.GoToAsync(nameof(MainRSUView));
         }
 

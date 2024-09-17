@@ -84,14 +84,15 @@ namespace TaxMaster
                 return;
             }
 
-            AnnualReportConfiguration.Year = SelectedYear;
-            AnnualReportConfiguration.FamilyStatus = isMarried ? FamilyStatus.Married : FamilyStatus.Single;
-            AnnualReportConfiguration.RegisteredPartner = TheRegisteredPartner.ToUser();
+            ReportSettings.Configuration.Year = SelectedYear;
+            ReportSettings.Configuration.FamilyStatus = isMarried ? FamilyStatus.Married : FamilyStatus.Single;
+            ReportSettings.Configuration.RegisteredPartner = TheRegisteredPartner.ToUser();
             if (isMarried)
             {
-                AnnualReportConfiguration.RegisteredPartner = Partner.ToUser();
+                ReportSettings.Configuration.RegisteredPartner = Partner.ToUser();
             }
 
+            base.OnNext();
             await Shell.Current.GoToAsync(nameof(DefinitionOfForm106View));
         }
 

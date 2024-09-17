@@ -79,6 +79,8 @@ namespace TaxMaster
 
         public override async void OnNext()
         {
+            ReportSettings.SaveConfiguration();
+
             if (!DisclaimerModel.DisclaimerApproval)
             {
                 if (Application.Current?.MainPage != null)
