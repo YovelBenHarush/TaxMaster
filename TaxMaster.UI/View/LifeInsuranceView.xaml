@@ -11,18 +11,15 @@
         <StackLayout Padding="20">
 
             <!-- Placeholder for short explanation about life insurance -->
-            <Label Text="Short explanation about life insurance goes here."
-                   FontSize="Medium"
-                   HorizontalOptions="Center"
-                   Margin="0,0,0,20"/>
+            <Label Text="נתוני ביטחי חיים" FontSize="Medium" HorizontalOptions="Center" Margin="0,0,0,20" FlowDirection="RightToLeft"/>
 
             <!-- Horizontal layout for User and Partner sections -->
-            <StackLayout Orientation="Horizontal" Spacing="40">
+            <StackLayout Orientation="Horizontal" Spacing="40" FlowDirection="RightToLeft">
 
                 <!-- User Section -->
                 <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" WidthRequest="600">
                     <StackLayout>
-                        <Label Text="User's Life Insurance" FontSize="Large" FontAttributes="Bold" />
+                        <Label Text="ביטוחי חיים" FontSize="Large" FontAttributes="Bold" FlowDirection="RightToLeft"/>
 
                         <!-- ListView for multiple insurances -->
                         <ListView x:Name="UserInsuranceList" ItemsSource="{Binding UserInsurances}">
@@ -30,23 +27,15 @@
                                 <DataTemplate>
                                     <ViewCell>
                                         <ViewCell.View>
-                                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
                                                 <!-- Choose insurance company -->
-                                                <Picker Title="Choose Insurance Company" SelectedItem="{Binding Company}">
-                                                    <Picker.ItemsSource>
-                                                        <x:Array Type="{x:Type x:String}">
-                                                            <x:String>הפניקס</x:String>
-                                                            <x:String>מגדל</x:String>
-                                                            <x:String>כלל</x:String>
-                                                        </x:Array>
-                                                    </Picker.ItemsSource>
-                                                </Picker>
+                                                <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft"/>
 
                                                 <!-- Annual amount paid for the insurance -->
-                                                <Entry Placeholder="Annual Amount Paid" Keyboard="Numeric" WidthRequest="100" Text="{Binding AnnualAmount}"/>
+                                                <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" WidthRequest="150"/>
 
                                                 <!-- Option to pick a local copy of the life insurance -->
-                                                <Button Text="Pick Local Copy" />
+                                                <Button Text="העלאת העתק של הפוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" WidthRequest="200"/>
 
                                                 <!-- Remove button -->
                                                 <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference UserInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="10" WidthRequest="20"/>
@@ -63,9 +52,9 @@
                 </Frame>
 
                 <!-- Partner Section -->
-                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" WidthRequest="600">
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" WidthRequest="600" IsVisible="{Binding IsNotSingle}">
                     <StackLayout>
-                        <Label Text="Partner's Life Insurance" FontSize="Large" FontAttributes="Bold" />
+                        <Label Text="ביטוחי חיים של בן\בת זוג" FontSize="Large" FontAttributes="Bold" />
 
                         <!-- ListView for multiple insurances -->
                         <ListView x:Name="PartnerInsuranceList" ItemsSource="{Binding PartnerInsurances}">
@@ -73,23 +62,15 @@
                                 <DataTemplate>
                                     <ViewCell>
                                         <ViewCell.View>
-                                            <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <StackLayout Orientation="Horizontal" Spacing="10" Padding="5">
                                                 <!-- Choose insurance company -->
-                                                <Picker Title="Choose Insurance Company">
-                                                    <Picker.ItemsSource>
-                                                        <x:Array Type="{x:Type x:String}">
-                                                            <x:String>הפניקס</x:String>
-                                                            <x:String>מגדל</x:String>
-                                                            <x:String>כלל</x:String>
-                                                        </x:Array>
-                                                    </Picker.ItemsSource>
-                                                </Picker>
+                                                <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft"/>
 
                                                 <!-- Annual amount paid for the insurance -->
-                                                <Entry Placeholder="Annual Amount Paid" Keyboard="Numeric" WidthRequest="100"/>
+                                                <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" WidthRequest="150"/>
 
                                                 <!-- Option to pick a local copy of the life insurance -->
-                                                <Button Text="Pick Local Copy" />
+                                                <Button Text="העלאת העתק של הפוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" WidthRequest="200"/>
 
                                                 <!-- Remove button -->
                                                 <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlexLayout.AlignSelf="End"/>
