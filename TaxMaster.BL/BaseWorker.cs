@@ -21,10 +21,27 @@ namespace TaxMaster.BL
         }
 
 
-        protected void SaveToOutputDir(string filePath)
+        protected void SaveToOutputDir(string SourcefilePath, string fileName)
         {
+            try
+            {
+                // Ensure that the source file exists
+                if (!File.Exists(SourcefilePath))
+                {
+                    throw new FileNotFoundException("Source file not found", SourcefilePath);
+                }
 
+                // Copy the file to the destination
+                File.Copy(SourcefilePath, GetOutputFilePath(fileName));
+
+                Console.WriteLine("File copied successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
         }
+
     }
 }
 
