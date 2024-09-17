@@ -29,12 +29,12 @@ namespace TaxMaster.Infra.Parsers
         private const string Form1325Path = "Assets\\1325Form.xlsx";
         private const string Pdf1325PathTemaplate = "{0}_1325_{1}.pdf";
 
-        public (string FirstHalfFormPath, string SecondHlfFormPath) Generate1325Forms(IEnumerable<ISellTransactionWithTaxMetadata> transactions, string outputDir)
+        public (string FirstHalfFormPath, string SecondHalfFormPath) Generate1325Forms(IEnumerable<ISellTransactionWithTaxMetadata> transactions, string outputDir)
         {
             var firstHalfTransactions = transactions.Where(trx => trx.SellDate.Month <= 6);
             var secondHalfTransactions = transactions.Where(trx => trx.SellDate.Month > 6);
 
-            return (Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, AnnualReportConfiguration.RegisteredPartner.ID, 1)), firstHalfTransactions), Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, AnnualReportConfiguration.RegisteredPartner.ID, 2)), secondHalfTransactions));
+            return (Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, ReportSettings.Configuration.RegisteredPartner.ID, 1)), firstHalfTransactions), Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, ReportSettings.Configuration.RegisteredPartner.ID, 2)), secondHalfTransactions));
         }
 
         public string Populate1325Form(string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions)
@@ -91,8 +91,8 @@ namespace TaxMaster.Infra.Parsers
             sheet.Range[Col(TotalTaxableProfitCol)].NumberValue = transactions.Sum(t => t.TaxableProfitInILS);
             sheet.Range[Col(TotalSellPriceCol)].NumberValue = transactions.Sum(t => t.SellPriceInILS);
 
-            sheet.Range[Col(NameCol)].Text = $"{AnnualReportConfiguration.RegisteredPartner.FirstName} {AnnualReportConfiguration.RegisteredPartner.LastName}";
-            sheet.Range[Col(IDCol)].Text = $"{AnnualReportConfiguration.RegisteredPartner.ID}";
+            sheet.Range[Col(NameCol)].Text = $"{ReportSettings.Configuration.RegisteredPartner.FirstName} {ReportSettings.Configuration.RegisteredPartner.LastName}";
+            sheet.Range[Col(IDCol)].Text = $"{ReportSettings.Configuration.RegisteredPartner.ID}";
         }
 
         public void SaveXlWorkbookToPdf(Workbook workbook, string pdfFilePath)

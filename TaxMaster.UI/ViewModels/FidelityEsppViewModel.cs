@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using TaxMaster.BL;
+using TaxMaster.Infra;
 
 namespace TaxMaster
 {
@@ -92,6 +93,12 @@ namespace TaxMaster
             esppWorker = new EsppWorker();
         }
 
+        public override string Title
+        {
+            get => "Fidelity ESPP";
+            set => base.Title = value;
+        }
+
         private async void Calcualte()
         {
             Application.Current.Dispatcher.Dispatch(() =>
@@ -113,6 +120,7 @@ namespace TaxMaster
 
         public async override void OnNext()
         {
+            ReportSettings.SaveConfiguration();
             await Shell.Current.GoToAsync(nameof(MainRSUView));
         }
 

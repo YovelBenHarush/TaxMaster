@@ -79,6 +79,8 @@ namespace TaxMaster
 
         public override async void OnNext()
         {
+            ReportSettings.SaveConfiguration();
+
             if (!DisclaimerModel.DisclaimerApproval)
             {
                 if (Application.Current?.MainPage != null)
@@ -94,7 +96,7 @@ namespace TaxMaster
                 LoggerConfiguration.Logger = FileLogger.CreateLogger("logs");
             }
 
-            await Shell.Current.GoToAsync(nameof(FirstActionSelectionView));
+            await Shell.Current.GoToAsync(nameof(ReportSelectionView));
         }
     }
 }

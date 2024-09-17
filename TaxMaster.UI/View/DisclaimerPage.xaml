@@ -2,8 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxMaster.DisclaimerPage"
-             xmlns:local="clr-namespace:TaxMaster"
-             >
+             xmlns:local="clr-namespace:TaxMaster">
     <Shell.TitleView>
         <local:PageTitle />
     </Shell.TitleView>
@@ -57,19 +56,18 @@
                                 </Label.GestureRecognizers>
                             </Label>
                         </HorizontalStackLayout>
+                        <HorizontalStackLayout FlowDirection="RightToLeft">
+                            <CheckBox IsChecked="{Binding LogsApproval}" VerticalOptions="Center"/>
+                            <Label Text="כתוב לוגים" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleLogsApprovalCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Frame>
             </VerticalStackLayout>
         </StackLayout>
-
-        <HorizontalStackLayout Grid.Row="1" FlowDirection="RightToLeft" Padding="10" VerticalOptions="End">
-            <CheckBox IsChecked="{Binding LogsApproval}" VerticalOptions="Center"/>
-            <Label Text="כתוב לוגים" VerticalOptions="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding ToggleLogsApprovalCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
-        </HorizontalStackLayout>
 
         <!-- Button area for navigation -->
         <local:NavigationButtonsView Grid.Row="1" />

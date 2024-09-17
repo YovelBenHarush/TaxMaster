@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using TaxMaster.Infra;
 
 namespace TaxMaster
 {
@@ -13,6 +14,10 @@ namespace TaxMaster
         public ICommand AddInsuranceCommand { get; }
         public ICommand RemoveInsuranceCommand { get; }
 
+        public ICommand PickFileCommand { get; }
+
+        public bool IsNotSingle => ReportSettings.Configuration.FamilyStatus != Infra.Entities.FamilyStatus.Single;
+
         public LifeInsuranceViewModel()
         {
             UserInsurances = new ObservableCollection<InsuranceEntry>();
@@ -20,6 +25,8 @@ namespace TaxMaster
 
             AddInsuranceCommand = new Command<string>(AddInsurance);
             RemoveInsuranceCommand = new Command<object>(RemoveInsurance);
+
+            PickFileCommand = new Command<object>(async (parameter) => await PickPdfFile(parameter));
         }
 
         private void AddInsurance(string parameter)
@@ -39,30 +46,27 @@ namespace TaxMaster
         {
             if (UserInsurances.Contains(entry))
             {
-                UserInsurances.Remove(entry as InsuranceEntry);
+                UserInsurances.Remove((InsuranceEntry)entry);
             }
             else
             {
-                PartnerInsurances.Remove(entry as InsuranceEntry);
+                PartnerInsurances.Remove((InsuranceEntry)entry);
             }
         }
 
-        private void PickLocalCopy()
+        private async Task PickPdfFile(object entry)
         {
-            // Implement logic to pick a local copy of the life insurance
+            ((InsuranceEntry)entry).PolicyPath = await PickPdfFile();
         }
 
         public override async void OnNext()
         {
+            ReportSettings.Configuration.LifeInsurences.UserInsurances = UserInsurances.ToList();
+            ReportSettings.Configuration.LifeInsurences.PartnerInsurances = PartnerInsurances.ToList();
+
+            base.OnNext();
+
             await Shell.Current.GoToAsync(nameof(BirthAllowanceView));
         }
     }
-
-    public class InsuranceEntry
-    {
-        public string Company { get; set; }
-        public string AnnualAmount { get; set; }
-        public string PolicyPath { get; set; }
-    }
-
 }

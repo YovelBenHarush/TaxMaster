@@ -41,7 +41,7 @@ namespace TaxMaster.Infra.Interfaces
 
         public double PurchasePriceInILS => PurchasePriceInUSD * ExchangeCurrencyAtPurchaseDate;
 
-        public double AdjustedPurchasePriceInILS => PurchasePriceInUSD * ExchangeCurrencyAtSellDate;
+        public double AdjustedPurchasePriceInILS => PurchasePriceInUSD * ExchangeCurrencyAtPurchaseDate * ExchangeRate;
 
         public double SellPriceInILS => SellPriceInUSD * ExchangeCurrencyAtSellDate;
 
