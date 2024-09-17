@@ -5,43 +5,85 @@ using TaxMaster.Infra;
 
 public class Tax106FileViewModel : INotifyPropertyChanged
 {
-    public Tax106File internalTax106File = new Tax106File();
+    private Tax106File? _internalTax106File = null;
+
+    public Tax106File? InternalTax106File
+    {
+        get => _internalTax106File;
+        set => SetProperty(ref _internalTax106File, value, nameof(InternalTax106File));
+    }
 
     public long Field_158_172
     {
-        get => internalTax106File._158_172;
-        set => SetProperty(ref internalTax106File._158_172, value, nameof(Field_158_172));
+        get => _internalTax106File?._158_172 ?? 0;
+        set
+        {
+            if (_internalTax106File != null)
+            {
+                SetProperty(ref _internalTax106File._158_172, value, nameof(Field_158_172));
+            }
+        }
     }
 
     // Add similar properties for each field you need to expose
     public long Field_042
     {
-        get => internalTax106File._042;
-        set => SetProperty(ref internalTax106File._042, value, nameof(Field_042));
+        get => _internalTax106File?._042 ?? 0;
+        set
+        {
+            if (_internalTax106File != null)
+            {
+                SetProperty(ref _internalTax106File._042, value, nameof(Field_042));
+            }
+        }
     }
 
     public long Field_244_245
     {
-        get => internalTax106File._244_245;
-        set => SetProperty(ref internalTax106File._244_245, value, nameof(Field_244_245));
+        get => _internalTax106File?._244_245 ?? 0;
+        set
+        {
+            if (_internalTax106File != null)
+            {
+                SetProperty(ref _internalTax106File._244_245, value, nameof(Field_244_245));
+            }
+        }
     }
 
     public long Field_218_219
     {
-        get => internalTax106File._218_219;
-        set => SetProperty(ref internalTax106File._218_219, value, nameof(Field_218_219));
+        get => _internalTax106File?._218_219 ?? 0;
+        set
+        {
+            if (_internalTax106File != null)
+            {
+                SetProperty(ref _internalTax106File._218_219, value, nameof(Field_218_219));
+            }
+        }
     }
 
     public long Field_086_045
     {
-        get => internalTax106File._086_045;
-        set => SetProperty(ref internalTax106File._086_045, value, nameof(Field_086_045));
+        get => _internalTax106File?._086_045 ?? 0;
+        set
+        {
+            if (_internalTax106File != null)
+            {
+                SetProperty(ref _internalTax106File._086_045, value, nameof(Field_086_045));
+            }
+        }
     }
 
     public long Field_248_249
     {
-        get => internalTax106File._248_249;
-        set => SetProperty(ref internalTax106File._248_249, value, nameof(Field_248_249));
+        get => _internalTax106File?._248_249 ?? 0;
+        set
+        {
+            if (_internalTax106File != null)
+            {
+                SetProperty(ref _internalTax106File._248_249, value, nameof(Field_248_249));
+            }
+        }
     }
 
     // INotifyPropertyChanged implementation
@@ -52,7 +94,6 @@ public class Tax106FileViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-
     protected bool SetProperty<T>(ref T storage, T value, string propertyName)
     {
         if (EqualityComparer<T>.Default.Equals(storage, value))
@@ -60,7 +101,23 @@ public class Tax106FileViewModel : INotifyPropertyChanged
 
         storage = value;
         OnPropertyChanged();
-        Debug.WriteLine(internalTax106File);
+        Debug.WriteLine(_internalTax106File);
+        return true;
+    }
+
+    protected bool SetProperty(ref long storage, long value, string propertyName)
+    {
+        if (!long.TryParse(value.ToString(), out long validValue))
+        {
+            validValue = 0;
+        }
+
+        if (storage == validValue)
+            return false;
+
+        storage = validValue;
+        OnPropertyChanged();
+        Debug.WriteLine(_internalTax106File);
         return true;
     }
 }

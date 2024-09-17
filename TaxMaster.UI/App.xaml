@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <local:BooleanToColumnSpanConverter x:Key="BooleanToColumnSpanConverter" />
             <local:StringToBooleanConverter x:Key="StringToBooleanConverter" />
             <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
         </ResourceDictionary>

@@ -22,15 +22,54 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxMaster.Tax106FormView">
-    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" BorderColor="Gray" Margin="5" WidthRequest="350">
-        <StackLayout Padding="10">
-            <!-- Bind each Entry to a property in the ViewModel -->
-            <Entry Text="{Binding Field_158_172, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 158-172"/>
-            <Entry Text="{Binding Field_042, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 042"/>
-            <Entry Text="{Binding Field_244_245, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 244-245"/>
-            <Entry Text="{Binding Field_218_219, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 218-219"/>
-            <Entry Text="{Binding Field_086_045, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 086-045"/>
-            <Entry Text="{Binding Field_248_249, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 248-249" IsEnabled="False"/>
+    <ContentView.Resources>
+        <Style x:Key="MaterialLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextColor" Value="#616161" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+        <Style x:Key="MaterialEntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="#212121" />
+            <Setter Property="BackgroundColor" Value="#FAFAFA" />
+            <Setter Property="Margin" Value="0,2,0,4" />
+            <Setter Property="HeightRequest" Value="20" />
+            <Setter Property="PlaceholderColor" Value="#9E9E9E" />
+        </Style>
+        <Style TargetType="Frame">
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="WidthRequest" Value="350" />
+        </Style>
+    </ContentView.Resources>
+
+    <Frame BackgroundColor="White" BorderColor="#E0E0E0">
+        <StackLayout>
+            <!-- Field 158-172 -->
+            <Label Text="Field 158-172" Style="{StaticResource MaterialLabelStyle}" />
+            <Entry Text="{Binding Field_158_172, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 158-172" Style="{StaticResource MaterialEntryStyle}" />
+
+            <!-- Field 042 -->
+            <Label Text="Field 042" Style="{StaticResource MaterialLabelStyle}" />
+            <Entry Text="{Binding Field_042, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 042" Style="{StaticResource MaterialEntryStyle}" />
+
+            <!-- Field 244-245 -->
+            <Label Text="Field 244-245" Style="{StaticResource MaterialLabelStyle}" />
+            <Entry Text="{Binding Field_244_245, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 244-245" Style="{StaticResource MaterialEntryStyle}" />
+
+            <!-- Field 218-219 -->
+            <Label Text="Field 218-219" Style="{StaticResource MaterialLabelStyle}" />
+            <Entry Text="{Binding Field_218_219, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 218-219" Style="{StaticResource MaterialEntryStyle}" />
+
+            <!-- Field 086-045 -->
+            <Label Text="Field 086-045" Style="{StaticResource MaterialLabelStyle}" />
+            <Entry Text="{Binding Field_086_045, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 086-045" Style="{StaticResource MaterialEntryStyle}" />
+
+            <!-- Field 248-249 -->
+            <Label Text="Field 248-249" Style="{StaticResource MaterialLabelStyle}" />
+            <Entry Text="{Binding Field_248_249, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 248-249" Style="{StaticResource MaterialEntryStyle}" IsEnabled="False" />
         </StackLayout>
     </Frame>
 </ContentView>
