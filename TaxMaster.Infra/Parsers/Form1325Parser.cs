@@ -29,7 +29,7 @@ namespace TaxMaster.Infra.Parsers
         private const string Form1325Path = "Assets\\1325Form.xlsx";
         private const string Pdf1325PathTemaplate = "{0}_1325_{1}.pdf";
 
-        public (string FirstHalfFormPath, string SecondHlfFormPath) Generate1325Forms(IEnumerable<ISellTransactionWithTaxMetadata> transactions, string outputDir)
+        public (string FirstHalfFormPath, string SecondHalfFormPath) Generate1325Forms(IEnumerable<ISellTransactionWithTaxMetadata> transactions, string outputDir)
         {
             var firstHalfTransactions = transactions.Where(trx => trx.SellDate.Month <= 6);
             var secondHalfTransactions = transactions.Where(trx => trx.SellDate.Month > 6);
