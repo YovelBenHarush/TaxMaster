@@ -1,6 +1,9 @@
 ﻿using TaxMaster.Infra.Entities;
 using TaxMaster.Infra;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using TaxMaster.BL;
 
 namespace TaxMaster
 {
@@ -11,24 +14,28 @@ namespace TaxMaster
 
         public bool IsMarried { get; set; }
 
+        private AnnualReportWorker _annualReportWorker;
 
         public AnnualReportIncomeDetailsViewModel()
         {
-            IsMarried = ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married;
+            IsMarried = true; // ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married;
+            _annualReportWorker = new AnnualReportWorker();
+            var income = _annualReportWorker.GetIncomeDetails();
 
-            RegisteredPartner106 = new ObservableCollection<Pair>
+            RegisteredPartner106 = new ObservableCollection<Pair>();
+            Partner106 = new ObservableCollection<Pair>();
+            foreach (var item in income)
             {
-                new Pair { Key = "Value1A", Value = "Value2A" },
-                new Pair { Key = "Value1B", Value = "Value2B" },
-                new Pair { Key = "Value1C", Value = "Value2C" }
-            };
+                if (item.RegisteredPartnerIncomeDetails != null)
+                {
+                    RegisteredPartner106.Add(new Pair { Key = item.RegisteredPartnerIncomeDetails.Key, Value = item.RegisteredPartnerIncomeDetails.Value, Explanation = item.RegisteredPartnerIncomeDetails.Explanation });
+                }
 
-            Partner106 = new ObservableCollection<Pair>
-            {
-                new Pair { Key = "Value1A", Value = "Value2A" },
-                new Pair { Key = "Value1B", Value = "Value2B" },
-                new Pair { Key = "Value1C", Value = "Value2C" }
-            };
+                if (item.PartnerIncomeDetails != null)
+                {
+                    Partner106.Add(new Pair { Key = item.PartnerIncomeDetails.Key, Value = item.PartnerIncomeDetails.Value, Explanation = item.PartnerIncomeDetails.Explanation });
+                }
+            }
         }
 
         public async override void OnNext()
@@ -38,9 +45,33 @@ namespace TaxMaster
         }
     }
 
-    public class Pair
+    public class Pair : INotifyPropertyChanged
     {
+        private bool _mark;
+
         public string Key { get; set; }
         public string Value { get; set; }
+        public string Explanation { get; set; }
+
+
+        public bool Mark
+        {
+            get => _mark;
+            set
+            {
+                if (_mark == value)
+                    return;
+
+                _mark = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

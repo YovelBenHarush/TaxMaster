@@ -12,17 +12,20 @@
             <local:BooleanToColumnSpanConverter x:Key="BooleanToColumnSpanConverter" />
             <local:StringToBooleanConverter x:Key="StringToBooleanConverter" />
             <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <local:BoolToColorConverter x:Key="BoolToColorConverter" />
             <local:Tax106NameTitleConverter x:Key="Tax106NameTitleConverter" />
             <DataTemplate x:Key="GenericPairTemplate">
                 <ViewCell>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Key}"
-                               FontSize="16"
-                               HorizontalOptions="StartAndExpand" />
-                        <Label Text="{Binding Value}"
-                               FontSize="16"
-                               HorizontalOptions="EndAndExpand" />
-                    </StackLayout>
+                    <Border StrokeThickness="3"  Margin="10" Stroke="{Binding Mark,Converter={StaticResource BoolToColorConverter}}" ToolTipProperties.Text="{Binding Explanation}">
+                        <StackLayout Orientation="Horizontal">
+                            <CheckBox Grid.Column="2" IsChecked="{Binding Mark}" HorizontalOptions="Center" VerticalOptions="Center" Margin="10"></CheckBox>
+                            <Editor Text="{Binding Key}"  IsReadOnly="True" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" AutoSize="TextChanges" ToolTipProperties.Text="{Binding Explanation}" />
+                            <Editor Text="{Binding Value}"  IsReadOnly="True" HorizontalOptions="Center" VerticalOptions="Center" AutoSize="TextChanges" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" ToolTipProperties.Text="{Binding Explanation}"/>
+                        </StackLayout>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                    </Border>
                 </ViewCell>
             </DataTemplate>
         </ResourceDictionary>
