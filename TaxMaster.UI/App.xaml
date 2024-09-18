@@ -12,6 +12,7 @@
             <local:BooleanToColumnSpanConverter x:Key="BooleanToColumnSpanConverter" />
             <local:StringToBooleanConverter x:Key="StringToBooleanConverter" />
             <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <local:Tax106NameTitleConverter x:Key="Tax106NameTitleConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

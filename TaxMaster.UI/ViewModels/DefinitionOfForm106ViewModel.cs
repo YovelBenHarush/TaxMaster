@@ -99,6 +99,35 @@ namespace TaxMaster
             }
         }
 
+        private string _fillerName;
+        public string FillerName
+        {
+            get => _fillerName;
+            set
+            {
+                if (_fillerName != value)
+                {
+                    _fillerName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _partnerName;
+        public string PartnerName
+        {
+            get => _partnerName;
+            set
+            {
+                if (_partnerName != value)
+                {
+                    _partnerName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         private string _submitButtonTextFiller = "הגש";
         public string SubmitButtonTextFiller
         {
@@ -114,7 +143,7 @@ namespace TaxMaster
         }
 
         private bool _isPartnerSubmitted = false;
-        public bool IsPartnerSubmmited
+        public bool IsPartnerSubmitted
         {
             get
             {
@@ -157,6 +186,7 @@ namespace TaxMaster
                 }
             }
         }
+
         public ICommand PickFileCommandFiller { get; }
         public ICommand? PickFileCommandPartner { get; }
         public ICommand SubmitFileFiller { get; }
@@ -172,35 +202,42 @@ namespace TaxMaster
 
         public DefinitionOfForm106ViewModel()
         {
-            Tax106FilesFiller = new ObservableCollection<Tax106File>(ReportSettings.Configuration.Tax106Files.User106);
+            Tax106FilesFiller = new ObservableCollection<Tax106File>(ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles ?? new List<Tax106File>());
             PickFileCommandFiller = new Command(Add106FormFiller);
             SubmitFileFiller = new Command(Submit106FormFiller);
-            if (ReportSettings.Configuration.Tax106Files.User106.Count() != 0)
+            FillerName = ReportSettings.Configuration.RegisteredPartner.DisplayName;
+            if (ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles != null && ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles?.Count != 0)
             {
                 ShouldShowTax106FileDetailsFiller = true;
             }
 
-            //if (ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married)
-            //{
-            //    Tax106FilesPartner = new ObservableCollection<Tax106File>(ReportSettings.Configuration.Tax106Files.Partner106);
-            //    PickFileCommandPartner = new Command(Add106FormPartner);
-            //    SubmitFilePartner = new Command(Submit106FormPartner);
-            //    if (ReportSettings.Configuration.Tax106Files.Partner106.Count() != 0)
-            //    {
-            //        ShouldShowTax106FileDetailsPartner = true;
-            //    }
-            //}
+            if (ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married)
+            {
+                ShouldShowPartner = true;
+                Tax106FilesPartner = new ObservableCollection<Tax106File>(ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles ?? new List<Tax106File>());
+                PickFileCommandPartner = new Command(Add106FormPartner);
+                SubmitFilePartner = new Command(Submit106FormPartner);
+                PartnerName = ReportSettings.Configuration.Partner.DisplayName;
+                if (ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles != null && ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles?.Count != 0)
+                {
+                    ShouldShowTax106FileDetailsPartner = true;
+                }
+            }
         }
 
         private async void Add106FormFiller()
         {
-            var form106Path = await PickPdfFile();
-            var tax106File = _tax106FileParser.Parse106File(form106Path);
+            try
+            {
+                var form106Path = await PickPdfFile();
+                var tax106File = _tax106FileParser.Parse106File(form106Path);
 
-            Tax106FilesFiller.Add(tax106File);
-            _fillerFormPaths[tax106File] = form106Path;
+                Tax106FilesFiller.Add(tax106File);
+                _fillerFormPaths[tax106File] = form106Path;
 
-            ResetSubmittionFiller();
+                ResetSubmittionFiller();
+            }
+            catch (Exception) { }
         }
 
         private void ResetSubmittionFiller()
@@ -210,33 +247,6 @@ namespace TaxMaster
             IsSubmittingFiller = false;
             SubmitButtonTextFiller = "הגש";
         }
-
-        //private async void Handle106Form(Tax106FormViewModelWrapper tax106ViewModelWrapper)
-        //{
-        //    try
-        //    {
-        //        var form106Path = await PickPdfFile();
-        //        tax106ViewModelWrapper.Tax106File.InternalTax106File = _tax106FileParser.Parse106File(form106Path);
-
-        //        if (ReferenceEquals(tax106ViewModelWrapper, Tax106FileFiller))
-        //        {
-        //            ShouldShowTax106FileDetailsFiller = true;
-        //            _fillerFormPath = form106Path;
-        //            IsFillerSubmmited = false;
-        //            SubmitButtonTextFiller = "Submit";
-        //        }
-        //        else if (ReferenceEquals(tax106ViewModelWrapper, Tax106FilePartnerWrapper))
-        //        {
-        //            ShouldShowTax106FileDetailsPartner = true;
-        //            _partnerFormPath = form106Path;
-        //            IsPartnerSubmmited = false;
-        //            SubmitButtonTextPartner = "Submit";
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //    }
-        //}
 
         private async void Submit106FormFiller()
         {
@@ -255,6 +265,48 @@ namespace TaxMaster
             IsSubmittingFiller = false;
             IsFillerSubmitted = true;
         }
+
+        private async void Add106FormPartner()
+        {
+            try
+            {
+                var form106Path = await PickPdfFile();
+                var tax106File = _tax106FileParser.Parse106File(form106Path);
+
+                Tax106FilesPartner!.Add(tax106File);
+                _partnerFormPaths[tax106File] = form106Path;
+
+                ResetSubmittionPartner();
+            }
+            catch (Exception) { }
+        }
+
+        private void ResetSubmittionPartner()
+        {
+            ShouldShowTax106FileDetailsPartner = true;
+            IsPartnerSubmitted = false;
+            IsSubmittingPartner = false;
+            SubmitButtonTextPartner = "הגש";
+        }
+
+        private async void Submit106FormPartner()
+        {
+            if (IsPartnerSubmitted == true)
+            {
+                return;
+            }
+
+            _tax106FileWorker.Submit(_partnerFormPaths.Values.ToList(), Tax106FilesPartner!.ToList(), isFiller: false);
+
+            IsSubmittingPartner = true;
+
+            await Task.Delay(1000);
+
+            SubmitButtonTextPartner = "הוגש בהצלחה!";
+            IsSubmittingPartner = false;
+            IsPartnerSubmitted = true;
+        }
+
         public override void OnPrevious()
         {
             Shell.Current.GoToAsync("..");
@@ -266,64 +318,5 @@ namespace TaxMaster
             await Shell.Current.GoToAsync(nameof(FidelityEsppView));
         }
 
-    }
-
-    public class Tax106FormViewModelWrapper : INotifyPropertyChanged
-    {
-        private Tax106FileViewModel _tax106File;
-        public Tax106FileViewModel Tax106File
-        {
-            get => _tax106File;
-            set
-            {
-                if (_tax106File != value)
-                {
-                    _tax106File = value;
-                    OnPropertyChanged(nameof(Tax106File));
-                }
-            }
-        }
-
-        private bool _isNotSubmitted = true;
-        public bool IsNotSubmitted
-        {
-            get => _isNotSubmitted;
-            set
-            {
-                if (_isNotSubmitted != value)
-                {
-                    _isNotSubmitted = value;
-                    OnPropertyChanged(nameof(IsNotSubmitted));
-                }
-            }
-        }
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-        }
-        private string _name;
-
-        public Tax106FormViewModelWrapper(Tax106FileViewModel tax106File, string name, bool isSubmitted)
-        {
-            _tax106File = tax106File;
-            _isNotSubmitted = isSubmitted;
-            Name = name;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

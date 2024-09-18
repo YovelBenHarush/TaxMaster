@@ -73,10 +73,10 @@ namespace TaxMaster
             }
 
             ReportSettings.Configuration.FamilyStatus = _isMarried ? FamilyStatus.Married : FamilyStatus.Single;
-            ReportSettings.Configuration.RegisteredPartner = RegisteredPartner.ToUser();
+            RegisteredPartner.UpdateUser(ReportSettings.Configuration.RegisteredPartner);
             if (_isMarried)
             {
-                ReportSettings.Configuration.Partner = Partner.ToUser();
+                Partner.UpdateUser(ReportSettings.Configuration.Partner);
             }
 
             base.OnNext();
@@ -85,7 +85,7 @@ namespace TaxMaster
 
         private bool Validate()
         {
-            if(string.IsNullOrEmpty(RegisteredPartner.FirstName) || string.IsNullOrEmpty(RegisteredPartner.LastName) || string.IsNullOrEmpty(RegisteredPartner.Id) || string.IsNullOrEmpty(RegisteredPartner.Gender))
+            if (string.IsNullOrEmpty(RegisteredPartner.FirstName) || string.IsNullOrEmpty(RegisteredPartner.LastName) || string.IsNullOrEmpty(RegisteredPartner.Id) || string.IsNullOrEmpty(RegisteredPartner.Gender))
             {
                 return false;
             }
