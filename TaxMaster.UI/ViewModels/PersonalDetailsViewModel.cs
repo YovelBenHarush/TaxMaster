@@ -41,7 +41,7 @@ namespace TaxMaster
         private bool _isMarried = ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married;
         public bool IsMarried => _isMarried;
 
-        private string _bankManagementApprovalFile;
+        private string _bankManagementApprovalFile = ReportSettings.Configuration.BankManagementApprovalFile;
         public string BankManagementApprovalFile
         {
             get => _bankManagementApprovalFile;
@@ -99,6 +99,8 @@ namespace TaxMaster
             {
                 Partner.UpdateUser(ReportSettings.Configuration.Partner);
             }
+
+            ReportSettings.Configuration.BankManagementApprovalFile = BankManagementApprovalFile;
 
             base.OnNext();
             await Shell.Current.GoToAsync(nameof(DefinitionOfForm106View));
