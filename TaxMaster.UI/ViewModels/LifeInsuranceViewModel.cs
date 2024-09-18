@@ -12,6 +12,7 @@ namespace TaxMaster
         public ObservableCollection<InsuranceEntry> PartnerInsurances { get; }
 
         public ICommand AddInsuranceCommand { get; }
+
         public ICommand RemoveInsuranceCommand { get; }
 
         public ICommand PickFileCommand { get; }

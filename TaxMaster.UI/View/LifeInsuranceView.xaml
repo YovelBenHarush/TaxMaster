@@ -38,7 +38,7 @@
                                             <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" MinimumWidthRequest="100" Margin="5"/>
 
                                             <!-- Option to pick a local copy of the life insurance -->
-                                            <Button Text="העלאת פוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
+                                            <Button Text="העלאת פוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference UserInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
                                             <Entry Text="{Binding PolicyPath, Mode=TwoWay}" MaximumWidthRequest="300" Margin="5"/>
 
                                             <!-- Remove button -->
