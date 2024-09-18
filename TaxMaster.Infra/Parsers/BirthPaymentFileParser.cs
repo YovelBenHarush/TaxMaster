@@ -47,13 +47,13 @@ namespace TaxMaster.Infra.Parsers
             return new TaxBirthPaymentFile();
         }
 
-        public long ParseNumber(string text)
+        public double ParseNumber(string text)
         {
             // Remove all non-numeric characters
             string number = Regex.Replace(text, "[^0-9]", "");
 
             // Parse the number
-            return long.Parse(number);
+            return double.Parse(number);
         }
     }
 }
