@@ -20,6 +20,7 @@ namespace TaxMaster
 
         public LifeInsuranceViewModel()
         {
+            Title = "נתוני ביטוחי חיים";
             UserInsurances = new ObservableCollection<InsuranceEntry>(ReportSettings.Configuration.LifeInsurences.UserInsurances);
             PartnerInsurances = new ObservableCollection<InsuranceEntry>(ReportSettings.Configuration.LifeInsurences.PartnerInsurances);
 
@@ -57,6 +58,17 @@ namespace TaxMaster
         private async Task PickPdfFile(object entry)
         {
             ((InsuranceEntry)entry).PolicyPath = await PickPdfFile();
+
+            if (UserInsurances.Contains(entry))
+            {
+                UserInsurances.Remove((InsuranceEntry)entry);
+                UserInsurances.Add((InsuranceEntry)entry);
+            }
+            else
+            {
+                PartnerInsurances.Remove((InsuranceEntry)entry);
+                PartnerInsurances.Add((InsuranceEntry)entry);
+            }
         }
 
         public override async void OnNext()
