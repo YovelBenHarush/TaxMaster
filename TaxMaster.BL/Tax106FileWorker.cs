@@ -23,13 +23,15 @@ namespace TaxMaster.BL
             {
                 var tax106OutputNameFiller = ReportSettings.Configuration.RegisteredPartner.ID + "_" + "106";
                 SaveToOutputDir(tax106FilePaths, tax106OutputNameFiller);
-                ReportSettings.Configuration.Tax106Files.User106 = tax106Files;
+
+                ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper = new() { taxFiles = tax106Files };
             }
             else
             {
                 var tax106OutputNamePartner = ReportSettings.Configuration.Partner.ID + "_" + "106";
                 SaveToOutputDir(tax106FilePaths, tax106OutputNamePartner);
-                ReportSettings.Configuration.Tax106Files.Partner106 = tax106Files;
+
+                ReportSettings.Configuration.Partner.Tax106FilesWrapper = new() { taxFiles = tax106Files };
             }
         }
 

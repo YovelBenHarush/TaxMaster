@@ -41,9 +41,26 @@ namespace TaxMaster
         private bool _isMarried = ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married;
         public bool IsMarried => _isMarried;
 
+        private string _bankManagementApprovalFile = ReportSettings.Configuration.BankManagementApprovalFile;
+        public string BankManagementApprovalFile
+        {
+            get => _bankManagementApprovalFile;
+            set
+            {
+                if (_bankManagementApprovalFile != value)
+                {
+                    _bankManagementApprovalFile = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public string SelectedYear => ReportSettings.Configuration.Year.ToString();
 
         public ObservableCollection<string> Genders { get; set; }
+
+        public Command<object> PickFileCommand { get; }
+        public Command<object> ResetFileCommand { get; }
 
         public PersonalDetailsViewModel()
         {
@@ -53,6 +70,10 @@ namespace TaxMaster
             SelectedMaritalStatus = ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married ? "נשוי" : "רווק";
             RegisteredPartner = UserModel.FromUser(ReportSettings.Configuration.RegisteredPartner);
             Partner = UserModel.FromUser(ReportSettings.Configuration.Partner);
+            BankManagementApprovalFile = ReportSettings.Configuration.BankManagementApprovalFile;
+
+            PickFileCommand = new Command<object>(async (parameter) => await PickPdfFile(parameter));
+            ResetFileCommand = new Command<object>((parameter) => ResetSelection(parameter));
         }
 
         public override string Title
@@ -73,11 +94,13 @@ namespace TaxMaster
             }
 
             ReportSettings.Configuration.FamilyStatus = _isMarried ? FamilyStatus.Married : FamilyStatus.Single;
-            ReportSettings.Configuration.RegisteredPartner = RegisteredPartner.ToUser();
+            RegisteredPartner.UpdateUser(ReportSettings.Configuration.RegisteredPartner);
             if (_isMarried)
             {
-                ReportSettings.Configuration.Partner = Partner.ToUser();
+                Partner.UpdateUser(ReportSettings.Configuration.Partner);
             }
+
+            ReportSettings.Configuration.BankManagementApprovalFile = BankManagementApprovalFile;
 
             base.OnNext();
             await Shell.Current.GoToAsync(nameof(DefinitionOfForm106View));
@@ -85,7 +108,7 @@ namespace TaxMaster
 
         private bool Validate()
         {
-            if(string.IsNullOrEmpty(RegisteredPartner.FirstName) || string.IsNullOrEmpty(RegisteredPartner.LastName) || string.IsNullOrEmpty(RegisteredPartner.Id) || string.IsNullOrEmpty(RegisteredPartner.Gender))
+            if (string.IsNullOrEmpty(RegisteredPartner.FirstName) || string.IsNullOrEmpty(RegisteredPartner.LastName) || string.IsNullOrEmpty(RegisteredPartner.Id) || string.IsNullOrEmpty(RegisteredPartner.Gender))
             {
                 return false;
             }
@@ -98,6 +121,28 @@ namespace TaxMaster
             }
 
             return true;
+        }
+
+        private async Task PickPdfFile(object parameter)
+        {
+            if (parameter is string fileType)
+            {
+                string file = await PickPdfFile();
+                UpdateValue(file);
+            }
+        }
+
+        private void ResetSelection(object parameter)
+        {
+            if (parameter is string fileType)
+            {
+                UpdateValue(string.Empty);
+            }
+        }
+
+        private void UpdateValue(string value)
+        {
+            BankManagementApprovalFile = value;
         }
     }
 }

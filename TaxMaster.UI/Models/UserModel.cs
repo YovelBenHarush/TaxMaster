@@ -18,6 +18,7 @@ namespace TaxMaster.UI
         {
             return new User
             {
+
                 FirstName = FirstName,
                 LastName = LastName,
                 ID = Id,
@@ -34,6 +35,13 @@ namespace TaxMaster.UI
                 Id = user.ID,
                 Gender = user.Gender == Infra.Entities.Gender.Male ? "זכר" : "נקבה",
             };
+        }
+        public void UpdateUser(User user)
+        {
+            user.FirstName = FirstName;
+            user.LastName = LastName;
+            user.ID = Id;
+            user.Gender = Gender == "זכר" ? Infra.Entities.Gender.Male : Infra.Entities.Gender.Female;
         }
     }
 }

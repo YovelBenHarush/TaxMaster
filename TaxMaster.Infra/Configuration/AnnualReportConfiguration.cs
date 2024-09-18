@@ -23,10 +23,12 @@ namespace TaxMaster.Infra
         }
 
 
-        public static void SaveToOutputDir(string sourcefilePath, string fileName)
+        public static string SaveToOutputDir(string sourcefilePath, string fileName)
         {
             try
             {
+                var destFilePath = GetOutputFilePath(fileName);
+
                 // Ensure that the source file exists
                 if (!File.Exists(sourcefilePath))
                 {
@@ -34,20 +36,23 @@ namespace TaxMaster.Infra
                 }
 
                 // Ensure the destination directory exists
-                var destinationDir = Path.GetDirectoryName(GetOutputFilePath(fileName));
+                var destinationDir = Path.GetDirectoryName(destFilePath);
                 if (!Directory.Exists(destinationDir))
                 {
                     Directory.CreateDirectory(destinationDir);
                 }
 
                 // Copy the file to the destination
-                File.Copy(sourcefilePath, GetOutputFilePath(fileName));
+                File.Copy(sourcefilePath, destFilePath, overwrite: true);
 
                 Console.WriteLine("File copied successfully.");
+
+                return destFilePath;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
+                return string.Empty;
             }
         }
 
@@ -97,7 +102,7 @@ namespace TaxMaster.Infra
 
         public User Partner { get; set; } = new User();
 
-        public string BankAccountManagementApprovalFilePath { get; set; }
+        public string BankManagementApprovalFile { get; set; } = string.Empty;
 
         public TaxBirthPaymentFile BirthPayment { get; set; } = new TaxBirthPaymentFile();
 

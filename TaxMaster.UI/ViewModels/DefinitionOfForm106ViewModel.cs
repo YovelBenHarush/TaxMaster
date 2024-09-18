@@ -99,6 +99,35 @@ namespace TaxMaster
             }
         }
 
+        private string _fillerName;
+        public string FillerName
+        {
+            get => _fillerName;
+            set
+            {
+                if (_fillerName != value)
+                {
+                    _fillerName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _partnerName;
+        public string PartnerName
+        {
+            get => _partnerName;
+            set
+            {
+                if (_partnerName != value)
+                {
+                    _partnerName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         private string _submitButtonTextFiller = "הגש";
         public string SubmitButtonTextFiller
         {
@@ -114,7 +143,7 @@ namespace TaxMaster
         }
 
         private bool _isPartnerSubmitted = false;
-        public bool IsPartnerSubmmited
+        public bool IsPartnerSubmitted
         {
             get
             {
@@ -157,10 +186,14 @@ namespace TaxMaster
                 }
             }
         }
+
         public ICommand PickFileCommandFiller { get; }
         public ICommand? PickFileCommandPartner { get; }
         public ICommand SubmitFileFiller { get; }
         public ICommand? SubmitFilePartner { get; }
+
+        public ICommand DeleteTax106FileCommandFiller { get; }
+        public ICommand DeleteTax106FileCommandPartner { get; }
         public ObservableCollection<Tax106File> Tax106FilesFiller { get; private set; }
         public ObservableCollection<Tax106File>? Tax106FilesPartner { get; private set; } = null;
 
@@ -172,71 +205,54 @@ namespace TaxMaster
 
         public DefinitionOfForm106ViewModel()
         {
-            Tax106FilesFiller = new ObservableCollection<Tax106File>(ReportSettings.Configuration.Tax106Files.User106);
+            ReportSettings.Configuration.RegisteredPartner.FirstName = "Saar Ofek";
+            Tax106FilesFiller = new ObservableCollection<Tax106File>(ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles ?? new List<Tax106File>());
             PickFileCommandFiller = new Command(Add106FormFiller);
             SubmitFileFiller = new Command(Submit106FormFiller);
-            if (ReportSettings.Configuration.Tax106Files.User106.Count() != 0)
+            DeleteTax106FileCommandFiller = new Command<object>(DeleteTax106FileFiller);
+            FillerName = ReportSettings.Configuration.RegisteredPartner.DisplayName;
+            if (ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles != null && ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles?.Count != 0)
             {
                 ShouldShowTax106FileDetailsFiller = true;
             }
 
-            //if (ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married)
-            //{
-            //    Tax106FilesPartner = new ObservableCollection<Tax106File>(ReportSettings.Configuration.Tax106Files.Partner106);
-            //    PickFileCommandPartner = new Command(Add106FormPartner);
-            //    SubmitFilePartner = new Command(Submit106FormPartner);
-            //    if (ReportSettings.Configuration.Tax106Files.Partner106.Count() != 0)
-            //    {
-            //        ShouldShowTax106FileDetailsPartner = true;
-            //    }
-            //}
+            if (ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married)
+            {
+                ShouldShowPartner = true;
+                Tax106FilesPartner = new ObservableCollection<Tax106File>(ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles ?? new List<Tax106File>());
+                PickFileCommandPartner = new Command(Add106FormPartner);
+                SubmitFilePartner = new Command(Submit106FormPartner);
+                DeleteTax106FileCommandPartner = new Command<object>(DeleteTax106FilePartner);
+                PartnerName = ReportSettings.Configuration.Partner.DisplayName;
+                if (ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles != null && ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles?.Count != 0)
+                {
+                    ShouldShowTax106FileDetailsPartner = true;
+                }
+            }
         }
 
         private async void Add106FormFiller()
         {
-            var form106Path = await PickPdfFile();
-            var tax106File = _tax106FileParser.Parse106File(form106Path);
+            try
+            {
+                var form106Path = await PickPdfFile();
+                var tax106File = _tax106FileParser.Parse106File(form106Path);
 
-            Tax106FilesFiller.Add(tax106File);
-            _fillerFormPaths[tax106File] = form106Path;
+                Tax106FilesFiller.Add(tax106File);
+                _fillerFormPaths[tax106File] = form106Path;
 
-            ResetSubmittionFiller();
+                ResetSubmittionFiller();
+            }
+            catch (Exception) { }
         }
 
         private void ResetSubmittionFiller()
         {
-            ShouldShowTax106FileDetailsFiller = true;
+            ShouldShowTax106FileDetailsFiller = Tax106FilesFiller.Count != 0;
             IsFillerSubmitted = false;
             IsSubmittingFiller = false;
             SubmitButtonTextFiller = "הגש";
         }
-
-        //private async void Handle106Form(Tax106FormViewModelWrapper tax106ViewModelWrapper)
-        //{
-        //    try
-        //    {
-        //        var form106Path = await PickPdfFile();
-        //        tax106ViewModelWrapper.Tax106File.InternalTax106File = _tax106FileParser.Parse106File(form106Path);
-
-        //        if (ReferenceEquals(tax106ViewModelWrapper, Tax106FileFiller))
-        //        {
-        //            ShouldShowTax106FileDetailsFiller = true;
-        //            _fillerFormPath = form106Path;
-        //            IsFillerSubmmited = false;
-        //            SubmitButtonTextFiller = "Submit";
-        //        }
-        //        else if (ReferenceEquals(tax106ViewModelWrapper, Tax106FilePartnerWrapper))
-        //        {
-        //            ShouldShowTax106FileDetailsPartner = true;
-        //            _partnerFormPath = form106Path;
-        //            IsPartnerSubmmited = false;
-        //            SubmitButtonTextPartner = "Submit";
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //    }
-        //}
 
         private async void Submit106FormFiller()
         {
@@ -255,6 +271,72 @@ namespace TaxMaster
             IsSubmittingFiller = false;
             IsFillerSubmitted = true;
         }
+
+        public void DeleteTax106FileFiller(object parameter)
+        {
+            var tax106File = parameter as Tax106File;
+            Tax106FilesFiller.Remove(tax106File);
+            _fillerFormPaths.Remove(tax106File);
+            if (Tax106FilesFiller.Count == 0)
+            {
+                _tax106FileWorker.Submit(_fillerFormPaths.Values.ToList(), Tax106FilesFiller!.ToList(), isFiller: true);
+            }
+            ResetSubmittionFiller();
+        }
+
+        private async void Add106FormPartner()
+        {
+            try
+            {
+                var form106Path = await PickPdfFile();
+                var tax106File = _tax106FileParser.Parse106File(form106Path);
+
+                Tax106FilesPartner!.Add(tax106File);
+                _partnerFormPaths[tax106File] = form106Path;
+
+                ResetSubmittionPartner();
+            }
+            catch (Exception) { }
+        }
+
+        private void ResetSubmittionPartner()
+        {
+            ShouldShowTax106FileDetailsPartner = Tax106FilesPartner?.Count != 0;
+            IsPartnerSubmitted = false;
+            IsSubmittingPartner = false;
+            SubmitButtonTextPartner = "הגש";
+        }
+
+        private async void Submit106FormPartner()
+        {
+            if (IsPartnerSubmitted == true)
+            {
+                return;
+            }
+
+            _tax106FileWorker.Submit(_partnerFormPaths.Values.ToList(), Tax106FilesPartner!.ToList(), isFiller: false);
+
+            IsSubmittingPartner = true;
+
+            await Task.Delay(1000);
+
+            SubmitButtonTextPartner = "הוגש בהצלחה!";
+            IsSubmittingPartner = false;
+            IsPartnerSubmitted = true;
+        }
+        public void DeleteTax106FilePartner(object parameter)
+        {
+            var tax106File = parameter as Tax106File;
+            Tax106FilesPartner!.Remove(tax106File!);
+            _partnerFormPaths!.Remove(tax106File!);
+            if (Tax106FilesPartner.Count == 0)
+            {
+                _tax106FileWorker.Submit(_partnerFormPaths.Values.ToList(), Tax106FilesPartner!.ToList(), isFiller: false);
+            }
+            ResetSubmittionPartner();
+        }
+
+
         public override void OnPrevious()
         {
             Shell.Current.GoToAsync("..");
@@ -266,64 +348,5 @@ namespace TaxMaster
             await Shell.Current.GoToAsync(nameof(FidelityEsppView));
         }
 
-    }
-
-    public class Tax106FormViewModelWrapper : INotifyPropertyChanged
-    {
-        private Tax106FileViewModel _tax106File;
-        public Tax106FileViewModel Tax106File
-        {
-            get => _tax106File;
-            set
-            {
-                if (_tax106File != value)
-                {
-                    _tax106File = value;
-                    OnPropertyChanged(nameof(Tax106File));
-                }
-            }
-        }
-
-        private bool _isNotSubmitted = true;
-        public bool IsNotSubmitted
-        {
-            get => _isNotSubmitted;
-            set
-            {
-                if (_isNotSubmitted != value)
-                {
-                    _isNotSubmitted = value;
-                    OnPropertyChanged(nameof(IsNotSubmitted));
-                }
-            }
-        }
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
-        }
-        private string _name;
-
-        public Tax106FormViewModelWrapper(Tax106FileViewModel tax106File, string name, bool isSubmitted)
-        {
-            _tax106File = tax106File;
-            _isNotSubmitted = isSubmitted;
-            Name = name;
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }
