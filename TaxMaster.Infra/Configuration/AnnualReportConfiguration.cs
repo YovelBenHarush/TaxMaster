@@ -109,6 +109,8 @@ namespace TaxMaster.Infra
       
         public Tax106Files Tax106Files { get; set; } = new Tax106Files();
 
+        public Donations Donations { get; set; } = new Donations();
+
         public string Serialize()
         {
             return JsonConvert.SerializeObject(this);
