@@ -137,10 +137,23 @@ namespace TaxMaster
             }
         }
 
-        public ICommand CalcualteCommand { get; }
+        private bool isWebViewVisible;
+
+        public bool IsWebViewVisible
+        {
+            get => isWebViewVisible;
+            set
+            {
+                isWebViewVisible = value;
+                OnPropertyChanged(nameof(IsWebViewVisible));
+            }
+        }
+
         public ICommand PickFileCommand { get; }
         public ICommand ResetFileCommand { get; }
         public ICommand ToggleNumberApprovalCommand { get; }
+        public ICommand ToggleWebViewCommand { get; }
+
 
         public BirthAllowanceViewModel()
         {
@@ -149,11 +162,14 @@ namespace TaxMaster
 
             PickFileCommand = new Command(PickBirthAllowanceFile);
             ResetFileCommand = new Command(ResetSelection);
-            CalcualteCommand = new Command(Calcualte);
 
             ToggleNumberApprovalCommand = new Command(() =>
             {
                 NumberApproval = !NumberApproval;
+            });
+            ToggleWebViewCommand = new Command(() =>
+            {
+                IsWebViewVisible = !IsWebViewVisible;
             });
 
             IsCalculating = false;
@@ -209,6 +225,7 @@ namespace TaxMaster
         {
             string file = await PickPdfFile();
             BirthAllowanceFile = file;
+            Calcualte();
         }
 
         private void ResetSelection(object parameter)

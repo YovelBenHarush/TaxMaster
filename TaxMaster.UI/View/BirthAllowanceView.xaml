@@ -29,7 +29,8 @@
                             <Picker ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}" />
                         </StackLayout>
                         <Label Text="הסבר איך מורידים את הקובץ : " VerticalOptions="Center" HorizontalOptions="Center" />
-                        <ScrollView>
+                            <Button Text="הצג" Command="{Binding ToggleWebViewCommand}"  HorizontalOptions="Center" />
+                            <ScrollView IsVisible="{Binding IsWebViewVisible}">
                             <WebView Source="{Binding BirthAllowanceGuide}" HeightRequest="500" Margin="40,10,40,10" />
                         </ScrollView>
                     </StackLayout>
@@ -44,7 +45,6 @@
                                 </Button.ImageSource>
                             </Button>
                         </StackLayout>
-                        <Button Margin="10" Text="חשב" Command="{Binding CalcualteCommand}" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="{Binding IsCalculating, Converter={StaticResource InvertedBoolConverter}}"/>
                         <ActivityIndicator Margin="10" IsRunning="{Binding IsCalculating}" IsVisible="{Binding IsCalculating}" HorizontalOptions="Center" VerticalOptions="Center" />
                         <Label Text="{Binding CalcualteError}" Margin="5" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Red" IsVisible="{Binding CalcualteError, Converter={StaticResource StringToBooleanConverter}}"/>
                     </StackLayout>
