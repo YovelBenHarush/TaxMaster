@@ -19,15 +19,22 @@ namespace TaxMaster.BL
 
         public async Task<RsuEsopObject> RsuEsopAsync(string esopTransactionsReportFilePath, string tax867FilePath)
         {
-            var tax867FileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.Report867 + ".pdf";
-            SaveToOutputDir(tax867FilePath, tax867FileName);
-            var esopTransactionsFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.EsopTransactionsReport + ".pdf";
-            SaveToOutputDir(esopTransactionsReportFilePath, esopTransactionsFileName);
             var rsuEsopParser = new RsuEsopParser();
-            ReportSettings.Configuration.RsuEsopObject.Transactions = rsuEsopParser.ParseStockSalesTranscations(esopTransactionsReportFilePath);
-            var output = rsuEsopParser.ParseDividend(tax867FilePath);
-            ReportSettings.Configuration.RsuEsopObject.DividendInNis = output.dividendInNis;
-            ReportSettings.Configuration.RsuEsopObject.DividendTaxInNis = output.dividendTaxInNis;
+            if (!string.IsNullOrEmpty(tax867FilePath))
+            {
+                var tax867FileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.Report867 + ".pdf";
+                SaveToOutputDir(tax867FilePath, tax867FileName);
+                var output = rsuEsopParser.ParseDividend(tax867FilePath);
+                ReportSettings.Configuration.RsuEsopObject.DividendInNis = output.dividendInNis;
+                ReportSettings.Configuration.RsuEsopObject.DividendTaxInNis = output.dividendTaxInNis;
+            }
+
+            if (!string.IsNullOrEmpty(esopTransactionsReportFilePath))
+            {
+                var esopTransactionsFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.EsopTransactionsReport + ".pdf";
+                SaveToOutputDir(esopTransactionsReportFilePath, esopTransactionsFileName);
+                ReportSettings.Configuration.RsuEsopObject.Transactions = rsuEsopParser.ParseStockSalesTranscations(esopTransactionsReportFilePath);
+            }
 
             return ReportSettings.Configuration.RsuEsopObject;
         }
