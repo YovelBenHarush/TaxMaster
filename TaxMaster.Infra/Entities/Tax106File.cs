@@ -8,6 +8,7 @@
         public long _218_219;
         public long _086_045;
         public long _248_249;
+        public long _037_237;
 
         // Override the ToString method to return a string representation of the object
         public override string ToString()
@@ -18,7 +19,8 @@
                    $"_244_245 = {_244_245}, " +
                    $"_218_219 = {_218_219}, " +
                    $"_086_045 = {_086_045}, " +
-                   $"_248_249 = {_248_249}";
+                   $"_248_249 = {_248_249}, " +
+                   $"_037_237 = {_037_237}";
         }
     }
     public class Tax106Files
