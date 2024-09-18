@@ -77,11 +77,14 @@
                     <Label Text="* ייתכן ותדרשו להזדהות במערכת הזיהוי הממשלית" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
 
                     <Label Text="4. בתוכן הפנייה, לכתוב:" VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>
-                    <Label Text="שלום רב," VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
-                    <Label Text="לאור הכנסות מהמעסיק (מיקרוסופט), וכן הכנסות מחול, אבקש לפתוח לי תיק מסוג 93 לצורך הגשת דוח מס. , " VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
-                    <Label Text="בברכה," VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
-                    <Label Text="** השם שלכם **" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
-
+                    <Border>
+                        <StackLayout Padding="10" FlowDirection="RightToLeft">
+                            <Entry FlowDirection="RightToLeft"  Text="שלום רב," IsReadOnly="True" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                            <Entry FlowDirection="RightToLeft" Text="לאור הכנסות מהמעסיק (מיקרוסופט), וכן הכנסות מחול, אבקש לפתוח לי תיק מסוג 93 לצורך הגשת דוח מס. , " VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                            <Entry FlowDirection="RightToLeft" Text="בברכה," VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                            <Entry FlowDirection="RightToLeft" Text="** השם שלכם **" VerticalOptions="Center" HorizontalOptions="Start" Margin="30,0,5,5"/>
+                        </StackLayout>
+                    </Border>
                     <Label Text="5. לצרף את טופס 5329 החתום על ידכם. " VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>
 
                     <Label Text="6. לשלוח" VerticalOptions="Center" HorizontalOptions="Start" Margin="10,0,5,5"/>

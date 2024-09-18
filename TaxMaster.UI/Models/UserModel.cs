@@ -4,8 +4,6 @@ namespace TaxMaster.UI
 {
     public class UserModel
     {
-        public string Gender { get; set; }
-
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -22,7 +20,6 @@ namespace TaxMaster.UI
                 FirstName = FirstName,
                 LastName = LastName,
                 ID = Id,
-                Gender = Gender == "זכר" ? Infra.Entities.Gender.Male : Infra.Entities.Gender.Female,
             };
         }
 
@@ -33,7 +30,6 @@ namespace TaxMaster.UI
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Id = user.ID,
-                Gender = user.Gender == Infra.Entities.Gender.Male ? "זכר" : "נקבה",
             };
         }
         public void UpdateUser(User user)
@@ -41,7 +37,6 @@ namespace TaxMaster.UI
             user.FirstName = FirstName;
             user.LastName = LastName;
             user.ID = Id;
-            user.Gender = Gender == "זכר" ? Infra.Entities.Gender.Male : Infra.Entities.Gender.Female;
         }
     }
 }
