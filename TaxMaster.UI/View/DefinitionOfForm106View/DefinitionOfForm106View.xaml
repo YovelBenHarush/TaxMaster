@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TaxMaster"
-             x:Class="TaxMaster.DefinitionOfForm106View">
+             x:Class="TaxMaster.DefinitionOfForm106View"
+             >
     <Shell.TitleView>
         <local:PageTitle />
     </Shell.TitleView>
@@ -17,8 +18,23 @@
                 <Setter Property="HasShadow" Value="True" />
                 <Setter Property="CornerRadius" Value="8" />
                 <Setter Property="Padding" Value="20" />
-                <Setter Property="Margin" Value="10,10,10,0" />
+                <Setter Property="Margin" Value="10,10,10,40" />
                 <Setter Property="WidthRequest" Value="400" />
+            </Style>
+            <Style x:Key="MaterialLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="TextColor" Value="#616161" />
+                <Setter Property="Margin" Value="0,10,0,0" />
+                <Setter Property="FlowDirection" Value="RightToLeft" />
+            </Style>
+            <Style x:Key="MaterialEntryStyle" TargetType="Entry">
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="TextColor" Value="#212121" />
+                <Setter Property="BackgroundColor" Value="#FAFAFA" />
+                <Setter Property="Margin" Value="0,0,0,0" />
+                <Setter Property="HeightRequest" Value="25" />
+                <Setter Property="PlaceholderColor" Value="#9E9E9E" />
+                <Setter Property="FlowDirection" Value="RightToLeft" />
             </Style>
             <Style x:Key="MaterialButtonStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="#2196F3" />
@@ -57,41 +73,65 @@
 
     <Grid RowDefinitions="9*, 1*">
         <!-- Main content area for the step -->
-        <Grid Grid.Row="0" Padding="10" ColumnDefinitions="*,*" RowDefinitions="*" ColumnSpacing="10" MaximumWidthRequest="1000">
-            <!-- Filler Section -->
-            <VerticalStackLayout Grid.Column="0" Grid.ColumnSpan="{Binding ShouldShowPartner, Converter={StaticResource BooleanToColumnSpanConverter}}" VerticalOptions="Center">
-                <Button Text="Load 106 File - Filler" Command="{Binding PickFileCommandFiller}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" />
-                <StackLayout IsVisible="{Binding ShouldShowTax106FileDetailsFiller}">
-                    <Frame BackgroundColor="White" BorderColor="#E0E0E0">
+        <ScrollView>
+            <Grid Grid.Row="0" Padding="10" ColumnDefinitions="*,*" RowDefinitions="*" ColumnSpacing="10" MaximumWidthRequest="1000">
+                <!-- Filler Section -->
+                <VerticalStackLayout Grid.Column="0" Grid.ColumnSpan="{Binding ShouldShowPartner, Converter={StaticResource BooleanToColumnSpanConverter}}" VerticalOptions="Center">
+
+                    <StackLayout IsVisible="{Binding ShouldShowTax106FileDetailsFiller}">
                         <Grid RowDefinitions="9*, 1*">
-                            <local:Tax106FormView BindingContext="{Binding Tax106FileFillerWrapper}" HorizontalOptions="FillAndExpand" />
-                            <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,13,0,0">
+                            <CollectionView x:Name="FillerTax106FilesList" ItemsSource="{Binding Tax106FilesFiller}" Margin="5">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame BackgroundColor="White" BorderColor="#E0E0E0">
+                                            <StackLayout FlowDirection="RightToLeft">
+                                                <Label Text="{Binding Source={x:Reference Name=FillerTax106FilesList}, Path=BindingContext.Title}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="14" FlowDirection="RightToLeft"></Label>
+
+                                                <!-- Field 158-172 -->
+                                                <Label Text='(158-172) סה"כ ' Style="{StaticResource MaterialLabelStyle}" />
+                                                <Entry Text="{Binding _158_172, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 158-172" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
+
+                                                <!-- Field 042 -->
+                                                <Label Text='(042) סה"כ ניכויי מס' Style="{StaticResource MaterialLabelStyle}" />
+                                                <Entry Text="{Binding _042, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 042" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
+
+                                                <!-- Field 244-245 -->
+                                                <Label Text="(244/245) הכנסה מבוטחת" Style="{StaticResource MaterialLabelStyle}" />
+                                                <Entry Text="{Binding _244_245, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 244-245" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
+
+                                                <!-- Field 218-219 -->
+                                                <Label Text="(218/219) בסיס להשתלמות" Style="{StaticResource MaterialLabelStyle}" />
+                                                <Entry Text="{Binding _218_219, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 218-219" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
+
+                                                <!-- Field 086-045 -->
+                                                <Label Text='(086/045) הפקדות העובד לקופ"ג לקצבה' Style="{StaticResource MaterialLabelStyle}" />
+                                                <Entry Text="{Binding _086_045, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 086-045" Style="{StaticResource MaterialEntryStyle}" MinimumHeightRequest="33" IsEnabled="{Binding IsNotSubmitted}" />
+
+                                                <!-- Field 248-249 -->
+                                                <Label Text="(248/249) סכום הפרשות המעביד לקופות גמל לקצבה" Style="{StaticResource MaterialLabelStyle}" />
+                                                <Entry Text="{Binding _248_249, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Field 248-249" Style="{StaticResource MaterialEntryStyle}" IsEnabled="{Binding IsNotSubmitted}" MinimumHeightRequest="33" />
+                                            </StackLayout>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                        </Grid>
+                            <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,2,0,0">
                                 <ActivityIndicator IsRunning="{Binding IsSubmittingFiller}" IsVisible="{Binding IsSubmittingFiller}" />
                                 <Button Text="{Binding SubmitButtonTextFiller}" Command="{Binding SubmitFileFiller}" HorizontalOptions="Center" 
-                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsNotSubmittingFiller} "/>
+                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsSubmittingFiller, Converter={StaticResource InvertedBoolConverter}} "/>
                             </StackLayout>
-                        </Grid>
-                    </Frame>
-                </StackLayout>
-            </VerticalStackLayout>
+                    </StackLayout>
+                    <Button Text="טען טופס מס 106" Command="{Binding PickFileCommandFiller}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" Margin="0,9,0,0" />
 
-            <!-- Partner Section -->
-            <VerticalStackLayout Grid.Column="1" IsVisible="{Binding ShouldShowPartner}" VerticalOptions="Center">
-                <Button Text="Load 106 File - Partner" Command="{Binding PickFileCommandPartner}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" />
-                <StackLayout IsVisible="{Binding ShouldShowTax106FileDetailsPartner}">
-                    <Frame BackgroundColor="White" BorderColor="#E0E0E0">
-                        <Grid RowDefinitions="9*, 1*">
-                            <local:Tax106FormView Grid.Row="0" BindingContext="{Binding Tax106FilePartnerWrapper}" HorizontalOptions="FillAndExpand" />
-                            <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,13,0,0">
-                                <ActivityIndicator IsRunning="{Binding IsSubmittingPartner}" IsVisible="{Binding IsSubmittingPartner}" />
-                                <Button Text="{Binding SubmitButtonTextPartner}" Command="{Binding SubmitFilePartner}" HorizontalOptions="Center" 
-                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsNotSubmittingPartner} "/>
-                            </StackLayout>
-                        </Grid>
-                    </Frame>
-                </StackLayout>
-            </VerticalStackLayout>
-        </Grid>
+
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
 
         <!-- Button area for navigation -->
         <local:NavigationButtonsView Grid.Row="1" />

@@ -17,19 +17,28 @@ namespace TaxMaster.BL
 
         }
 
-        public async void Submit(string tax106FilePath, Tax106File tax106File, bool isFiller)
+        public void Submit(List<string> tax106FilePaths, List<Tax106File> tax106Files, bool isFiller)
         {
             if (isFiller)
             {
                 var tax106OutputNameFiller = ReportSettings.Configuration.RegisteredPartner.ID + "_" + "106";
-                SaveToOutputDir(tax106FilePath, tax106OutputNameFiller);
-                ReportSettings.Configuration.Tax106Files.User106 = tax106File;
+                SaveToOutputDir(tax106FilePaths, tax106OutputNameFiller);
+                ReportSettings.Configuration.Tax106Files.User106 = tax106Files;
             }
             else
             {
                 var tax106OutputNamePartner = ReportSettings.Configuration.Partner.ID + "_" + "106";
-                SaveToOutputDir(tax106FilePath, tax106OutputNamePartner);
-                ReportSettings.Configuration.Tax106Files.Partner106 = tax106File;
+                SaveToOutputDir(tax106FilePaths, tax106OutputNamePartner);
+                ReportSettings.Configuration.Tax106Files.Partner106 = tax106Files;
+            }
+        }
+
+        private void SaveToOutputDir(List<string> filePaths, string outputName)
+        {
+            for (int i = 0; i < filePaths.Count; i++)
+            {
+                var filePath = filePaths[i];
+                SaveToOutputDir(filePath, outputName + "_" + (i + 1));
             }
         }
     }

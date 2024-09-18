@@ -13,79 +13,7 @@ public class Tax106FileViewModel : INotifyPropertyChanged
         set => SetProperty(ref _internalTax106File, value, nameof(InternalTax106File));
     }
 
-    public long Field_158_172
-    {
-        get => _internalTax106File?._158_172 ?? 0;
-        set
-        {
-            if (_internalTax106File != null)
-            {
-                SetProperty(ref _internalTax106File._158_172, value, nameof(Field_158_172));
-            }
-        }
-    }
-
     // Add similar properties for each field you need to expose
-    public long Field_042
-    {
-        get => _internalTax106File?._042 ?? 0;
-        set
-        {
-            if (_internalTax106File != null)
-            {
-                SetProperty(ref _internalTax106File._042, value, nameof(Field_042));
-            }
-        }
-    }
-
-    public long Field_244_245
-    {
-        get => _internalTax106File?._244_245 ?? 0;
-        set
-        {
-            if (_internalTax106File != null)
-            {
-                SetProperty(ref _internalTax106File._244_245, value, nameof(Field_244_245));
-            }
-        }
-    }
-
-    public long Field_218_219
-    {
-        get => _internalTax106File?._218_219 ?? 0;
-        set
-        {
-            if (_internalTax106File != null)
-            {
-                SetProperty(ref _internalTax106File._218_219, value, nameof(Field_218_219));
-            }
-        }
-    }
-
-    public long Field_086_045
-    {
-        get => _internalTax106File?._086_045 ?? 0;
-        set
-        {
-            if (_internalTax106File != null)
-            {
-                SetProperty(ref _internalTax106File._086_045, value, nameof(Field_086_045));
-            }
-        }
-    }
-
-    public long Field_248_249
-    {
-        get => _internalTax106File?._248_249 ?? 0;
-        set
-        {
-            if (_internalTax106File != null)
-            {
-                SetProperty(ref _internalTax106File._248_249, value, nameof(Field_248_249));
-            }
-        }
-    }
-
     public Tax106FileViewModel(Tax106File? tax106File)
     {
         InternalTax106File = tax106File;
