@@ -12,6 +12,44 @@
     <Grid RowDefinitions="9*, 1*">
         <ScrollView>
             <StackLayout Grid.Row="0" Padding="10" FlowDirection="RightToLeft">
+                 <Border StrokeThickness="3"  Margin="10">
+                     <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
+                        <Label Text="נמלא את פרטי ההכנסה לפי הסעיפים המוגדרים הטופס 106" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                        <Grid ColumnDefinitions="* ,*">
+                            <StackLayout Grid.Column="0">
+                                <ListView ItemsSource="{Binding RegisteredPartner106}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Key}" FontSize="16"  HorizontalOptions="StartAndExpand" />
+                                                    <Label Text="{Binding Value}" FontSize="16"  HorizontalOptions="EndAndExpand" />
+                                                </StackLayout>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" IsVisible="{Binding IsMarried}">
+                                <ListView ItemsSource="{Binding Partner106}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="{Binding Key}" FontSize="16"  HorizontalOptions="StartAndExpand" />
+                                                    <Label Text="{Binding Value}" FontSize="16"  HorizontalOptions="EndAndExpand" />
+                                                </StackLayout>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackLayout>
+                        </Grid>
+                      </StackLayout>
+                     <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                </Border>
             </StackLayout>
         </ScrollView>
         <local:NavigationButtonsView Grid.Row="1" />

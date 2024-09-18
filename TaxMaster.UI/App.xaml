@@ -12,6 +12,18 @@
             <local:BooleanToColumnSpanConverter x:Key="BooleanToColumnSpanConverter" />
             <local:StringToBooleanConverter x:Key="StringToBooleanConverter" />
             <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <DataTemplate x:Key="GenericPairTemplate">
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Key}"
+                               FontSize="16"
+                               HorizontalOptions="StartAndExpand" />
+                        <Label Text="{Binding Value}"
+                               FontSize="16"
+                               HorizontalOptions="EndAndExpand" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
