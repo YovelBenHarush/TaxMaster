@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AppxWinMdCacheEnabled>false</AppxWinMdCacheEnabled>
-		<WindowsPackageType>None</WindowsPackageType>
+    <AppxWinMdCacheEnabled>false</AppxWinMdCacheEnabled>
+    <WindowsPackageType>None</WindowsPackageType>
 		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
@@ -59,18 +59,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Remove="NewFolder1\**" />
-	  <AndroidResource Remove="NewFolder\**" />
-	  <Compile Remove="NewFolder1\**" />
-	  <Compile Remove="NewFolder\**" />
-	  <EmbeddedResource Remove="NewFolder1\**" />
-	  <EmbeddedResource Remove="NewFolder\**" />
-	  <MauiCss Remove="NewFolder1\**" />
-	  <MauiCss Remove="NewFolder\**" />
-	  <MauiXaml Remove="NewFolder1\**" />
-	  <MauiXaml Remove="NewFolder\**" />
-	  <None Remove="NewFolder1\**" />
-	  <None Remove="NewFolder\**" />
+	  <AndroidResource Remove="View\NewFolder1\**" />
+	  <AndroidResource Remove="View\NewFolder\**" />
+	  <Compile Remove="View\NewFolder1\**" />
+	  <Compile Remove="View\NewFolder\**" />
+	  <EmbeddedResource Remove="View\NewFolder1\**" />
+	  <EmbeddedResource Remove="View\NewFolder\**" />
+	  <MauiCss Remove="View\NewFolder1\**" />
+	  <MauiCss Remove="View\NewFolder\**" />
+	  <MauiXaml Remove="View\NewFolder1\**" />
+	  <MauiXaml Remove="View\NewFolder\**" />
+	  <None Remove="View\NewFolder1\**" />
+	  <None Remove="View\NewFolder\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -88,7 +88,7 @@
 	  <Compile Update="View\BirthAllowanceView.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
-	  <Compile Update="View\DefinitionOfForm106View\DefinitionOfForm106View.xaml.cs">
+	  <Compile Update="View\DefinitionOfForm106View.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
 	  <Compile Update="View\DefinitionOfForm106View\Tax106FormView.xaml.cs">
@@ -100,11 +100,11 @@
 	  <Compile Update="View\DonationsView.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
-	  <Compile Update="View\EsppDividendsView.xaml.cs">
-	    <DependentUpon>%(Filename)</DependentUpon>
+	  <Compile Update="View\FidelityEsppView.xaml.cs">
+	    <DependentUpon>FidelityEsppView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="View\ReportSelectionView.xaml.cs">
-	    <DependentUpon>ReportSelectionView.xaml</DependentUpon>
+	  <Compile Update="View\FirstActionSelectionView.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
 	  <Compile Update="View\LifeInsuranceView.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
@@ -113,6 +113,9 @@
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
 	  <Compile Update="View\PersonalDetailsView.xaml.cs">
+	    <DependentUpon>%(Filename)</DependentUpon>
+	  </Compile>
+	  <Compile Update="View\SelectReportType.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
 	  <Compile Update="View\TaxAccountConfirmation.xaml.cs">
@@ -142,10 +145,10 @@
 	  <MauiXaml Update="View\DonationsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\EsppDividendsView.xaml">
+	  <MauiXaml Update="View\FidelityEsppView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\ReportSelectionView.xaml">
+	  <MauiXaml Update="View\FirstActionSelectionView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\LifeInsuranceView.xaml">
@@ -157,6 +160,9 @@
 	  <MauiXaml Update="View\PersonalDetailsView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\SelectReportType.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\TaxAccountConfirmation.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -166,6 +172,13 @@
 	  <None Update="Guides\fidelity_espp_guide.pdf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Icons\reset.jpg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Icons\" />
 	</ItemGroup>
 
 </Project>

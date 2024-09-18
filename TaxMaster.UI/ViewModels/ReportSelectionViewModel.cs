@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TaxMaster.BL;
+using TaxMaster.Infra;
 
 namespace TaxMaster
 {
@@ -107,7 +108,7 @@ namespace TaxMaster
 
         private void OnSelectedYearChanged()
         {
-            var reports = _annualReportWorker.GetExistingAnnualReports(int.Parse(SelectedYear));
+            var reports = _annualReportWorker.GetExistingAnnualReports(SelectedYear);
             Reports = (reports == null || reports.Count == 0) ? new ObservableCollection<string>() : new ObservableCollection<string>(reports.Select(r => r.DisplayName));
             OnPropertyChanged(nameof(Reports));
             SelectedReport = Reports.Count == 0 ? "" : Reports[0];
@@ -123,6 +124,20 @@ namespace TaxMaster
                 }
                 return;
             }
+
+            if (ReportAction == ReportAction.Existing && SelectedReport != string.Empty)
+            {
+                ReportSettings.LoadConfiguration(SelectedReport);
+            }
+
+            if (ReportAction == ReportAction.New)
+            {
+                ReportSettings.ClearConfiguration();
+            }
+
+            ReportSettings.Configuration.Year = int.Parse(SelectedYear);
+
+            base.OnNext();
 
             await Shell.Current.GoToAsync(nameof(TaxAccountConfirmation));
         }

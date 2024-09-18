@@ -8,45 +8,28 @@ namespace TaxMaster
 {
     public class PersonalDetailsViewModel : BaseViewModel
     {
-        private bool isMarried;
-
-        public UserModel TheRegisteredPartner { get; set; }
+        public UserModel RegisteredPartner { get; set; }
 
         public UserModel Partner { get; set; }
 
+        public ObservableCollection<string> MaritalStatuses { get; set; }
 
-        public ObservableCollection<int> Years { get; set; }
-        private int _selectedYear;
-        public int SelectedYear
+        private string _selectedMaritalStatus = "רווק";
+        public string SelectedMaritalStatus
         {
-            get => _selectedYear;
+            get => _selectedMaritalStatus;
             set
             {
-                if (_selectedYear != value)
+                if (_selectedMaritalStatus != value)
                 {
-                    _selectedYear = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public ObservableCollection<string> FamilyStatues { get; set; }
-        private string _selectedFamilyStatus;
-        public string SelectedFamilyStatus
-        {
-            get => _selectedFamilyStatus;
-            set
-            {
-                if (_selectedFamilyStatus != value)
-                {
-                    _selectedFamilyStatus = value;
+                    _selectedMaritalStatus = value;
                     if (value == "נשוי")
                     {
-                        isMarried = true;
+                        _isMarried = true;
                     }
                     else
                     {
-                        isMarried = false;
+                        _isMarried = false;
                     }
 
                     OnPropertyChanged();
@@ -55,39 +38,43 @@ namespace TaxMaster
             }
         }
 
-        public bool IsMarried => isMarried;
+        private bool _isMarried = ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married;
+        public bool IsMarried => _isMarried;
+
+        public string SelectedYear => ReportSettings.Configuration.Year.ToString();
+
         public ObservableCollection<string> Genders { get; set; }
 
         public PersonalDetailsViewModel()
         {
-            Years = new ObservableCollection<int>(Enumerable.Range(DateTime.Now.Year - 6, 7).Reverse());
-            FamilyStatues = new ObservableCollection<string> { "רווק", "נשוי" };
-            Genders = new ObservableCollection<string> { "ז", "נ" };
+            MaritalStatuses = new ObservableCollection<string> { "רווק", "נשוי" };
+            Genders = new ObservableCollection<string> { "זכר", "נקבה" };
 
-            SelectedFamilyStatus = FamilyStatues.First();
-            SelectedYear = Years.First();
+            SelectedMaritalStatus = ReportSettings.Configuration.FamilyStatus == FamilyStatus.Married ? "נשוי" : "רווק";
+            RegisteredPartner = UserModel.FromUser(ReportSettings.Configuration.RegisteredPartner);
+            Partner = UserModel.FromUser(ReportSettings.Configuration.Partner);
+        }
 
-            TheRegisteredPartner = new UserModel();
-            Partner = new UserModel();
-
-            IsPreviousEnabled = true;
+        public override string Title
+        {
+            get => "פרטים אישיים";
+            set => base.Title = value;
         }
 
         public async override void OnNext()
         {
-            if (!IsValidate())
+            if (!Validate())
             {
                 if (Application.Current?.MainPage != null)
                 {
-                    await Application.Current.MainPage.DisplayAlert("", "אנא מלא את כל הפרטיים האישיים לפי המשך התהליך", "Ok");
+                    await Application.Current.MainPage.DisplayAlert("", "אנא מלא/י את כל הפרטיים האישיים", "OK");
                 }
                 return;
             }
 
-            ReportSettings.Configuration.Year = SelectedYear;
-            ReportSettings.Configuration.FamilyStatus = isMarried ? FamilyStatus.Married : FamilyStatus.Single;
-            ReportSettings.Configuration.RegisteredPartner = TheRegisteredPartner.ToUser();
-            if (isMarried)
+            ReportSettings.Configuration.FamilyStatus = _isMarried ? FamilyStatus.Married : FamilyStatus.Single;
+            ReportSettings.Configuration.RegisteredPartner = RegisteredPartner.ToUser();
+            if (_isMarried)
             {
                 ReportSettings.Configuration.RegisteredPartner = Partner.ToUser();
             }
@@ -96,15 +83,15 @@ namespace TaxMaster
             await Shell.Current.GoToAsync(nameof(DefinitionOfForm106View));
         }
 
-        private bool IsValidate()
+        private bool Validate()
         {
-            if(string.IsNullOrEmpty(TheRegisteredPartner.FirstName) || string.IsNullOrEmpty(TheRegisteredPartner.LastName) || string.IsNullOrEmpty(TheRegisteredPartner.ID) || string.IsNullOrEmpty(TheRegisteredPartner.Gender))
+            if(string.IsNullOrEmpty(RegisteredPartner.FirstName) || string.IsNullOrEmpty(RegisteredPartner.LastName) || string.IsNullOrEmpty(RegisteredPartner.Id) || string.IsNullOrEmpty(RegisteredPartner.Gender))
             {
                 return false;
             }
             if (IsMarried)
             {
-                if (string.IsNullOrEmpty(Partner.FirstName) || string.IsNullOrEmpty(Partner.LastName) || string.IsNullOrEmpty(Partner.ID) || string.IsNullOrEmpty(Partner.Gender))
+                if (string.IsNullOrEmpty(Partner.FirstName) || string.IsNullOrEmpty(Partner.LastName) || string.IsNullOrEmpty(Partner.Id) || string.IsNullOrEmpty(Partner.Gender))
                 {
                     return false;
                 }

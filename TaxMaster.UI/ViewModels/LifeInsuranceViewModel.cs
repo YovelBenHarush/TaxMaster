@@ -8,8 +8,8 @@ namespace TaxMaster
 {
     public class LifeInsuranceViewModel : BaseViewModel
     {
-        public ObservableCollection<InsuranceEntry> UserInsurances { get; set; }
-        public ObservableCollection<InsuranceEntry> PartnerInsurances { get; set; }
+        public ObservableCollection<InsuranceEntry> UserInsurances { get; }
+        public ObservableCollection<InsuranceEntry> PartnerInsurances { get; }
 
         public ICommand AddInsuranceCommand { get; }
         public ICommand RemoveInsuranceCommand { get; }
@@ -20,8 +20,8 @@ namespace TaxMaster
 
         public LifeInsuranceViewModel()
         {
-            UserInsurances = new ObservableCollection<InsuranceEntry>();
-            PartnerInsurances = new ObservableCollection<InsuranceEntry>();
+            UserInsurances = new ObservableCollection<InsuranceEntry>(ReportSettings.Configuration.LifeInsurences.UserInsurances);
+            PartnerInsurances = new ObservableCollection<InsuranceEntry>(ReportSettings.Configuration.LifeInsurences.PartnerInsurances);
 
             AddInsuranceCommand = new Command<string>(AddInsurance);
             RemoveInsuranceCommand = new Command<object>(RemoveInsurance);
@@ -61,8 +61,8 @@ namespace TaxMaster
 
         public override async void OnNext()
         {
-            ReportSettings.Configuration.LifeInsurences.UserInsurances = UserInsurances.ToList();
-            ReportSettings.Configuration.LifeInsurences.PartnerInsurances = PartnerInsurances.ToList();
+            ReportSettings.Configuration.LifeInsurences.UserInsurances = [.. UserInsurances];
+            ReportSettings.Configuration.LifeInsurences.PartnerInsurances = [.. PartnerInsurances];
 
             base.OnNext();
 

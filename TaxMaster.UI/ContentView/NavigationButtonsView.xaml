@@ -2,7 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxMaster.NavigationButtonsView">
-    <Grid ColumnDefinitions="2*,10*,2*" FlowDirection="RightToLeft">
+    <Grid ColumnDefinitions="2*,10*,2*" FlowDirection="RightToLeft" VerticalOptions="Fill">
         <Button Text="הקודם" Command="{Binding PreviousCommand}" Grid.Column="0" IsVisible="{Binding IsPreviousEnabled}" CornerRadius="20" Padding="10,5" Margin="10" HeightRequest="50" WidthRequest="147"/>
         <Button Text="הבא" Command="{Binding NextCommand}" Margin="10" Grid.Column="2" CornerRadius="20" Padding="10,5" HeightRequest="50" WidthRequest="147"/>
     </Grid>

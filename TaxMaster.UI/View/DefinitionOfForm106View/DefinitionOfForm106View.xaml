@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TaxMaster"
+             x:Class="TaxMaster.DefinitionOfForm106View">
+    <Shell.TitleView>
+        <local:PageTitle />
+    </Shell.TitleView>
+
+    <ContentPage.BindingContext>
+        <local:DefinitionOfForm106ViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Frame">
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Padding" Value="20" />
+                <Setter Property="Margin" Value="10,10,10,0" />
+                <Setter Property="WidthRequest" Value="400" />
+            </Style>
+            <Style x:Key="MaterialButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="#2196F3" />
+                <!-- Material Blue -->
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="Padding" Value="15,5" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="Black" Opacity="0.2" Offset="3,3" Radius="10" />
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <Setter.Value>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#1976D2" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="#0D47A1" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="9*, 1*">
+        <!-- Main content area for the step -->
+        <Grid Grid.Row="0" Padding="10" ColumnDefinitions="*,*" RowDefinitions="*" ColumnSpacing="10" MaximumWidthRequest="1000">
+            <!-- Filler Section -->
+            <VerticalStackLayout Grid.Column="0" Grid.ColumnSpan="{Binding ShouldShowPartner, Converter={StaticResource BooleanToColumnSpanConverter}}" VerticalOptions="Center">
+                <Button Text="Load 106 File - Filler" Command="{Binding PickFileCommandFiller}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" />
+                <StackLayout IsVisible="{Binding ShouldShowTax106FileDetailsFiller}">
+                    <Frame BackgroundColor="White" BorderColor="#E0E0E0">
+                        <Grid RowDefinitions="9*, 1*">
+                            <local:Tax106FormView BindingContext="{Binding Tax106FileFillerWrapper}" HorizontalOptions="FillAndExpand" />
+                            <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,13,0,0">
+                                <ActivityIndicator IsRunning="{Binding IsSubmittingFiller}" IsVisible="{Binding IsSubmittingFiller}" />
+                                <Button Text="{Binding SubmitButtonTextFiller}" Command="{Binding SubmitFileFiller}" HorizontalOptions="Center" 
+                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsNotSubmittingFiller} "/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+            </VerticalStackLayout>
+
+            <!-- Partner Section -->
+            <VerticalStackLayout Grid.Column="1" IsVisible="{Binding ShouldShowPartner}" VerticalOptions="Center">
+                <Button Text="Load 106 File - Partner" Command="{Binding PickFileCommandPartner}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" />
+                <StackLayout IsVisible="{Binding ShouldShowTax106FileDetailsPartner}">
+                    <Frame BackgroundColor="White" BorderColor="#E0E0E0">
+                        <Grid RowDefinitions="9*, 1*">
+                            <local:Tax106FormView Grid.Row="0" BindingContext="{Binding Tax106FilePartnerWrapper}" HorizontalOptions="FillAndExpand" />
+                            <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,13,0,0">
+                                <ActivityIndicator IsRunning="{Binding IsSubmittingPartner}" IsVisible="{Binding IsSubmittingPartner}" />
+                                <Button Text="{Binding SubmitButtonTextPartner}" Command="{Binding SubmitFilePartner}" HorizontalOptions="Center" 
+                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsNotSubmittingPartner} "/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Button area for navigation -->
+        <local:NavigationButtonsView Grid.Row="1" />
+    </Grid>
+</ContentPage>
