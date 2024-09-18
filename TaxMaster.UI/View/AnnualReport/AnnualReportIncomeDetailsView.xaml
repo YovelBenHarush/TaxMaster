@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaxMaster.AnnualReportIncomeDetailsView"
+             xmlns:local="clr-namespace:TaxMaster">
+    <Shell.TitleView>
+        <local:PageTitle />
+    </Shell.TitleView>
+    <ContentPage.BindingContext>
+        <local:AnnualReportIncomeDetailsViewModel />
+    </ContentPage.BindingContext>
+    <Grid RowDefinitions="9*, 1*">
+        <ScrollView>
+            <StackLayout Grid.Row="0" Padding="10" FlowDirection="RightToLeft">
+            </StackLayout>
+        </ScrollView>
+        <local:NavigationButtonsView Grid.Row="1" />
+    </Grid>
+</ContentPage>

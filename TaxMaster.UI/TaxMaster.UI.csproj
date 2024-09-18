@@ -127,6 +127,24 @@
 	  <MauiXaml Update="ContentView\PageTitle.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\AnnualReport\AnnualReportAbroadAnnexView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AnnualReport\AnnualReportCapitalGainView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AnnualReport\AnnualReportFirstStepPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AnnualReport\AnnualReportGeneralDetailsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AnnualReport\AnnualReportIncomeDetailsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AnnualReport\AnnualReportPersonalDetailsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\BirthAllowanceView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

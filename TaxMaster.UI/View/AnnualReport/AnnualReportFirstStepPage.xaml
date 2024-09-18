@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaxMaster.AnnualReportFirstStepPage"
+             xmlns:local="clr-namespace:TaxMaster">
+    <Shell.TitleView>
+        <local:PageTitle />
+    </Shell.TitleView>
+    <ContentPage.BindingContext>
+        <local:AnnualReportFirstStepViewModel />
+    </ContentPage.BindingContext> 
+    <Grid RowDefinitions="9*, 1*">
+        <ScrollView>
+            <StackLayout Grid.Row="0" Padding="10" FlowDirection="RightToLeft">
+                <HorizontalStackLayout FlowDirection="RightToLeft">
+                    <Label Text="יש להיכנס" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                    <Label Text=" לאתר מס כנסה" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" TextColor="#AC99EA" Margin="10,0,0,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenLinkCommand}" CommandParameter=" https://secapp.taxes.gov.il/srsherutatzmi/#/clientMainDashboard" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Label Text=" באתר יש להכינס לשדה של דיווחים" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+                <Image Source="MainTexPage1.png" Aspect="Center" Margin="10"/>
+                <Label Text="יש לבחור שנה אליה תרצה להגיש דוח, שם לב שאם אתה מחויב בהגשה יהיה כתובת שאתה מחויב" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Start" FontAttributes="Bold" />
+                <Image Source="selectreport2.png" Aspect="Center" Margin="10"/>
+                <HorizontalStackLayout FlowDirection="RightToLeft">
+                    <Label Text="יש לבחור את שנת המס עליה אתה רוצה להגיש את הדוח" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                    <Label Text="{Binding Year}" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center"  Margin="10,0,0,0" />
+                    <Label Text="מספר תיק זה מספר ת.ז של בעל החשבון ." VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                    <Label Text="{Binding ID}" VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center"  Margin="10,0,0,0" />
+                    <Label Text="יש לבחור את האופציה הראשונה - הזנת דוח שנתי מלא ליחיד." VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" FontAttributes="Bold" />
+                </HorizontalStackLayout>
+                
+                <Label Text="יש לבחור את שנת המס עליה אתה רוצה להגיש את הדוח " VerticalOptions="Center" HorizontalOptions="Start" VerticalTextAlignment="Center" FontAttributes="Bold" />
+            </StackLayout>
+        </ScrollView>
+        <local:NavigationButtonsView Grid.Row="1" />
+    </Grid>
+</ContentPage>
