@@ -192,10 +192,13 @@ namespace TaxMaster
                     ReportSettings.Configuration.RegisteredPartner :
                     (SelectedUser.Equals(ReportSettings.Configuration.RegisteredPartner.DisplayName)) ? ReportSettings.Configuration.RegisteredPartner : ReportSettings.Configuration.Partner;
 
-                ReportSettings.Configuration.BirthPayment.Tax = Tax;
-                ReportSettings.Configuration.BirthPayment.Amount = Amount;
-                ReportSettings.Configuration.BirthPayment.FilePath = BirthAllowanceFile;
-                ReportSettings.Configuration.BirthPayment.UserId = getUser.ID;
+                getUser.BirthPayment = new TaxBirthPaymentFile
+                {
+                    Tax = Tax,
+                    Amount = Amount,
+                    FilePath = BirthAllowanceFile,
+                    UserId = getUser.ID
+                };
             }
 
             base.OnNext();
