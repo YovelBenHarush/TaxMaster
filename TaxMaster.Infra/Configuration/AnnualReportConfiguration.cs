@@ -103,6 +103,8 @@ namespace TaxMaster.Infra
 
         public EsppObject EsppObject { get; set; } = new EsppObject();
 
+        public RsuEsopObject RsuEsopObject { get; set; } = new RsuEsopObject();
+      
         public Tax106Files Tax106Files { get; set; } = new Tax106Files();
 
         public string Serialize()
