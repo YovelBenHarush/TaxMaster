@@ -191,6 +191,9 @@ namespace TaxMaster
         public ICommand? PickFileCommandPartner { get; }
         public ICommand SubmitFileFiller { get; }
         public ICommand? SubmitFilePartner { get; }
+
+        public ICommand DeleteTax106FileCommandFiller { get; }
+        public ICommand DeleteTax106FileCommandPartner { get; }
         public ObservableCollection<Tax106File> Tax106FilesFiller { get; private set; }
         public ObservableCollection<Tax106File>? Tax106FilesPartner { get; private set; } = null;
 
@@ -202,9 +205,11 @@ namespace TaxMaster
 
         public DefinitionOfForm106ViewModel()
         {
+            ReportSettings.Configuration.RegisteredPartner.FirstName = "Saar Ofek";
             Tax106FilesFiller = new ObservableCollection<Tax106File>(ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles ?? new List<Tax106File>());
             PickFileCommandFiller = new Command(Add106FormFiller);
             SubmitFileFiller = new Command(Submit106FormFiller);
+            DeleteTax106FileCommandFiller = new Command<object>(DeleteTax106FileFiller);
             FillerName = ReportSettings.Configuration.RegisteredPartner.DisplayName;
             if (ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles != null && ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles?.Count != 0)
             {
@@ -217,6 +222,7 @@ namespace TaxMaster
                 Tax106FilesPartner = new ObservableCollection<Tax106File>(ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles ?? new List<Tax106File>());
                 PickFileCommandPartner = new Command(Add106FormPartner);
                 SubmitFilePartner = new Command(Submit106FormPartner);
+                DeleteTax106FileCommandPartner = new Command<object>(DeleteTax106FilePartner);
                 PartnerName = ReportSettings.Configuration.Partner.DisplayName;
                 if (ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles != null && ReportSettings.Configuration.Partner.Tax106FilesWrapper.taxFiles?.Count != 0)
                 {
@@ -242,7 +248,7 @@ namespace TaxMaster
 
         private void ResetSubmittionFiller()
         {
-            ShouldShowTax106FileDetailsFiller = true;
+            ShouldShowTax106FileDetailsFiller = Tax106FilesFiller.Count != 0;
             IsFillerSubmitted = false;
             IsSubmittingFiller = false;
             SubmitButtonTextFiller = "הגש";
@@ -266,6 +272,18 @@ namespace TaxMaster
             IsFillerSubmitted = true;
         }
 
+        public void DeleteTax106FileFiller(object parameter)
+        {
+            var tax106File = parameter as Tax106File;
+            Tax106FilesFiller.Remove(tax106File);
+            _fillerFormPaths.Remove(tax106File);
+            if (Tax106FilesFiller.Count == 0)
+            {
+                _tax106FileWorker.Submit(_fillerFormPaths.Values.ToList(), Tax106FilesFiller!.ToList(), isFiller: true);
+            }
+            ResetSubmittionFiller();
+        }
+
         private async void Add106FormPartner()
         {
             try
@@ -283,7 +301,7 @@ namespace TaxMaster
 
         private void ResetSubmittionPartner()
         {
-            ShouldShowTax106FileDetailsPartner = true;
+            ShouldShowTax106FileDetailsPartner = Tax106FilesPartner?.Count != 0;
             IsPartnerSubmitted = false;
             IsSubmittingPartner = false;
             SubmitButtonTextPartner = "הגש";
@@ -306,6 +324,18 @@ namespace TaxMaster
             IsSubmittingPartner = false;
             IsPartnerSubmitted = true;
         }
+        public void DeleteTax106FilePartner(object parameter)
+        {
+            var tax106File = parameter as Tax106File;
+            Tax106FilesPartner!.Remove(tax106File!);
+            _partnerFormPaths!.Remove(tax106File!);
+            if (Tax106FilesPartner.Count == 0)
+            {
+                _tax106FileWorker.Submit(_partnerFormPaths.Values.ToList(), Tax106FilesPartner!.ToList(), isFiller: false);
+            }
+            ResetSubmittionPartner();
+        }
+
 
         public override void OnPrevious()
         {

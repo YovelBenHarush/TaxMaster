@@ -87,6 +87,8 @@
                                     <DataTemplate>
                                         <Frame BackgroundColor="White" BorderColor="#E0E0E0">
                                             <StackLayout FlowDirection="RightToLeft">
+                                                <Button Text="X" BackgroundColor="Transparent" TextColor="Red" HorizontalOptions="End" VerticalOptions="Start" Padding="0" Margin="0,0,0,-27" FontAttributes="Bold" FontSize="18" Command="{Binding Source={x:Reference FillerTax106FilesList}, Path=BindingContext.DeleteTax106FileCommandFiller}" CommandParameter="{Binding .}"  />
+
                                                 <Label Text="{Binding Source={x:Reference Name=FillerTax106FilesList}, Path=BindingContext.FillerName}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="14" FlowDirection="RightToLeft"></Label>
 
                                                 <!-- Field 158-172 -->
@@ -169,6 +171,8 @@
                                     <DataTemplate>
                                         <Frame BackgroundColor="White" BorderColor="#E0E0E0">
                                             <StackLayout FlowDirection="RightToLeft">
+                                                <Button Text="X" BackgroundColor="Transparent" TextColor="Red" HorizontalOptions="End" VerticalOptions="Start" Padding="0" Margin="0,0,0,-27" FontAttributes="Bold" FontSize="18" Command="{Binding Source={x:Reference PartnerTax106FilesList}, Path=BindingContext.DeleteTax106FileCommandPartner}" CommandParameter="{Binding .}"  />
+                                                
                                                 <Label Text="{Binding Source={x:Reference Name=PartnerTax106FilesList}, Path=BindingContext.PartnerName}" HorizontalOptions="Center" FontAttributes="Bold" FontSize="14" FlowDirection="RightToLeft"></Label>
 
                                                 <!-- Field 158-172 -->
