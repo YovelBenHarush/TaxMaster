@@ -13,6 +13,18 @@
             <local:StringToBooleanConverter x:Key="StringToBooleanConverter" />
             <local:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <local:Tax106NameTitleConverter x:Key="Tax106NameTitleConverter" />
+            <DataTemplate x:Key="GenericPairTemplate">
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Key}"
+                               FontSize="16"
+                               HorizontalOptions="StartAndExpand" />
+                        <Label Text="{Binding Value}"
+                               FontSize="16"
+                               HorizontalOptions="EndAndExpand" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
