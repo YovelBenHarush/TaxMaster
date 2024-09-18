@@ -97,7 +97,7 @@ namespace TaxMaster.Infra
 
         public User Partner { get; set; } = new User();
 
-        public string BankAccountManagementApprovalFilePath { get; set; }
+        public string BankManagementApprovalFile { get; set; } = string.Empty;
 
         public TaxBirthPaymentFile BirthPayment { get; set; } = new TaxBirthPaymentFile();
 
