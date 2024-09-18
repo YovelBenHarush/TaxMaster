@@ -97,6 +97,8 @@ namespace TaxMaster.Infra
 
         public User Partner { get; set; } = new User();
 
+        public string BankAccountManagementApprovalFilePath { get; set; }
+
         public TaxBirthPaymentFile BirthPayment { get; set; } = new TaxBirthPaymentFile();
 
         public LifeInsurences LifeInsurences { get; set; } = new LifeInsurences();
@@ -106,6 +108,8 @@ namespace TaxMaster.Infra
         public RsuEsopObject RsuEsopObject { get; set; } = new RsuEsopObject();
       
         public Tax106Files Tax106Files { get; set; } = new Tax106Files();
+
+        public Donations Donations { get; set; } = new Donations();
 
         public string Serialize()
         {

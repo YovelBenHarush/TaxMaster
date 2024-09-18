@@ -17,14 +17,6 @@ namespace TaxMaster
             set => base.Title = value;
         }
 
-        private async void OpenLink(string url)
-        {
-            if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
-            {
-                await Launcher.OpenAsync(url);
-            }
-        }
-
         public async override void OnNext()
         {
             base.OnNext();

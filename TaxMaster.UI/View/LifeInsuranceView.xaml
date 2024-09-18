@@ -4,6 +4,9 @@
              x:Class="TaxMaster.LifeInsuranceView"
              xmlns:local="clr-namespace:TaxMaster"
              Title="LifeInsuranceView">
+    <Shell.TitleView>
+        <local:PageTitle />
+    </Shell.TitleView>
     <ContentPage.BindingContext>
         <local:LifeInsuranceViewModel />
     </ContentPage.BindingContext>
@@ -13,14 +16,13 @@
         <StackLayout Padding="20">
 
             <!-- Placeholder for short explanation about life insurance -->
-            <Label Text="נתוני ביטחי חיים" FontSize="Medium" HorizontalOptions="Center" Margin="0,0,0,20" FlowDirection="RightToLeft"/>
                 <Label Text="עבור תשלום שנתי של פוליסת ביטוח חיים ניתן לקבל 25% החזר כחלק מהדוח השנתי. לצורך כך, יש להזין את הפרמיה השנתית ששולמה בשנת המס  וכן לצרף את הטופס מחברת הביטוח (המערכת מבצעת את החישוב של ה25%).  המידע מיועד לחלק פירוט ההכנסות בדוח השנתי." FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Padding="50"/>
 
                 <!-- Horizontal layout for User and Partner sections -->
-            <StackLayout Orientation="Horizontal" Spacing="40" FlowDirection="RightToLeft">
+                <StackLayout Orientation="Horizontal" Spacing="30" FlowDirection="RightToLeft">
 
                 <!-- User Section -->
-                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" MinimumWidthRequest="650">
+                <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" MinimumWidthRequest="600" MaximumWidthRequest="900">
                     <StackLayout>
                             <Label Text="ביטוחי החיים שלי" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
 
@@ -30,16 +32,17 @@
                                     <DataTemplate>
                                         <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
                                             <!-- Choose insurance company -->
-                                            <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft" WidthRequest="200" Margin="5"/>
+                                            <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
 
                                             <!-- Annual amount paid for the insurance -->
-                                            <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" WidthRequest="200" Margin="5"/>
+                                            <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" MinimumWidthRequest="100" Margin="5"/>
 
                                             <!-- Option to pick a local copy of the life insurance -->
-                                            <Button Text="העלאת העתק של הפוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" WidthRequest="200" Margin="5"/>
+                                            <Button Text="העלאת פוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference UserInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
+                                            <Entry Text="{Binding PolicyPath, Mode=TwoWay}" MaximumWidthRequest="300" Margin="5"/>
 
                                             <!-- Remove button -->
-                                            <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference UserInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="10" WidthRequest="20" Margin="5"/>
+                                            <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference UserInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="5" WidthRequest="10" Margin="5"/>
                                         </StackLayout>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
@@ -52,7 +55,7 @@
                 </Frame>
 
                 <!-- Partner Section -->
-                    <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" MinimumWidthRequest="650" IsVisible="{Binding IsNotSingle}">
+                    <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" MinimumWidthRequest="600" MaximumWidthRequest="900" IsVisible="{Binding IsNotSingle}">
                     <StackLayout>
                             <Label Text="ביטוחי החיים של בן\בת הזוג" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
 
@@ -62,16 +65,17 @@
                                     <DataTemplate>
                                         <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
                                             <!-- Choose insurance company -->
-                                            <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft" WidthRequest="200" Margin="5"/>
+                                            <Entry Placeholder="חברת הביטוח" Text="{Binding Company}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
 
                                             <!-- Annual amount paid for the insurance -->
-                                            <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" WidthRequest="200" Margin="5"/>
+                                            <Entry Placeholder="עלות פוליסה שנתית" Keyboard="Numeric" Text="{Binding AnnualAmount}" MinimumWidthRequest="100" Margin="5"/>
 
                                             <!-- Option to pick a local copy of the life insurance -->
-                                            <Button Text="העלאת העתק של הפוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" WidthRequest="200" Margin="5"/>
+                                            <Button Text="העלאת פוליסה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
+                                            <Entry Text="{Binding PolicyPath, Mode=TwoWay}" MaximumWidthRequest="300" Margin="5"/>
 
                                             <!-- Remove button -->
-                                            <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="10" WidthRequest="20" Margin="5"/>
+                                            <Button Text="X" Command="{Binding Path=BindingContext.RemoveInsuranceCommand, Source={x:Reference PartnerInsuranceList}}" CommandParameter="{Binding .}" HeightRequest="5" MinimumWidthRequest="10" Margin="5"/>
                                         </StackLayout>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>

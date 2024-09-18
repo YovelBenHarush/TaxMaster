@@ -115,9 +115,32 @@ namespace TaxMaster
             }
         }
 
+        private bool _birthAllowanceRadioButton;
+        public bool BirthAllowanceRadioButton
+        {
+            get => _birthAllowanceRadioButton;
+            set
+            {
+                _birthAllowanceRadioButton = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _numberApproval;
+        public bool NumberApproval
+        {
+            get => _numberApproval;
+            set
+            {
+                _numberApproval = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand CalcualteCommand { get; }
         public ICommand PickFileCommand { get; }
         public ICommand ResetFileCommand { get; }
+        public ICommand ToggleNumberApprovalCommand { get; }
 
         public BirthAllowanceViewModel()
         {
@@ -128,16 +151,56 @@ namespace TaxMaster
             ResetFileCommand = new Command(ResetSelection);
             CalcualteCommand = new Command(Calcualte);
 
+            ToggleNumberApprovalCommand = new Command(() =>
+            {
+                NumberApproval = !NumberApproval;
+            });
+
             IsCalculating = false;
             CalcualteError = string.Empty;
 
             BirthAllowanceGuide = GuidesConfigurations.EsppFidelityPdfUrl;
             _birthAllowanceWorker = new BirthAllowanceWorker();
             ShouldDisplayValues = false;
+            BirthAllowanceRadioButton = false;
+            NumberApproval = false;
         }
 
         public async override void OnNext()
         {
+            if (BirthAllowanceRadioButton)
+            {
+                if (string.IsNullOrEmpty(BirthAllowanceFile))
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("", "אנא בחר/י טופס דמי לידה ובצע חישוב עבורו", "OK");
+                    }
+                    return;
+                }
+
+                if (!NumberApproval)
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("", "אנא אשר/י את ערכי דמי הלידה", "OK");
+                    }
+                    return;
+                }
+
+                var getUser = (ReportSettings.Configuration.FamilyStatus != Infra.Entities.FamilyStatus.Married) ?
+                    ReportSettings.Configuration.RegisteredPartner :
+                    (SelectedUser.Equals(ReportSettings.Configuration.RegisteredPartner.DisplayName)) ? ReportSettings.Configuration.RegisteredPartner : ReportSettings.Configuration.Partner;
+
+                getUser.BirthPayment = new TaxBirthPaymentFile
+                {
+                    Tax = Tax,
+                    Amount = Amount,
+                    FilePath = BirthAllowanceFile,
+                    UserId = getUser.ID
+                };
+            }
+
             base.OnNext();
             await Shell.Current.GoToAsync(nameof(DonationsView));
         }

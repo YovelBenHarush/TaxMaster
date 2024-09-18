@@ -76,7 +76,7 @@ namespace TaxMaster
             ReportSettings.Configuration.RegisteredPartner = RegisteredPartner.ToUser();
             if (_isMarried)
             {
-                ReportSettings.Configuration.RegisteredPartner = Partner.ToUser();
+                ReportSettings.Configuration.Partner = Partner.ToUser();
             }
 
             base.OnNext();
