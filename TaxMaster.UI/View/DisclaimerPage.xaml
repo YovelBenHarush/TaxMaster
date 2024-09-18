@@ -56,7 +56,7 @@
                                 </Label.GestureRecognizers>
                             </Label>
                         </HorizontalStackLayout>
-                        <HorizontalStackLayout FlowDirection="RightToLeft">
+                        <HorizontalStackLayout FlowDirection="RightToLeft" IsVisible="False">
                             <CheckBox IsChecked="{Binding LogsApproval}" VerticalOptions="Center"/>
                             <Label Text="כתוב לוגים" VerticalOptions="Center">
                                 <Label.GestureRecognizers>

@@ -108,13 +108,13 @@ namespace TaxMaster
 
         private bool Validate()
         {
-            if (string.IsNullOrEmpty(RegisteredPartner.FirstName) || string.IsNullOrEmpty(RegisteredPartner.LastName) || string.IsNullOrEmpty(RegisteredPartner.Id) || string.IsNullOrEmpty(RegisteredPartner.Gender))
+            if (string.IsNullOrEmpty(RegisteredPartner.FirstName) || string.IsNullOrEmpty(RegisteredPartner.LastName) || string.IsNullOrEmpty(RegisteredPartner.Id))
             {
                 return false;
             }
             if (IsMarried)
             {
-                if (string.IsNullOrEmpty(Partner.FirstName) || string.IsNullOrEmpty(Partner.LastName) || string.IsNullOrEmpty(Partner.Id) || string.IsNullOrEmpty(Partner.Gender))
+                if (string.IsNullOrEmpty(Partner.FirstName) || string.IsNullOrEmpty(Partner.LastName) || string.IsNullOrEmpty(Partner.Id) )
                 {
                     return false;
                 }
