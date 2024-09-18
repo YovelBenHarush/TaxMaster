@@ -2,8 +2,11 @@
 {
     public class TaxBirthPaymentFile
     {
-        public long Amount;
-        public long Tax;
+        public double Amount;
+        public double Tax;
+
+        public string FilePath;
+        public string UserId;
 
         public override string ToString()
         {
