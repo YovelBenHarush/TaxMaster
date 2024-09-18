@@ -79,7 +79,7 @@
                     <Label  Text="לצורך המשך התהליך יש להעלות טופס אישור ניהול חשבון בנק" FontAttributes="Bold" Margin="10" TextDecorations="Underline"/>
                     <Grid FlowDirection="RightToLeft"  Grid.Column="1" RowDefinitions="*, *, *, *"   ColumnDefinitions="Auto ,*" Margin="10" >
                         <Button Grid.Row="0" Grid.Column="0" Text="בחר קובץ" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1024" HeightRequest="44"/>
-                        <Entry Grid.Row="0" Grid.Column="1"  Text="{Binding BankManagementApprovalFile, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
+                        <Entry Grid.Row="0" Grid.Column="1"  Text="{Binding BankManagementApprovalFile}" Margin="10" HorizontalOptions="FillAndExpand"/>
                         <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1024" IsVisible="{Binding BankManagementApprovalFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44" HorizontalOptions="End"/>
                     </Grid>
                 </StackLayout>
