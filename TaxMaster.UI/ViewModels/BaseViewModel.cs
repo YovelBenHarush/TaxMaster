@@ -86,5 +86,13 @@ namespace TaxMaster
 
             return string.Empty;
         }
+
+        public async void OpenLink(string url)
+        {
+            if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
+            {
+                await Launcher.OpenAsync(url);
+            }
+        }
     }
 }

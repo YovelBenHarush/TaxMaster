@@ -4,9 +4,10 @@ namespace TaxMaster
 {
     public class DonationsViewModel : BaseViewModel
     {
-        public override void OnNext()
+        public async override void OnNext()
         {
-            ReportSettings.SaveConfiguration();
+            base.OnNext();
+            await Shell.Current.GoToAsync(nameof(AnnualReportFirstStepPage));
         }
     }
 }
