@@ -19,21 +19,28 @@ namespace TaxMaster.BL
 
         public async Task<EsppObject> EsppFidelityAsync(string tax1042sFilePath, string customTransactionSummaryFilePath)
         {
-            var tax1042sFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.Report1042s +".pdf";
-            SaveToOutputDir(tax1042sFilePath, tax1042sFileName);
             var esppFidelityClient = new ESPPFidelityParser();
-            var sellTransactions = esppFidelityClient.ParseStockSalesTranscations(customTransactionSummaryFilePath);
-            var esppDivident = esppFidelityClient.ParseDividend(customTransactionSummaryFilePath);
+            if (!string.IsNullOrEmpty(tax1042sFilePath))
+            {
+                var tax1042sFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.Report1042s + ".pdf";
+                SaveToOutputDir(tax1042sFilePath, tax1042sFileName);
+            }
 
-            var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
-            var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
-            ReportSettings.Configuration.EsppObject.TransactionWithTaxMetadata = sellTransactionsWithTaxMetadata;
-            var parser = new Form1325Parser();
-            var outputPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata , GetOutputDir());
+            if (!string.IsNullOrEmpty(customTransactionSummaryFilePath))
+            {
+                var sellTransactions = esppFidelityClient.ParseStockSalesTranscations(customTransactionSummaryFilePath);
+                var esppDivident = esppFidelityClient.ParseDividend(customTransactionSummaryFilePath);
 
-            ReportSettings.Configuration.EsppObject.FirstHalfOfYearStockSaleReport = outputPaths.FirstHalfFormPath;
-            ReportSettings.Configuration.EsppObject.SecondHalfOfYearStockSaleReport = outputPaths.SecondHalfFormPath;
-            ReportSettings.Configuration.EsppObject.DividendInUsd = esppDivident;
+                var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
+                var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
+                ReportSettings.Configuration.EsppObject.TransactionWithTaxMetadata = sellTransactionsWithTaxMetadata;
+                var parser = new Form1325Parser();
+                var outputPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata, GetOutputDir());
+
+                ReportSettings.Configuration.EsppObject.FirstHalfOfYearStockSaleReport = outputPaths.FirstHalfFormPath;
+                ReportSettings.Configuration.EsppObject.SecondHalfOfYearStockSaleReport = outputPaths.SecondHalfFormPath;
+                ReportSettings.Configuration.EsppObject.DividendInUsd = esppDivident;
+            }
 
             return ReportSettings.Configuration.EsppObject;
         }
