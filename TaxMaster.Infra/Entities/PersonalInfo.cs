@@ -26,9 +26,7 @@
 
         public RsuEsopObject RsuEsopObject { get; set; } = new RsuEsopObject();
 
-        public List<Tax106File> Tax106Files { get; set; } = new List<Tax106File>();
-
-        public Tax106File MargeTax106File { get; set; } = new Tax106File();
+        public Tax106FileWrapper Tax106FilesWrapper { get; set; } = new Tax106FileWrapper();
 
     }
 }
