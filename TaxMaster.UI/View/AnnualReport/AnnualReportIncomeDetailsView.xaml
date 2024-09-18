@@ -16,34 +16,24 @@
                      <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
                         <Label Text="נמלא את פרטי ההכנסה לפי הסעיפים המוגדרים הטופס 106" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
                         <Grid ColumnDefinitions="* ,*">
-                            <StackLayout Grid.Column="0">
-                                <ListView ItemsSource="{Binding RegisteredPartner106}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <StackLayout Orientation="Horizontal">
-                                                    <Label Text="{Binding Key}" FontSize="16"  HorizontalOptions="StartAndExpand" />
-                                                    <Label Text="{Binding Value}" FontSize="16"  HorizontalOptions="EndAndExpand" />
-                                                </StackLayout>
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </StackLayout>
-                            <StackLayout Grid.Column="1" IsVisible="{Binding IsMarried}">
-                                <ListView ItemsSource="{Binding Partner106}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <StackLayout Orientation="Horizontal">
-                                                    <Label Text="{Binding Key}" FontSize="16"  HorizontalOptions="StartAndExpand" />
-                                                    <Label Text="{Binding Value}" FontSize="16"  HorizontalOptions="EndAndExpand" />
-                                                </StackLayout>
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </StackLayout>
+                            <Border Grid.Column="0" StrokeThickness="3"  Margin="10">
+                                <StackLayout >
+                                    <Label Text="בן הזוג הרשום" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                                    <ListView ItemsSource="{Binding RegisteredPartner106}" ItemTemplate="{StaticResource GenericPairTemplate}" />
+                                </StackLayout>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="20" />
+                                </Border.StrokeShape>
+                            </Border>
+                            <Border Grid.Column="1" StrokeThickness="3"  Margin="10" IsVisible="{Binding IsMarried}">
+                                    <StackLayout  >
+                                    <Label Text="בן הזוג " FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                                    <ListView ItemsSource="{Binding Partner106}" ItemTemplate="{StaticResource GenericPairTemplate}" />
+                                </StackLayout>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="20" />
+                                    </Border.StrokeShape>
+                                </Border>
                         </Grid>
                       </StackLayout>
                      <Border.StrokeShape>
