@@ -1,16 +1,20 @@
 ﻿using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
-using TaxMaster.Infra.Configuration;
+using System.Globalization;
+using System.Transactions;
 using TaxMaster.Infra.Interfaces;
 
 namespace TaxMaster.Infra;
 
-public class ESPPFidelityParser
+public class RsuEsopParser
 {
-    public IEnumerable<ISellTransaction> ParseStockSalesTranscations(string pdfPath)
+    private static readonly string DateFormat = "dd/MM/yyyy";
+
+    public IEnumerable<IRsuSellTransaction> ParseStockSalesTranscations(string pdfPath)
     {
-        var transactions = new List<ISellTransaction>();
+        var transactions = new List<IRsuSellTransaction>();
+
         if (File.Exists(pdfPath))
         {
             using (PdfReader pdfReader = new PdfReader(pdfPath))
@@ -20,7 +24,7 @@ public class ESPPFidelityParser
                 var strategy = new SimpleTextExtractionStrategy();
 
                 // Extract text from the page
-                string text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(4), strategy);
+                string text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(1), strategy);
 
                 // Split the extracted content into lines (for table parsing)
                 string[] lines = text.Split('\n');
@@ -30,7 +34,7 @@ public class ESPPFidelityParser
                 {
                     var line = lines[j];
                     j++;
-                    if (line.StartsWith("Date sold or transferred "))
+                    if (line.StartsWith("הרבעה םוכס"))
                     {
                         break;
                     }
@@ -40,20 +44,20 @@ public class ESPPFidelityParser
                 while (j < lines.Length)
                 {
                     var transcationLine = lines[j];
-                    if (transcationLine.StartsWith("*"))
+                    if (transcationLine.StartsWith("Name"))
                     {
                         break;
                     }
 
-                    var sellTransaction = new SellTransaction();
-                    sellTransaction.ShareIndex = ConstNamesConfiguration.MSFT;
+                    var rsuSellTransaction = new RsuSellTransaction();
+                    rsuSellTransaction.ShareIndex = "MSFT";
                     // You can further split by spaces or tabs to identify columns
                     string[] columns = transcationLine.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    sellTransaction.SellDate = DateTime.Parse(columns[0]);
-                    sellTransaction.PurchaseDate = DateTime.Parse(columns[1]);
-                    sellTransaction.PurchasePriceInUSD = double.Parse(columns[3].Replace("$", ""))*10/9;
-                    sellTransaction.SellPriceInUSD = double.Parse(columns[4].Replace("$", ""));
-                    transactions.Add(sellTransaction);
+                    rsuSellTransaction.SellDate = DateTime.ParseExact(columns[1], DateFormat, CultureInfo.InvariantCulture);
+                    rsuSellTransaction.GrantDate = DateTime.ParseExact(columns[2], DateFormat, CultureInfo.InvariantCulture);
+                    rsuSellTransaction.OrdinaryIncomeInNis = double.Parse(columns[9]);
+                    rsuSellTransaction.PurchasePriceInNis = double.Parse(columns[9])+ double.Parse(columns[12]);
+                    transactions.Add(rsuSellTransaction);
                     j++;
                 }
             }
@@ -66,9 +70,10 @@ public class ESPPFidelityParser
         return transactions;
     }
 
-    public double ParseDividend(string pdfPath)
+    public (double dividendInNis, double dividendTaxInNis) ParseDividend(string pdfPath)
     {
-        double dividend = 0;
+        double dividendInNis = 0;
+        double dividendTaxInNis =0;
         if (File.Exists(pdfPath))
         {
             using (PdfReader pdfReader = new PdfReader(pdfPath))
@@ -78,7 +83,7 @@ public class ESPPFidelityParser
                 var strategy = new SimpleTextExtractionStrategy();
 
                 // Extract text from the page
-                string text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(2), strategy);
+                string text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(1));
 
                 // Split the extracted content into lines (for table parsing)
                 string[] lines = text.Split('\n');
@@ -88,25 +93,27 @@ public class ESPPFidelityParser
                 {
                     var line = lines[j];
                     j++;
-                    if (line.StartsWith("Transaction date"))
+                    if (line.StartsWith("םידספה זוזיק ינפל דנדיבידמ הסנכה 1"))
                     {
                         break;
                     }
                 }
                 while (j < lines.Length);
 
-                while (j < lines.Length)
+                dividendInNis = double.Parse(lines[j]);
+
+                do
                 {
                     var line = lines[j];
-                    if (line.StartsWith("2 / 6"))
+                    if (line.Contains("ץוח ןרקמ / דנדיבידמ רוקמב הכונש סמ 6"))
                     {
+                        string[] columns = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                        dividendTaxInNis = double.Parse(columns.Last());
                         break;
                     }
-
-                    string[] columns = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    dividend += double.Parse(columns[4].Replace("$", ""));
                     j++;
                 }
+                while (j < lines.Length);
             }
         }
         else
@@ -114,6 +121,6 @@ public class ESPPFidelityParser
             throw new FileNotFoundException("File does not exist.");
         }
 
-        return dividend;
+        return (dividendInNis, dividendTaxInNis);
     }
 }

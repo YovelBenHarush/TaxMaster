@@ -69,7 +69,9 @@ namespace TaxMaster.Infra
 
         public LifeInsurences LifeInsurences { get; set; } = new LifeInsurences();
 
-        public  EsppObject EsppObject { get; set; } = new EsppObject();
+        public EsppObject EsppObject { get; set; } = new EsppObject();
+
+        public RsuEsopObject RsuEsopObject { get; set; } = new RsuEsopObject();
 
         public string Serialize()
         {

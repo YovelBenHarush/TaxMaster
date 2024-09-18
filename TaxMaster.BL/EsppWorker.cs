@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaxMaster.Infra;
+using TaxMaster.Infra.Configuration;
 using TaxMaster.Infra.Entities;
 using TaxMaster.Infra.Parsers;
 
 namespace TaxMaster.BL
 {
-
     public class EsppWorker : BaseWorker
     {
         public EsppWorker()
@@ -19,7 +19,7 @@ namespace TaxMaster.BL
 
         public async Task<EsppObject> EsppFidelityAsync(string tax1042sFilePath, string customTransactionSummaryFilePath)
         {
-            var tax1042sFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + "1042s";
+            var tax1042sFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.Report1042s +".pdf";
             SaveToOutputDir(tax1042sFilePath, tax1042sFileName);
             var esppFidelityClient = new ESPPFidelityParser();
             var sellTransactions = esppFidelityClient.ParseStockSalesTranscations(customTransactionSummaryFilePath);
@@ -33,7 +33,7 @@ namespace TaxMaster.BL
 
             ReportSettings.Configuration.EsppObject.FirstHalfOfYearStockSaleReport = outputPaths.FirstHalfFormPath;
             ReportSettings.Configuration.EsppObject.SecondHalfOfYearStockSaleReport = outputPaths.SecondHalfFormPath;
-            ReportSettings.Configuration.EsppObject.Dividend = esppDivident;
+            ReportSettings.Configuration.EsppObject.DividendInUsd = esppDivident;
 
             return ReportSettings.Configuration.EsppObject;
         }
