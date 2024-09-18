@@ -58,6 +58,10 @@ namespace TaxMaster.Infra.Parsers
                         {
                             tax106._037_237 = ParseNumber(columns[11]);
                         }
+                        else if (hebrewText.Contains("(193/093)"))
+                        {
+                            tax106._193_093 = 0; // ParseNumber(columns[11]);
+                        }
                     }
 
                     return tax106;
