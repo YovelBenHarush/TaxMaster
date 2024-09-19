@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using iText.StyledXmlParser.Jsoup.Parser;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TaxMaster.BL;
 using TaxMaster.Infra;
@@ -158,7 +159,10 @@ namespace TaxMaster
         public BirthAllowanceViewModel()
         {
             Users = [ReportSettings.Configuration.RegisteredPartner.DisplayName];
-            if(ReportSettings.Configuration.FamilyStatus == Infra.Entities.FamilyStatus.Married) Users.Add(ReportSettings.Configuration.Partner.DisplayName);
+            if (ReportSettings.Configuration.IsMarried)
+            {
+                Users.Add(ReportSettings.Configuration.Partner.DisplayName);
+            }
 
             PickFileCommand = new Command(PickBirthAllowanceFile);
             ResetFileCommand = new Command(ResetSelection);
@@ -180,6 +184,30 @@ namespace TaxMaster
             ShouldDisplayValues = false;
             BirthAllowanceRadioButton = false;
             NumberApproval = false;
+
+            var registeredPartner = ReportSettings.Configuration.RegisteredPartner;
+            var partner = ReportSettings.Configuration.Partner;
+            var registeredPartnerBirthPayment = registeredPartner?.BirthPayment;
+            var partnerBirthPayment = partner?.BirthPayment;
+
+            if (registeredPartnerBirthPayment != null && !string.IsNullOrEmpty(registeredPartnerBirthPayment.FilePath))
+            {
+                SelectedUser = 0;
+                BirthAllowanceFile = registeredPartnerBirthPayment.FilePath;
+                Amount = registeredPartnerBirthPayment.Amount;
+                Tax = registeredPartnerBirthPayment.Tax;
+                ShouldDisplayValues = true;
+                BirthAllowanceRadioButton = true;
+            }
+            else if (partnerBirthPayment != null && ReportSettings.Configuration.IsMarried && !string.IsNullOrEmpty(partnerBirthPayment.FilePath))
+            {
+                SelectedUser = 1;
+                BirthAllowanceFile = partnerBirthPayment.FilePath;
+                Amount = partnerBirthPayment.Amount;
+                Tax = partnerBirthPayment.Tax;
+                ShouldDisplayValues = true;
+                BirthAllowanceRadioButton = true;
+            }
         }
 
         public async override void OnNext()
@@ -206,7 +234,7 @@ namespace TaxMaster
 
                 var getUser = (ReportSettings.Configuration.FamilyStatus != Infra.Entities.FamilyStatus.Married) ?
                     ReportSettings.Configuration.RegisteredPartner :
-                    (SelectedUser.Equals(ReportSettings.Configuration.RegisteredPartner.DisplayName)) ? ReportSettings.Configuration.RegisteredPartner : ReportSettings.Configuration.Partner;
+                    (SelectedUser == 0) ? ReportSettings.Configuration.RegisteredPartner : ReportSettings.Configuration.Partner;
 
                 getUser.BirthPayment = new TaxBirthPaymentFile
                 {

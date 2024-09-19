@@ -26,7 +26,7 @@
                         <Label Margin="5" Text="דמי הלידה מכילים שני ערכים שאותם צריכים בדוח: סכום ברוטו ששולם ומס שנוכה מאותו הסכום, שני ערכים אילו צריכים להיות משוקפים בהגשת בדוח." HorizontalOptions="End" />
                         <StackLayout Grid.Row="0" Padding="10" Orientation="Horizontal" FlowDirection="RightToLeft">
                             <Label Text="אם שולמו דמי לידה בשנת המס, אנא בחרו למי הם שולמו: " VerticalOptions="Center" HorizontalOptions="Center" Margin="5,0,20,0" TextDecorations="Underline"/>
-                            <Picker ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}" />
+                                <Picker ItemsSource="{Binding Users}" SelectedIndex="{Binding SelectedUser, Mode=TwoWay}"/>
                         </StackLayout>
                         <Label Text="הסבר איך מורידים את הקובץ : " VerticalOptions="Center" HorizontalOptions="Center" />
                             <Button Text="הצג" Command="{Binding ToggleWebViewCommand}"  HorizontalOptions="Center" />
