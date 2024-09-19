@@ -13,6 +13,31 @@
     <Grid RowDefinitions="9*, 1*">
         <ScrollView>
             <StackLayout Grid.Row="0" Padding="10" FlowDirection="RightToLeft">
+                <Label Text="בשלב זה נמלא פרטים כללים הקשורים לדוח" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
+                <Label Text="נא לוודא שהדוח נמצא על לשונית : פרטים כללים" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
+                <Image Source="annual_report_general_details_1.png" Aspect="Center"/>
+                <Label Text="בשלב הראשון נצרך למלא נספחים עבור הכנסות מחול ורווח הון." FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2,15,2,0"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="נא לסמן " FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
+                    <Label Text="{Binding ShouldDisplayAbroadAnnex, Converter={StaticResource BooleanToYesNoConverter}}" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft" Margin="2" />
+                    <Label Text="עבור '' האם הדו''ח כולל נספח ד' - הכנסות מחו''ל? ''" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
+                    <Label Text="(המערכת זיהתת כי יש לך דיבדנטים או שמכרת מניות בשנת המס האחרונה)" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2" IsVisible="{Binding ShouldDisplayCapitalGain}"/>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding ShouldDisplayCapitalGain}">
+                    <Label Text="לאחר הסימון יתווסף לושנית חדשה - נספח חו''ל" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
+                    <Image Source="annual_report_general_details_2.png" Aspect="Center"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="נא לסמן " FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
+                    <Label Text="{Binding ShouldDisplayCapitalGain, Converter={StaticResource BooleanToYesNoConverter}}" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft" Margin="2" />
+                    <Label Text="עבור ''האם הדו''ח כולל נספח רווח הון?''" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
+                    <Label Text="(המערכת זיהתת כי יש לך שמכרת מניות בשנת המס האחרונה)" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2" IsVisible="{Binding ShouldDisplayCapitalGain}"/>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding ShouldDisplayCapitalGain}">
+                    <Label Text="לאחר הסימון יתווסף לושנית חדשה - רווח הון" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
+                    <Image Source="annual_report_general_details_3.png" Aspect="Center"/>
+                </StackLayout>
+                <Label  Text="לחץ על בדיקה ומלא את הדברים שהמערכת מחייבת אותך, לאחר מכון עבור לשלב הבא : פירוט הכנסות." FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
             </StackLayout>
         </ScrollView>
         <local:NavigationButtonsView Grid.Row="1" />
