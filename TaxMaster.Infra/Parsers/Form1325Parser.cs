@@ -40,6 +40,9 @@ namespace TaxMaster.Infra.Parsers
 
         public string Populate1325Form(string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions, User user)
         {
+            if (!transactions.Any())
+                return String.Empty;
+
             var workbook = LoadXlWorkbook(Path.Combine(Directory.GetCurrentDirectory(), Form1325Path));
             PopulateXlWorkbook(workbook, pdfFilePath, transactions, user);
             SaveXlWorkbookToPdf(workbook, pdfFilePath);
