@@ -9,7 +9,7 @@
     <ContentPage.BindingContext>
         <local:PersonalDetailsViewModel />
     </ContentPage.BindingContext>
-    <Grid RowDefinitions="6*, 4*, 1*" FlowDirection="RightToLeft">
+    <Grid RowDefinitions="Auto, 4*, 1*" FlowDirection="RightToLeft">
         <StackLayout Grid.Row="0" Margin="10,0,10,10" FlowDirection="RightToLeft">
             <StackLayout Orientation="Horizontal" FlowDirection="RightToLeft">
                 <Label VerticalOptions="Center" HorizontalOptions="Start" Margin="10">
@@ -62,17 +62,15 @@
                         <RoundRectangle CornerRadius="20" />
                     </Border.StrokeShape>
                 </Border>
-
             </Grid>
-
         </StackLayout>
 
-        <StackLayout Grid.Row="1" Margin="10,0,10,10" FlowDirection="RightToLeft">
+        <StackLayout Grid.Row="1" Margin="20,0,10,10" FlowDirection="RightToLeft">
             <Border Grid.Column="0" Grid.ColumnSpan="1" StrokeThickness="3"  Margin="10">
                 <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
                     <Label  Text="לצורך המשך התהליך יש להעלות טופס אישור ניהול חשבון בנק" FontAttributes="Bold" Margin="10" TextDecorations="Underline"/>
-                    <Grid FlowDirection="RightToLeft"  Grid.Column="1" RowDefinitions="*, *, *, *"   ColumnDefinitions="Auto ,*" Margin="10" >
-                        <Button Grid.Row="0" Grid.Column="0" Text="בחר קובץ" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1024" HeightRequest="44"/>
+                    <Grid FlowDirection="RightToLeft"  Grid.Column="1" RowDefinitions="*, *, *, *"   ColumnDefinitions="Auto ,*, Auto" Margin="10" >
+                        <Button Grid.Row="0" Grid.Column="0" Text="בחר/י קובץ" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1024" HeightRequest="44"/>
                         <Entry Grid.Row="0" Grid.Column="1"  Text="{Binding BankManagementApprovalFile}" Margin="10" HorizontalOptions="FillAndExpand"/>
                         <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1024" IsVisible="{Binding BankManagementApprovalFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44" HorizontalOptions="End"/>
                     </Grid>
