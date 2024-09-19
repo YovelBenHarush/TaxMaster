@@ -82,8 +82,8 @@
                                 </HorizontalStackLayout>
 
                                 <Grid FlowDirection="RightToLeft"  ColumnDefinitions="Auto,Auto" RowDefinitions="*,*">
-                                    <Button Grid.Row="0" Grid.Column="0"  Text="הצג דוח 1325 חציון 1" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_1" HeightRequest="44" Margin="10"/>
-                                    <Button Grid.Row="0" Grid.Column="1"  Text="הצג דוח 1325 חציון 2" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_2" HeightRequest="44" Margin="10"/>
+                                    <Button Grid.Row="0" Grid.Column="0"  Text="הצג דוח 1325 חציון 1" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_1" HeightRequest="44" Margin="10" IsVisible="{Binding Report_1325_1_File, Converter={StaticResource StringToBooleanConverter}}"/>
+                                    <Button Grid.Row="0" Grid.Column="1"  Text="הצג דוח 1325 חציון 2" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_2" HeightRequest="44" Margin="10" IsVisible="{Binding Report_1325_2_File, Converter={StaticResource StringToBooleanConverter}}"/>
                                 </Grid>
                             </StackLayout>
                         </StackLayout>
@@ -124,8 +124,8 @@
                                 </HorizontalStackLayout>
 
                                 <Grid FlowDirection="RightToLeft"  ColumnDefinitions="Auto,Auto" RowDefinitions="*,*">
-                                    <Button Grid.Row="0" Grid.Column="0"  Text="הצג דוח 1325 חציון 1" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_1_Partner" HeightRequest="44" Margin="10"/>
-                                    <Button Grid.Row="0" Grid.Column="1"  Text="הצג דוח 1325 חציון 2" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_2_Partner" HeightRequest="44" Margin="10"/>
+                                    <Button Grid.Row="0" Grid.Column="0"  Text="הצג דוח 1325 חציון 1" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_1_Partner" HeightRequest="44" Margin="10"  IsVisible="{Binding Report_1325_1_PartnerFile, Converter={StaticResource StringToBooleanConverter}}"/>
+                                    <Button Grid.Row="0" Grid.Column="1"  Text="הצג דוח 1325 חציון 2" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_2_Partner" HeightRequest="44" Margin="10"  IsVisible="{Binding Report_1325_2_PartnerFile, Converter={StaticResource StringToBooleanConverter}}"/>
                                 </Grid>
                             </StackLayout>
                         </StackLayout>

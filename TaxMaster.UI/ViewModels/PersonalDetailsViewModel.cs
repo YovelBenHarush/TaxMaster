@@ -100,6 +100,11 @@ namespace TaxMaster
                 Partner.UpdateUser(ReportSettings.Configuration.Partner);
             }
 
+            var copy = ReportSettings.SaveToOutputDir(BankManagementApprovalFile, $"{ReportSettings.Configuration.RegisteredPartner.ID}_bank_management_approval.pdf");
+            if (!string.IsNullOrEmpty(copy))
+            {
+                BankManagementApprovalFile = copy;
+            }
             ReportSettings.Configuration.BankManagementApprovalFile = BankManagementApprovalFile;
 
             base.OnNext();

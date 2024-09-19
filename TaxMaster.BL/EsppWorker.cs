@@ -34,7 +34,7 @@ namespace TaxMaster.BL
 
                 var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
                 var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
-                user.EsppObject.TransactionWithTaxMetadata = sellTransactionsWithTaxMetadata;
+                user.EsppObject.TransactionsWithTaxMetadata = sellTransactionsWithTaxMetadata;
                 var parser = new Form1325Parser();
                 var outputPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user, GetOutputDir());
 

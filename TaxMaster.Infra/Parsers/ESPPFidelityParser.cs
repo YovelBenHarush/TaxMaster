@@ -18,12 +18,21 @@ public class ESPPFidelityParser
             {
                 // Create a strategy for parsing text
                 var strategy = new SimpleTextExtractionStrategy();
-
-                // Extract text from the page
-                string text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(4), strategy);
-
-                // Split the extracted content into lines (for table parsing)
+                string text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(1));
                 string[] lines = text.Split('\n');
+                if (lines.Contains("Stock sales   0 transactions · Total $0.00 USD"))
+                    return transactions;
+
+                // Loop through the pages
+                for (int i = 2; i <= pdfDocument.GetNumberOfPages(); i++)
+                {
+                    // Extract text from the page
+                    text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(i));
+                    lines = text.Split('\n');
+                    if (lines.Contains("Stock sales"))
+                        break;
+                }
+
                 int j = 0;
 
                 do
@@ -78,7 +87,7 @@ public class ESPPFidelityParser
                 var strategy = new SimpleTextExtractionStrategy();
 
                 // Extract text from the page
-                string text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(2), strategy);
+                string text = PdfTextExtractor.GetTextFromPage(pdfDocument.GetPage(1));
 
                 // Split the extracted content into lines (for table parsing)
                 string[] lines = text.Split('\n');
@@ -88,25 +97,14 @@ public class ESPPFidelityParser
                 {
                     var line = lines[j];
                     j++;
-                    if (line.StartsWith("Transaction date"))
+                    if (line.StartsWith("Dividend"))
                     {
+                        string[] columns = line.Split(new[] { '$', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                        dividend = double.Parse(columns[1].Split(' ')[0]);
                         break;
                     }
                 }
                 while (j < lines.Length);
-
-                while (j < lines.Length)
-                {
-                    var line = lines[j];
-                    if (line.StartsWith("2 / 6"))
-                    {
-                        break;
-                    }
-
-                    string[] columns = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    dividend += double.Parse(columns[4].Replace("$", ""));
-                    j++;
-                }
             }
         }
         else

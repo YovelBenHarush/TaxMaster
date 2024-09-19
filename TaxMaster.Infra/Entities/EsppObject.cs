@@ -12,6 +12,9 @@ namespace TaxMaster.Infra.Entities
         public string FirstHalfOfYearStockSaleReport { get; set; }
         public string SecondHalfOfYearStockSaleReport { get; set; }
         public double DividendInUsd { get; set; }
-        public IEnumerable<ISellTransactionWithTaxMetadata> TransactionWithTaxMetadata { get; set; }
+        public IEnumerable<ISellTransactionWithTaxMetadata> TransactionsWithTaxMetadata { get; set; }
+
+        public double TotalTaxableProfitInILS => TransactionsWithTaxMetadata?.Sum(t => t.TaxableProfitInILS) ?? 0;
+
     }
 }

@@ -354,7 +354,7 @@ namespace TaxMaster
                 Application.Current.Dispatcher.Dispatch(() =>
                 {
                     IsCalculating = false;
-                    ShouldDisplayValues = true;
+                    ShouldDisplayValues = true && CustomTransactionSummaryFile != string.Empty;
                 });
             }
             else
@@ -362,7 +362,7 @@ namespace TaxMaster
                 Application.Current.Dispatcher.Dispatch(() =>
                 {
                     IsCalculatingPartner = false;
-                    ShouldDisplayValuesPartner = true;
+                    ShouldDisplayValuesPartner = true && CustomTransactionSummaryPartnerFile != string.Empty;
                 });
             }
         }
@@ -432,6 +432,10 @@ namespace TaxMaster
             {
                 CustomTransactionSummaryFile = value;
                 Calcualte("RegisteredPartner");
+                if (value == "")
+                {
+                    ShouldDisplayValues = false;
+                }
             }
             else if (fileType.Equals("1024Partner"))
             {
@@ -441,6 +445,10 @@ namespace TaxMaster
             {
                 CustomTransactionSummaryPartnerFile = value;
                 Calcualte("Partner");
+                if (value == "")
+                {
+                    ShouldDisplayValuesPartner = false;
+                }
             };
         }
     }
