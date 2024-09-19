@@ -9,7 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxMaster.BL", "TaxMaster.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxMaster.ConsoleTestApp", "TaxMaster.ConsoleTestApp\TaxMaster.ConsoleTestApp.csproj", "{E91487A2-B5DE-4DA7-B6FC-BA6B0EE98BE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxMaster.UI", "TaxMaster.UI\TaxMaster.UI.csproj", "{2374DE6C-44C9-4E8C-BD7B-F1191FACA717}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxMaster.UI", "TaxMaster.UI\TaxMaster.UI.csproj", "{2374DE6C-44C9-4E8C-BD7B-F1191FACA717}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "CreateMSIInstaller", "TaxMaster.Installer\CreateMSIInstaller.wixproj", "{F4A8F5B2-D920-4487-8055-EEF64A5C2A26}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{91EBEB60-F549-45BE-920A-510C0E9D38DE}"
+	ProjectSection(SolutionItems) = preProject
+		CreateInstaller.ps1 = CreateInstaller.ps1
+		LicenseAgreement.rtf = LicenseAgreement.rtf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +43,10 @@ Global
 		{2374DE6C-44C9-4E8C-BD7B-F1191FACA717}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2374DE6C-44C9-4E8C-BD7B-F1191FACA717}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2374DE6C-44C9-4E8C-BD7B-F1191FACA717}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F4A8F5B2-D920-4487-8055-EEF64A5C2A26}.Debug|Any CPU.ActiveCfg = Release|x86
+		{F4A8F5B2-D920-4487-8055-EEF64A5C2A26}.Debug|Any CPU.Build.0 = Release|x86
+		{F4A8F5B2-D920-4487-8055-EEF64A5C2A26}.Release|Any CPU.ActiveCfg = Release|x86
+		{F4A8F5B2-D920-4487-8055-EEF64A5C2A26}.Release|Any CPU.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

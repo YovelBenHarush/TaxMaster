@@ -1,0 +1,52 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Language="1033" Id="*" Name="Hackathon2024TaxMaster" Version="1.0.0.0" Manufacturer="YourCompanyName" UpgradeCode="D1C5B6A9-7A49-4D74-A065-B12A8D98743D">
+        <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
+
+        <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="LocalAppDataFolder">
+                <Directory Id="INSTALLFOLDER" Name="Hackathon2024TaxMaster">
+                    <Component Id="MainExecutable" Guid="E2A852DF-456B-40D4-97B5-2C3C34EA60E8">
+                        <File Id="MainExecutableFile" Source="$(var.HarvestPath)\TaxMaster.UI.exe" />
+                    </Component>
+                </Directory>
+            </Directory>
+
+            <Directory Id="StartMenuFolder" />
+
+            <Directory Id="ApplicationProgramsFolder" Name="Hackathon2024 TaxMaster"/>
+        </Directory>
+
+        <Feature Id="DefaultFeature" Level="1">
+            <ComponentRef Id="MainExecutable" />
+            <ComponentGroupRef Id="TaxMasterFiles" />
+        </Feature>
+
+        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+        <UIRef Id="WixUI_InstallDir" />
+        <WixVariable Id="WixUILicenseRtf" Value="..\LicenseAgreement.rtf" />
+
+        <CustomAction Id="EXECUTE_AFTER_FINALIZE"
+                      Execute="immediate"
+                      Impersonate="yes"
+                      Return="asyncNoWait"
+                      FileKey="MainExecutableFile"
+                      ExeCommand="" />
+
+
+        <DirectoryRef Id="ApplicationProgramsFolder">
+            <Component Id="ApplicationShortcut" Guid="f31df8a4-19ee-49e7-a64e-b2573dfc3875">
+                <Shortcut Id="ApplicationStartMenuShortcut"
+                          Name="Hackathon2024 TaxMaster"
+                          Description="Hackathon2024 TaxMaster"
+                          Target="[#MainExecutableFile]"
+                          WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+                <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+                <RegistryValue Root="HKCU" Key="Software\MicrosoftHackathon2024\TaxMaster" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+
+    </Product>
+
+</Wix>
