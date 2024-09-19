@@ -53,7 +53,10 @@ namespace TaxMaster
 
         public virtual void OnNext()
         {
-            ReportSettings.SaveConfiguration();
+            if (!string.IsNullOrEmpty(ReportSettings.Configuration.RegisteredPartner.ID) && ReportSettings.Configuration.Year != 0)
+            {
+                ReportSettings.SaveConfiguration();
+            }
         }
 
         public virtual void OnPrevious()

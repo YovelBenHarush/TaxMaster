@@ -94,6 +94,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="View\AnnualReport\AnnualReportAdditionalDocsUploadView.xaml.cs">
+	    <DependentUpon>AnnualReportAdditionalDocsUploadView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="View\BirthAllowanceView.xaml.cs">
 	    <DependentUpon>%(Filename)</DependentUpon>
 	  </Compile>
@@ -140,6 +143,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\AnnualReport\AnnualReportFirstStepPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\AnnualReport\AnnualReportAdditionalDocsUploadView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\AnnualReport\AnnualReportGeneralDetailsView.xaml">
