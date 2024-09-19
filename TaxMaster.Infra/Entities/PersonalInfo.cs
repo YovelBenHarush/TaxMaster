@@ -20,13 +20,15 @@
         public Gender Gender { get; set; }
         public TaxBirthPaymentFile BirthPayment { get; set; } = new TaxBirthPaymentFile();
 
-        public List<InsuranceEntry> LifeInsurences { get; set; } = new List<InsuranceEntry>();
+        public LifeInsurences LifeInsurences { get; set; } = new LifeInsurences();
 
         public EsppObject EsppObject { get; set; } = new EsppObject();
 
         public RsuEsopObject RsuEsopObject { get; set; } = new RsuEsopObject();
 
         public Tax106FileWrapper Tax106FilesWrapper { get; set; } = new Tax106FileWrapper();
+
+        public Donations Donations { get; set; } = new Donations();
 
     }
 }

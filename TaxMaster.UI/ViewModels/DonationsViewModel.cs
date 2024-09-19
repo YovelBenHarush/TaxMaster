@@ -19,7 +19,7 @@ namespace TaxMaster
         public DonationsViewModel()
         {
             Title = "תרומות";
-            Donations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.Donations.DonationsList);
+            Donations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList);
 
             AddDonationCommand = new Command(AddDonation);
             RemoveDonationCommand = new Command<object>(RemoveDonation);
@@ -54,7 +54,7 @@ namespace TaxMaster
 
         public async override void OnNext()
         {
-            ReportSettings.Configuration.Donations.DonationsList = [.. Donations];
+            ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList = [.. Donations];
 
             base.OnNext();
             await Shell.Current.GoToAsync(nameof(AnnualReportFirstStepPage));

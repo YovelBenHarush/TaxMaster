@@ -31,39 +31,145 @@ namespace TaxMaster.BL
 
         public List<IncomeDetailsProperties> GetIncomeDetails()
         {
-            return new List<IncomeDetailsProperties>
+            var registeredPartner = ReportSettings.Configuration.RegisteredPartner;
+            var partner = ReportSettings.Configuration.Partner;
+            var incomeDetails = new List<IncomeDetailsProperties>();
+
+
+            // Add 106 data
+            var registeredPartner106 = registeredPartner?.Tax106FilesWrapper.GetMerged106();
+            var partner106 = partner?.Tax106FilesWrapper.GetMerged106();
+
+            // Add _158_172
+            AddIncomeDetail("158", "172", registeredPartner106?._158_172, partner106?._158_172, "חלק מטופס 106", incomeDetails);
+
+            // Add _244_245
+            AddIncomeDetail("244", "245", registeredPartner106?._244_245, partner106?._244_245, "חלק מטופס 106", incomeDetails);
+
+            // Add _218_219
+            AddIncomeDetail("218", "219", registeredPartner106?._218_219, partner106?._218_219, "חלק מטופס 106", incomeDetails);
+
+            // Add _086_045
+            AddIncomeDetail("086", "045", registeredPartner106?._086_045, partner106?._086_045, "חלק מטופס 106", incomeDetails);
+
+            // Add _248_249
+            AddIncomeDetail("248", "249", registeredPartner106?._248_249, partner106?._248_249, "חלק מטופס 106", incomeDetails);
+
+            // Add _037_237
+            AddIncomeDetail("037", "237", registeredPartner106?._037_237, partner106?._037_237, "חלק מטופס 106", incomeDetails);
+
+            // Add _193_093
+            AddIncomeDetail("193", "093", registeredPartner106?._193_093, partner106?._193_093, "חלק מטופס 106", incomeDetails);
+
+
+            // Birth Payment 
+            var registeredPartnerBirthPayment = registeredPartner?.BirthPayment;
+            var partnerBirthPayment = partner?.BirthPayment;
+
+            AddIncomeDetail("250", "270", registeredPartnerBirthPayment?.Amount, partnerBirthPayment?.Amount, "דמי לידה מחושבים מטופס דמי הלידה", incomeDetails);
+
+            // Life Insurances
+            var registeredPartnerLifeInsurences = registeredPartner?.LifeInsurences;
+            var partnerLifeInsurences = partner?.LifeInsurences;
+            AddIncomeDetail("036", "081", registeredPartnerLifeInsurences?.TotalInsurencesValue, partnerLifeInsurences?.TotalInsurencesValue, "חישוב סכום ביטוח חיים מבוסס על סך כל רשומות ביטוחי החיים אותן העלת בשלב המקדים", incomeDetails);
+
+
+            // Donations
+            var registeredPartnerDonations = registeredPartner?.Donations;
+            var partnerDonationss = partner?.Donations;
+            AddIncomeDetail("037", "237", registeredPartnerDonations?.TotalDonations, partnerDonationss?.TotalDonations, "חישוב סכום התרומות מבוסס על סך כל רשומות התרומות אותן העלת בשלב המקדים", incomeDetails);
+
+
+            // Add _042
+            (long? registeredPartnerTax, string registeredPartnerExplanation) = Total42(registeredPartner106, registeredPartnerBirthPayment);
+            (long? partnerTax, string partnerExplanation) = Total42(partner106, partnerBirthPayment);
+            AddIncomeDetail("042", "042", registeredPartnerTax , partnerTax, registeredPartnerExplanation, partnerExplanation, incomeDetails);
+
+            return incomeDetails;
+        }
+
+        private void AddIncomeDetail<T>(string registeredKey, string partnerKey, T? registeredValue, T? partnerValue, string explanation, List<IncomeDetailsProperties> incomeDetails)
+            where T : struct, IComparable
+        {
+            var incomeDetailsProperties = new IncomeDetailsProperties();
+
+            // Handle the registered partner income details
+            if (registeredValue.HasValue && !IsZero(registeredValue.Value))
             {
-                new IncomeDetailsProperties
+                incomeDetailsProperties.RegisteredPartnerIncomeDetails = new IncomeDetails
                 {
-                    RegisteredPartnerIncomeDetails = new IncomeDetails
-                    {
-                        Key = "סעיף 158",
-                        Value = "45667",
-                        Explanation = "חלק מטופס 106"
-                    },
-                    PartnerIncomeDetails = new IncomeDetails
-                    {
-                       Key = "סעיף 172",
-                        Value = "45667",
-                        Explanation = "חלק מטופס 106"
-                    }
-                },
-                new IncomeDetailsProperties
+                    Key = $"סעיף {registeredKey}",
+                    Value = registeredValue.Value.ToString() ?? string.Empty,
+                    Explanation = explanation
+                };
+            }
+
+            // Handle the partner income details
+            if (partnerValue.HasValue && !IsZero(partnerValue.Value))
+            {
+                incomeDetailsProperties.PartnerIncomeDetails = new IncomeDetails
                 {
-                    RegisteredPartnerIncomeDetails = new IncomeDetails
-                    {
-                        Key = "סעיף 244",
-                        Value = "45667",
-                        Explanation = "חלק מטופס 106"
-                    },
-                    PartnerIncomeDetails = new IncomeDetails
-                    {
-                       Key = "סעיף 245",
-                        Value = "45667",
-                        Explanation = "חלק מטופס 106"
-                    }
-                }
-            };
+                    Key = $"סעיף {partnerKey}",
+                    Value = partnerValue.Value.ToString() ?? string.Empty,
+                    Explanation = explanation
+                };
+            }
+
+            incomeDetails.Add(incomeDetailsProperties);
+        }
+
+        private void AddIncomeDetail<T>(string registeredKey, string partnerKey, T? registeredValue, T? partnerValue, string registeredExplanation, string partnerExplanation, List<IncomeDetailsProperties> incomeDetails)
+           where T : struct, IComparable
+        {
+            var incomeDetailsProperties = new IncomeDetailsProperties();
+
+            // Handle the registered partner income details
+            if (registeredValue.HasValue && !IsZero(registeredValue.Value))
+            {
+                incomeDetailsProperties.RegisteredPartnerIncomeDetails = new IncomeDetails
+                {
+                    Key = $"סעיף {registeredKey}",
+                    Value = registeredValue.Value.ToString() ?? string.Empty,
+                    Explanation = registeredExplanation
+                };
+            }
+
+            // Handle the partner income details
+            if (partnerValue.HasValue && !IsZero(partnerValue.Value))
+            {
+                incomeDetailsProperties.PartnerIncomeDetails = new IncomeDetails
+                {
+                    Key = $"סעיף {partnerKey}",
+                    Value = partnerValue.Value.ToString() ?? string.Empty,
+                    Explanation = partnerExplanation
+                };
+            }
+
+            incomeDetails.Add(incomeDetailsProperties);
+        }
+
+        private bool IsZero<T>(T value) where T : IComparable
+        {
+            return value.CompareTo(default(T)) == 0;
+        }
+
+        private (long?, string) Total42(Tax106File merged106, TaxBirthPaymentFile taxBirthPayment)
+        {
+            string explanation = "סעיף 42 מתאר את סך כל המס ששולם השנה והוא מורכב מ: ";
+            long total42 = 0;
+            if (merged106 != null && merged106._042 > 0)
+            {
+                total42 = merged106._042;
+                explanation += " חלק מטופס 106";
+            }
+
+            if (taxBirthPayment != null && taxBirthPayment.Tax > 0)
+            {
+                total42 += (long)taxBirthPayment.Tax;
+                explanation += "חלק מהמס ששולם מדמי לידה ";
+            }
+
+            return (total42, explanation);
         }
     }
 

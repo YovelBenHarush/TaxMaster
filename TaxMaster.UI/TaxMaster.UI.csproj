@@ -184,6 +184,12 @@
 	  <None Update="Guides\fidelity_espp_guide.pdf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Guides\tax_annual_personal_data.pdf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Guides\tax_annual_report_connect.pdf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>
