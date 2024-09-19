@@ -36,7 +36,7 @@ namespace TaxMaster.BL
                 var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
                 user.EsppObject.TransactionWithTaxMetadata = sellTransactionsWithTaxMetadata;
                 var parser = new Form1325Parser();
-                var outputPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user.ID, GetOutputDir());
+                var outputPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user, GetOutputDir());
 
                 user.EsppObject.FirstHalfOfYearStockSaleReport = outputPaths.FirstHalfFormPath;
                 user.EsppObject.SecondHalfOfYearStockSaleReport = outputPaths.SecondHalfFormPath;
