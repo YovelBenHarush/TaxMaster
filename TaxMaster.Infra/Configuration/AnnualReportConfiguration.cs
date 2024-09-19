@@ -104,11 +104,9 @@ namespace TaxMaster.Infra
 
         public string BankManagementApprovalFile { get; set; } = string.Empty;
 
-        public LifeInsurences LifeInsurences { get; set; } = new LifeInsurences();
-      
-        public Tax106Files Tax106Files { get; set; } = new Tax106Files();
+        public EsppObject EsppObject { get; set; } = new EsppObject();
 
-        public Donations Donations { get; set; } = new Donations();
+        public RsuEsopObject RsuEsopObject { get; set; } = new RsuEsopObject();
 
         public bool IsMarried => (FamilyStatus == FamilyStatus.Married);
 
