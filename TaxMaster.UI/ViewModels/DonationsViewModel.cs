@@ -54,6 +54,14 @@ namespace TaxMaster
 
         public async override void OnNext()
         {
+            for (int i = 0; i < Donations.Count; i++)
+            {
+                var copy = ReportSettings.SaveToOutputDir(Donations[i].ReciptPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_donation_{i}.pdf");
+                if (!string.IsNullOrEmpty(copy))
+                {
+                    Donations[i].ReciptPath = copy;
+                }
+            }
             ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList = [.. Donations];
 
             base.OnNext();
