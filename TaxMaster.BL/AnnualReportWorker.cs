@@ -29,6 +29,26 @@ namespace TaxMaster.BL
             };
         }
 
+        public bool HasDividend()
+        {
+            var registeredPartner = ReportSettings.Configuration.RegisteredPartner;
+            var partner = ReportSettings.Configuration.Partner;
+
+            var esspDividend = registeredPartner?.EsppObject?.DividendInUsd ?? 0;
+            var rsuDividend = registeredPartner?.RsuEsopObject?.DividendTaxInNis ?? 0;
+
+            return esspDividend > 0 || rsuDividend > 0;
+        }
+
+        public bool HasCapitalGain()
+        {
+            var registeredPartner = ReportSettings.Configuration.RegisteredPartner;
+            var partner = ReportSettings.Configuration.Partner;
+
+            var esspCapitalGain = registeredPartner?.EsppObject?.TotalTaxableProfitInILS ?? 0;
+            return esspCapitalGain > 0;
+        }
+
         public List<IncomeDetailsProperties> GetIncomeDetails()
         {
             var registeredPartner = ReportSettings.Configuration.RegisteredPartner;
