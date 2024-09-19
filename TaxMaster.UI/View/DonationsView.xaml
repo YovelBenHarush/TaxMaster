@@ -17,38 +17,68 @@
 
                 <!-- Placeholder for short explanation about life insurance -->
                 <Label Text="נא להעלות קבלות על תרומות לעמותות במידה ויש" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Padding="50"/>
+                <Grid ColumnDefinitions="*,*" FlowDirection="RightToLeft" Margin="10">
+                    <StackLayout Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center" FlowDirection="RightToLeft">
+                        <!-- User Section -->
+                        <Border StrokeThickness="5" Padding="10" HorizontalOptions="Fill" VerticalOptions="Fill">
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="{Binding RegisteredPartnerDisplayName, StringFormat='סך התרומות של {0}'}"  FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
+                                <!-- ListView for multiple insurances -->
+                                <CollectionView x:Name="RegisteredPartnerDonationsList" ItemsSource="{Binding RegisteredPartnerDonations}" Margin="10">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
+                                                <!-- Annual amount paid for the insurance -->
+                                                <Entry Placeholder="סכום התרומה" Keyboard="Numeric" Text="{Binding DonationAmount}" MinimumWidthRequest="100" Margin="5"/>
 
-                <!-- Horizontal layout for User and Partner sections -->
-                <StackLayout Orientation="Horizontal" Spacing="30" FlowDirection="RightToLeft">
+                                                <!-- Option to pick a local copy of the life insurance -->
+                                                <Button Text="העלאת קבלה" Command="{Binding Source={RelativeSource AncestorType={x:Type local:DonationsViewModel}}, Path=PickFileCommand}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
+                                                <Entry Text="{Binding ReciptPath, Mode=TwoWay}" MaximumWidthRequest="500" Margin="5"/>
 
-                    <!-- User Section -->
-                    <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" MinimumWidthRequest="600" MaximumWidthRequest="900">
-                        <StackLayout>
-                            <!-- ListView for multiple insurances -->
-                            <CollectionView x:Name="DonationsList" ItemsSource="{Binding Donations}" Margin="10">
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
-                                            <!-- Annual amount paid for the insurance -->
-                                            <Entry Placeholder="סכום התרומה" Keyboard="Numeric" Text="{Binding DonationAmount}" MinimumWidthRequest="100" Margin="5"/>
+                                                <!-- Remove button -->
+                                                <Button Text="X" Command="{Binding Source={RelativeSource AncestorType={x:Type local:DonationsViewModel}}, Path=RemoveDonationCommand}" CommandParameter="{Binding .}" HeightRequest="5" WidthRequest="10" Margin="5"/>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
 
-                                            <!-- Option to pick a local copy of the life insurance -->
-                                            <Button Text="העלאת קבלה" Command="{Binding Path=BindingContext.PickFileCommand, Source={x:Reference DonationsList}}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
-                                            <Entry Text="{Binding ReciptPath, Mode=TwoWay}" MaximumWidthRequest="500" Margin="5"/>
+                                <!-- Add new insurance button -->
+                                <Button Text="הוספת תרומה נוספת" Command="{Binding AddDonationCommand}" CommandParameter="RegisteredPartner" />
+                            </StackLayout>
+                        </Border>
+                    </StackLayout>
+                    <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand"  FlowDirection="RightToLeft">
+                        <!-- User Section -->
+                        <Border StrokeThickness="5" Padding="10" HorizontalOptions="Fill" VerticalOptions="Fill" >
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="{Binding PartnerDisplayName, StringFormat='סך התרומות של {0}'}"  FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
+                                <!-- ListView for multiple insurances -->
+                                <CollectionView x:Name="DonationsList" ItemsSource="{Binding PartnerDonations}" Margin="10">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackLayout Orientation="Horizontal" Spacing="10" Margin="10">
+                                                <!-- Annual amount paid for the insurance -->
+                                                <Entry Placeholder="סכום התרומה" Keyboard="Numeric" Text="{Binding DonationAmount}" MinimumWidthRequest="100" Margin="5"/>
 
-                                            <!-- Remove button -->
-                                            <Button Text="X" Command="{Binding Path=BindingContext.RemoveDonationCommand, Source={x:Reference DonationsList}}" CommandParameter="{Binding .}" HeightRequest="5" WidthRequest="10" Margin="5"/>
-                                        </StackLayout>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
+                                                <!-- Option to pick a local copy of the life insurance -->
+                                                <Button Text="העלאת קבלה" Command="{Binding Source={RelativeSource AncestorType={x:Type local:DonationsViewModel}}, Path=PickFileCommand}" CommandParameter="{Binding .}" FlowDirection="RightToLeft" MinimumWidthRequest="100" Margin="5"/>
+                                                <Entry Text="{Binding ReciptPath, Mode=TwoWay}" MaximumWidthRequest="500" Margin="5"/>
 
+                                                <!-- Remove button -->
+                                                <Button Text="X" Command="{Binding Source={RelativeSource AncestorType={x:Type local:DonationsViewModel}}, Path=RemoveDonationCommand}" CommandParameter="{Binding .}" HeightRequest="5" WidthRequest="10" Margin="5"/>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
 
-                            <!-- Add new insurance button -->
-                            <Button Text="הוספת תרומה נוספת" Command="{Binding AddDonationCommand}" />
-                        </StackLayout>
-                    </Frame>
-                </StackLayout>
+                                <!-- Add new insurance button -->
+                                <Button Text="הוספת תרומה נוספת" Command="{Binding AddDonationCommand}" CommandParameter="Partner" />
+                            </StackLayout>
+                        </Border>
+                    </StackLayout>
+                </Grid>
+                 <!-- Horizontal layout for User and Partner sections -->
+                
             </StackLayout>
         </ScrollView>
 

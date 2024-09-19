@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 using System.Windows.Input;
 using TaxMaster.Infra;
 
@@ -6,7 +7,9 @@ namespace TaxMaster
 {
     public class DonationsViewModel : BaseViewModel
     {
-        public ObservableCollection<DonationEntry> Donations { get; }
+        public ObservableCollection<DonationEntry> RegisteredPartnerDonations { get; }
+        public ObservableCollection<DonationEntry> PartnerDonations { get; }
+
 
         public ICommand AddDonationCommand { get; }
 
@@ -19,25 +22,37 @@ namespace TaxMaster
         public DonationsViewModel()
         {
             Title = "תרומות";
-            Donations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList);
+            RegisteredPartnerDonations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList);
+            PartnerDonations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.Partner.Donations.DonationsList);
 
-            AddDonationCommand = new Command(AddDonation);
+            AddDonationCommand = new Command<string>(AddDonation);
             RemoveDonationCommand = new Command<object>(RemoveDonation);
 
             PickFileCommand = new Command<object>(async (parameter) => await PickPdfFile(parameter));
         }
 
-        private void AddDonation()
+        private void AddDonation(string parameter)
         {
             var newEntry = new DonationEntry();
-            Donations.Add(newEntry);
+            if (parameter == "RegisteredPartner")
+            {
+                RegisteredPartnerDonations.Add(newEntry);
+            }
+            else
+            {
+                PartnerDonations.Add(newEntry);
+            }
         }
 
         private void RemoveDonation(object entry)
         {
-            if (Donations.Contains(entry))
+            if (RegisteredPartnerDonations.Contains(entry))
             {
-                Donations.Remove((DonationEntry)entry);
+                RegisteredPartnerDonations.Remove((DonationEntry)entry);
+            }
+            else
+            {
+                PartnerDonations.Remove((DonationEntry)entry);
             }
         }
 
@@ -45,24 +60,39 @@ namespace TaxMaster
         {
             ((DonationEntry)entry).ReciptPath = await PickPdfFile();
 
-            if (Donations.Contains(entry))
+            if (RegisteredPartnerDonations.Contains(entry))
             {
-                Donations.Remove((DonationEntry)entry);
-                Donations.Add((DonationEntry)entry);
+                RegisteredPartnerDonations.Remove((DonationEntry)entry);
+                RegisteredPartnerDonations.Add((DonationEntry)entry);
+            }
+            else
+            {
+                PartnerDonations.Remove((DonationEntry)entry);
+                PartnerDonations.Add((DonationEntry)entry);
             }
         }
 
         public async override void OnNext()
         {
-            for (int i = 0; i < Donations.Count; i++)
+            for (int i = 0; i < RegisteredPartnerDonations.Count; i++)
             {
-                var copy = ReportSettings.SaveToOutputDir(Donations[i].ReciptPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_donation_{i}.pdf");
+                var copy = ReportSettings.SaveToOutputDir(RegisteredPartnerDonations[i].ReciptPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_donation_{i}.pdf");
                 if (!string.IsNullOrEmpty(copy))
                 {
-                    Donations[i].ReciptPath = copy;
+                    RegisteredPartnerDonations[i].ReciptPath = copy;
                 }
             }
-            ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList = [.. Donations];
+            ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList = [.. RegisteredPartnerDonations];
+
+            for (int i = 0; i < PartnerDonations.Count; i++)
+            {
+                var copy = ReportSettings.SaveToOutputDir(PartnerDonations[i].ReciptPath, $"{ReportSettings.Configuration.Partner.ID}_donation_{i}.pdf");
+                if (!string.IsNullOrEmpty(copy))
+                {
+                    PartnerDonations[i].ReciptPath = copy;
+                }
+            }
+            ReportSettings.Configuration.Partner.Donations.DonationsList = [.. PartnerDonations];
 
             base.OnNext();
             await Shell.Current.GoToAsync(nameof(AnnualReportFirstStepPage));
