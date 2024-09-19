@@ -14,7 +14,8 @@
             <StackLayout Grid.Row="0" Padding="10" FlowDirection="RightToLeft">
                  <Border StrokeThickness="3"  Margin="10">
                      <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
-                        <Label Text="נמלא את פרטי ההכנסה לפי הסעיפים המוגדרים הטופס 106" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                        <Label Text="נמלא את פרטי ההכנסה, כל סעיף שמופיע חושב על מסך המידע אותו הגדרת עד כה: טופס 106, ביטוח חיים, דמי לידה, תרומות." FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                        <Label Text="לשם נוחות עבור כל ערך ישנו סמן שניתן לסמנו כאשר הועתק הערך לדוח השנתי, צבע המסגרת יצבע בירוק." FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
                         <Grid ColumnDefinitions="* ,*">
                             <Border Grid.Column="0" StrokeThickness="3"  Margin="10">
                                 <StackLayout >

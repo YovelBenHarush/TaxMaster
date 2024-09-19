@@ -27,23 +27,68 @@
                     </Label>
                 </StackLayout>
 
-                <StackLayout Grid.Row="1" FlowDirection="RightToLeft" Padding="5" Margin="20,0,20,5">
-                    <Label Text="צירוף מסמכים:" HorizontalOptions="Start" TextDecorations="Underline" FontAttributes="Bold"  />
+                <Grid Grid.Row="1" ColumnDefinitions="1*, 1*" FlowDirection="RightToLeft" Padding="10,5" Margin="10">
+                    <Border Grid.Column="0" StrokeThickness="3"  Margin="10">
+                        <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
+                            <Label Text="צירוף מסמכים בן זוג רשום:" TextDecorations="Underline" Margin="10" FontAttributes="Bold"  />
 
-                    <Grid ColumnDefinitions="Auto, *, 44" RowDefinitions="*,*" RowSpacing="20" Margin="10">
-                        <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 867ג" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="867" HeightRequest="44"/>
-                        <Entry Grid.Row="0" Grid.Column="1"  Text="{Binding Tax867File, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
-                        <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="867" IsVisible="{Binding Tax867File, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
+                            <Grid ColumnDefinitions="Auto, *, 44" RowDefinitions="*,*" RowSpacing="20" Margin="10">
+                                <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 867ג" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="867" HeightRequest="44"/>
+                                <Entry Grid.Row="0" Grid.Column="1"  Text="{Binding Tax867File, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
+                                <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="867" IsVisible="{Binding Tax867File, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
 
-                        <Button Grid.Row="1" Grid.Column="0" Text="בחר/י את מסמך Esop Transactions Report " Command="{Binding PickFileCommand}" CommandParameter="EsopTransactionsReport" HeightRequest="44" />
-                        <Entry Grid.Row="1" Grid.Column="1"  Text="{Binding EsopTransactionsReportFile, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
-                        <Button Grid.Row="1" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="EsopTransactionsReport" IsVisible="{Binding EsopTransactionsReportFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
-                    </Grid>
+                                <Button Grid.Row="1" Grid.Column="0" Text="בחר/י את מסמך Esop Transactions Report " Command="{Binding PickFileCommand}" CommandParameter="EsopTransactionsReport" HeightRequest="44" />
+                                <Entry Grid.Row="1" Grid.Column="1"  Text="{Binding EsopTransactionsReportFile, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
+                                <Button Grid.Row="1" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="EsopTransactionsReport" IsVisible="{Binding EsopTransactionsReportFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
+                            </Grid>
 
-                    <Button Margin="10" Text="חשב" Command="{Binding CalcualteCommand}" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="{Binding IsCalculating, Converter={StaticResource InvertedBoolConverter}}"/>
-                    <ActivityIndicator Margin="10" IsRunning="{Binding IsCalculating}" IsVisible="{Binding IsCalculating}" HorizontalOptions="Center" VerticalOptions="Center" />
-                    <Label Text="{Binding CalcualteError}" Margin="5" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Red" IsVisible="{Binding CalcualteError, Converter={StaticResource StringToBooleanConverter}}"/>
-                </StackLayout>
+                            <Button Margin="10" Text="חשב" Command="{Binding CalcualteCommand}" CommandParameter="RegisteredPartner" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="{Binding IsCalculating, Converter={StaticResource InvertedBoolConverter}}"/>
+                            <ActivityIndicator Margin="10" IsRunning="{Binding IsCalculating}" IsVisible="{Binding IsCalculating}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Text="{Binding CalcualteError}" Margin="5" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Red" IsVisible="{Binding CalcualteError, Converter={StaticResource StringToBooleanConverter}}"/>
+                            <StackLayout IsVisible="{Binding ShouldDisplayValues}">
+                                <Label Text="תוצאות החישוב:" FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" TextColor="GreenYellow"/>
+                                <Label Text="דבידנט" VerticalOptions="Center"  FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" />
+                                <Entry Text="{Binding Dividend, Mode=TwoWay} " FlowDirection="RightToLeft" Margin="10" />
+                                <Label Text="דבידנט מס ששולם" VerticalOptions="Center"  FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" />
+                                <Entry Text="{Binding DividendTax, Mode=TwoWay} " FlowDirection="RightToLeft" Margin="10" />
+                            </StackLayout>
+                        </StackLayout>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                    </Border>
+
+                    <Border Grid.Column="1" StrokeThickness="3" IsVisible="{Binding IsMarried}" Margin="10">
+                        <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
+                            <Label Text="צירוף מסמכים בן זוג :" TextDecorations="Underline" Margin="10" FontAttributes="Bold"  />
+
+                            <Grid ColumnDefinitions="Auto, *, 44" RowDefinitions="*,*" RowSpacing="20" Margin="10">
+                                <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 867ג" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="867Partner" HeightRequest="44"/>
+                                <Entry Grid.Row="0" Grid.Column="1"  Text="{Binding Tax867PartnerFile, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
+                                <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="867" IsVisible="{Binding Tax867PartnerFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
+
+                                <Button Grid.Row="1" Grid.Column="0" Text="בחר/י את מסמך Esop Transactions Report " Command="{Binding PickFileCommand}" CommandParameter="EsopTransactionsReportPartner" HeightRequest="44" />
+                                <Entry Grid.Row="1" Grid.Column="1"  Text="{Binding EsopTransactionsReportPartnerFile, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
+                                <Button Grid.Row="1" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="EsopTransactionsReport" IsVisible="{Binding EsopTransactionsReportPartnerFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
+                            </Grid>
+
+                            <Button Margin="10" Text="חשב" Command="{Binding CalcualteCommand}" CommandParameter="Partner" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="{Binding IsCalculatingPartner, Converter={StaticResource InvertedBoolConverter}}"/>
+                            <ActivityIndicator Margin="10" IsRunning="{Binding IsCalculatingPartner}" IsVisible="{Binding IsCalculating}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Text="{Binding CalcualteErrorPartner}" Margin="5" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Red" IsVisible="{Binding CalcualteErrorPartner, Converter={StaticResource StringToBooleanConverter}}"/>
+
+                            <StackLayout IsVisible="{Binding ShouldDisplayValuesPartner}">
+                                <Label Text="תוצאות החישוב:" FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" TextColor="GreenYellow"/>
+                                <Label Text="דבידנט" VerticalOptions="Center"  FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" />
+                                <Entry Text="{Binding DividendPartner, Mode=TwoWay} " FlowDirection="RightToLeft" Margin="10" />
+                                <Label Text="דבידנט מס ששולם" VerticalOptions="Center"  FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" />
+                                <Entry Text="{Binding DividendTaxPartner, Mode=TwoWay} " FlowDirection="RightToLeft" Margin="10" />
+                            </StackLayout>
+                        </StackLayout>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                    </Border>
+                </Grid>
 
                 <StackLayout Grid.Row="2" Padding="5">
 
