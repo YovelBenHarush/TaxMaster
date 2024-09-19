@@ -6,6 +6,10 @@ namespace TaxMaster
 {
     public class FidelityEsppViewModel : BaseViewModel
     {
+        public string RegisteredPartnerName => ReportSettings.Configuration.RegisteredPartner.FirstName;
+
+        public string PartnerName => ReportSettings.Configuration.Partner.FirstName;
+
         private string _esppFidelityGuide;
         public string EsppFidelityGuide
         {
@@ -269,6 +273,18 @@ namespace TaxMaster
 
         private async void Calcualte(string userType)
         {
+            // TODO
+            //var isRegisteredPartner2 = userType.Equals("RegisteredPartner");
+            //if (isRegisteredPartner2)
+            //{
+            //    ShouldDisplayValues = true;
+            //}
+            //else
+            //{
+            //    ShouldDisplayValuesPartner = true;
+            //}
+            //return;
+
             var isRegisteredPartner = userType.Equals("RegisteredPartner");
             if (isRegisteredPartner)
             {
@@ -415,6 +431,7 @@ namespace TaxMaster
             else if (fileType.Equals("CustomTransactionSummary"))
             {
                 CustomTransactionSummaryFile = value;
+                Calcualte("RegisteredPartner");
             }
             else if (fileType.Equals("1024Partner"))
             {
@@ -423,6 +440,7 @@ namespace TaxMaster
             else if (fileType.Equals("CustomTransactionSummaryPartner"))
             {
                 CustomTransactionSummaryPartnerFile = value;
+                Calcualte("Partner");
             };
         }
     }
