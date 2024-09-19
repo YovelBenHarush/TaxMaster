@@ -76,7 +76,7 @@ namespace TaxMaster
         {
             for (int i = 0; i < RegisteredPartnerDonations.Count; i++)
             {
-                if (ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList.Count <= i || Donations[i] != ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList[i])
+                if (ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList.Count <= i || RegisteredPartnerDonations[i] != ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList[i])
                 {
                     var copy = ReportSettings.SaveToOutputDir(RegisteredPartnerDonations[i].ReciptPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_donation_{i}.pdf");
                     if (!string.IsNullOrEmpty(copy))
@@ -89,7 +89,7 @@ namespace TaxMaster
 
             for (int i = 0; i < PartnerDonations.Count; i++)
             {
-                if (ReportSettings.Configuration.Partner.Donations.DonationsList.Count <= i || Donations[i] != ReportSettings.Configuration.Partner.Donations.DonationsList[i])
+                if (ReportSettings.Configuration.Partner.Donations.DonationsList.Count <= i || PartnerDonations[i] != ReportSettings.Configuration.Partner.Donations.DonationsList[i])
                 {
                     var copy = ReportSettings.SaveToOutputDir(PartnerDonations[i].ReciptPath, $"{ReportSettings.Configuration.Partner.ID}_donation_{i}.pdf");
                     if (!string.IsNullOrEmpty(copy))
