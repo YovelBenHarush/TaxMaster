@@ -42,7 +42,7 @@
                             </Label>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout FlowDirection="RightToLeft">
-                            <RadioButton IsChecked="{Binding ReportType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ReportType.HalfAnnualReport}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportType"/>
+                            <RadioButton IsChecked="{Binding ReportType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ReportType.HalfAnnualReport}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportType" IsEnabled="False"/>
                             <Label Text="דוח חצי שנתי (מניות)" VerticalOptions="Center" IsEnabled="False">
                                 <Label.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding ToggleReportTypeCommand}" CommandParameter="{x:Static local:ReportType.HalfAnnualReport}" />
