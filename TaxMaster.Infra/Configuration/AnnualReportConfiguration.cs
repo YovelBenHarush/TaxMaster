@@ -107,10 +107,6 @@ namespace TaxMaster.Infra
         public TaxBirthPaymentFile BirthPayment { get; set; } = new TaxBirthPaymentFile();
 
         public LifeInsurences LifeInsurences { get; set; } = new LifeInsurences();
-
-        public EsppObject EsppObject { get; set; } = new EsppObject();
-
-        public RsuEsopObject RsuEsopObject { get; set; } = new RsuEsopObject();
       
         public Tax106Files Tax106Files { get; set; } = new Tax106Files();
 

@@ -17,26 +17,27 @@ namespace TaxMaster.BL
 
         }
 
-        public async Task<RsuEsopObject> RsuEsopAsync(string esopTransactionsReportFilePath, string tax867FilePath)
+        public async Task<RsuEsopObject> RsuEsopAsync(bool isRegisteredPartner, string esopTransactionsReportFilePath, string tax867FilePath)
         {
             var rsuEsopParser = new RsuEsopParser();
+            var user = isRegisteredPartner ? ReportSettings.Configuration.RegisteredPartner : ReportSettings.Configuration.Partner;
             if (!string.IsNullOrEmpty(tax867FilePath))
             {
-                var tax867FileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.Report867 + ".pdf";
+                var tax867FileName = user.ID + "_" + ConstNamesConfiguration.Report867 + ".pdf";
                 SaveToOutputDir(tax867FilePath, tax867FileName);
                 var output = rsuEsopParser.ParseDividend(tax867FilePath);
-                ReportSettings.Configuration.RsuEsopObject.DividendInNis = output.dividendInNis;
-                ReportSettings.Configuration.RsuEsopObject.DividendTaxInNis = output.dividendTaxInNis;
+                user.RsuEsopObject.DividendInNis = output.dividendInNis;
+                user.RsuEsopObject.DividendTaxInNis = output.dividendTaxInNis;
             }
 
             if (!string.IsNullOrEmpty(esopTransactionsReportFilePath))
             {
-                var esopTransactionsFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.EsopTransactionsReport + ".pdf";
+                var esopTransactionsFileName = user.ID + "_" + ConstNamesConfiguration.EsopTransactionsReport + ".pdf";
                 SaveToOutputDir(esopTransactionsReportFilePath, esopTransactionsFileName);
-                ReportSettings.Configuration.RsuEsopObject.Transactions = rsuEsopParser.ParseStockSalesTranscations(esopTransactionsReportFilePath);
+                user.RsuEsopObject.Transactions = rsuEsopParser.ParseStockSalesTranscations(esopTransactionsReportFilePath);
             }
 
-            return ReportSettings.Configuration.RsuEsopObject;
+            return user.RsuEsopObject;
         }
     }
 }
