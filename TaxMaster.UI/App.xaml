@@ -16,11 +16,12 @@
             <local:Tax106NameTitleConverter x:Key="Tax106NameTitleConverter" />
             <DataTemplate x:Key="GenericPairTemplate">
                 <ViewCell>
-                    <Border StrokeThickness="3"  Margin="10" Stroke="{Binding Mark,Converter={StaticResource BoolToColorConverter}}" ToolTipProperties.Text="{Binding Explanation}">
-                        <StackLayout Orientation="Horizontal">
+                    <Border StrokeThickness="3"  Margin="10" Stroke="{Binding Mark,Converter={StaticResource BoolToColorConverter}}">
+                        <StackLayout Orientation="Horizontal" >
                             <CheckBox Grid.Column="2" IsChecked="{Binding Mark}" HorizontalOptions="Center" VerticalOptions="Center" Margin="10"></CheckBox>
-                            <Editor Text="{Binding Key}"  IsReadOnly="True" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" AutoSize="TextChanges" ToolTipProperties.Text="{Binding Explanation}" />
-                            <Editor Text="{Binding Value}"  IsReadOnly="True" HorizontalOptions="Center" VerticalOptions="Center" AutoSize="TextChanges" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" ToolTipProperties.Text="{Binding Explanation}"/>
+                            <Editor Text="{Binding Key}"  IsReadOnly="True" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" AutoSize="TextChanges" />
+                            <Editor Text="{Binding Value}"  IsReadOnly="True" HorizontalOptions="Center" VerticalOptions="Center" AutoSize="TextChanges" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            <Label Text="{Binding Explanation}" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Margin="10"/>
                         </StackLayout>
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="20" />

@@ -205,7 +205,6 @@ namespace TaxMaster
 
         public DefinitionOfForm106ViewModel()
         {
-            ReportSettings.Configuration.RegisteredPartner.FirstName = "Saar Ofek";
             Tax106FilesFiller = new ObservableCollection<Tax106File>(ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles ?? new List<Tax106File>());
             PickFileCommandFiller = new Command(Add106FormFiller);
             SubmitFileFiller = new Command(Submit106FormFiller);

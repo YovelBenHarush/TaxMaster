@@ -12,6 +12,7 @@ namespace TaxMaster.BL
         {
             _birthPaymentFileParser = new BirthPaymentFileParser();
         }
+
         public TaxBirthPaymentFile BirthPayment(string file)
         {
             try
@@ -23,7 +24,6 @@ namespace TaxMaster.BL
                     throw new Exception("Birth payment file is invalid");
                 }
 
-                ReportSettings.Configuration.BirthPayment = taxBirthPaymentFile;
                 return taxBirthPaymentFile;
             }
             catch (Exception)
