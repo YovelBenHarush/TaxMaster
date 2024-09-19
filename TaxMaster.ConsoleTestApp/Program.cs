@@ -1,5 +1,6 @@
 ﻿using TaxMaster.BL;
 using TaxMaster.Infra;
+using TaxMaster.Infra.Entities;
 using TaxMaster.Infra.Interfaces;
 using TaxMaster.Infra.Parsers;
 
@@ -30,11 +31,18 @@ public static class Program
             SellDate = DateTime.Now - TimeSpan.FromDays(180)
         };
 
+        var user = new User
+        {
+            ID = "12345678",
+            FirstName = "Test",
+            LastName = "Test",
+        };
+
         var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
 
         var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax([sellTransaction1, sellTransaction2]);
 
         var parser = new Form1325Parser();
-        parser.Generate1325Forms(sellTransactionsWithTaxMetadata, Directory.GetCurrentDirectory());
+        parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user, Directory.GetCurrentDirectory());
     }
 }

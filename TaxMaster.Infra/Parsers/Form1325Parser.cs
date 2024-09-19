@@ -5,6 +5,7 @@ using TaxMaster.Infra.Interfaces;
 using PdfSharpCore.Pdf.Content.Objects;
 using PdfSharpCore.Pdf.Content;
 using Spire.Xls;
+using TaxMaster.Infra.Entities;
 
 namespace TaxMaster.Infra.Parsers
 {
@@ -29,18 +30,18 @@ namespace TaxMaster.Infra.Parsers
         private const string Form1325Path = "Assets\\1325Form.xlsx";
         private const string Pdf1325PathTemaplate = "{0}_1325_{1}.pdf";
 
-        public (string FirstHalfFormPath, string SecondHalfFormPath) Generate1325Forms(IEnumerable<ISellTransactionWithTaxMetadata> transactions, string outputDir)
+        public (string FirstHalfFormPath, string SecondHalfFormPath) Generate1325Forms(IEnumerable<ISellTransactionWithTaxMetadata> transactions, User user, string outputDir)
         {
             var firstHalfTransactions = transactions.Where(trx => trx.SellDate.Month <= 6);
             var secondHalfTransactions = transactions.Where(trx => trx.SellDate.Month > 6);
 
-            return (Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, ReportSettings.Configuration.RegisteredPartner.ID, 1)), firstHalfTransactions), Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, ReportSettings.Configuration.RegisteredPartner.ID, 2)), secondHalfTransactions));
+            return (Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, user.ID, 1)), firstHalfTransactions, user), Populate1325Form(Path.Combine(outputDir, string.Format(Pdf1325PathTemaplate, user.ID, 2)), secondHalfTransactions, user));
         }
 
-        public string Populate1325Form(string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions)
+        public string Populate1325Form(string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions, User user)
         {
             var workbook = LoadXlWorkbook(Path.Combine(Directory.GetCurrentDirectory(), Form1325Path));
-            PopulateXlWorkbook(workbook, pdfFilePath, transactions);
+            PopulateXlWorkbook(workbook, pdfFilePath, transactions, user);
             SaveXlWorkbookToPdf(workbook, pdfFilePath);
             return pdfFilePath;
         }
@@ -59,7 +60,7 @@ namespace TaxMaster.Infra.Parsers
             return workbook;
         }
 
-        public void PopulateXlWorkbook(Workbook workbook, string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions)
+        public void PopulateXlWorkbook(Workbook workbook, string pdfFilePath, IEnumerable<ISellTransactionWithTaxMetadata> transactions, User user)
         {
             // Get the first worksheet
             Worksheet sheet = workbook.Worksheets[0];
@@ -91,8 +92,8 @@ namespace TaxMaster.Infra.Parsers
             sheet.Range[Col(TotalTaxableProfitCol)].NumberValue = transactions.Sum(t => t.TaxableProfitInILS);
             sheet.Range[Col(TotalSellPriceCol)].NumberValue = transactions.Sum(t => t.SellPriceInILS);
 
-            sheet.Range[Col(NameCol)].Text = $"{ReportSettings.Configuration.RegisteredPartner.FirstName} {ReportSettings.Configuration.RegisteredPartner.LastName}";
-            sheet.Range[Col(IDCol)].Text = $"{ReportSettings.Configuration.RegisteredPartner.ID}";
+            sheet.Range[Col(NameCol)].Text = $"{user.FirstName} {user.LastName}";
+            sheet.Range[Col(IDCol)].Text = $"{user.ID}";
         }
 
         public void SaveXlWorkbookToPdf(Workbook workbook, string pdfFilePath)

@@ -41,27 +41,73 @@
                     </ScrollView>
                 </StackLayout>
 
-                <StackLayout Grid.Row="1" FlowDirection="RightToLeft" Padding="5" Margin="20,0,20,5">
-                    <Label Text="צירוף מסמכים:" HorizontalOptions="Start" TextDecorations="Underline" FontAttributes="Bold"  />
+                <Grid Grid.Row="1" ColumnDefinitions="1*, 1*" FlowDirection="RightToLeft" Padding="10,5" Margin="10">
+                    <Border Grid.Column="0" StrokeThickness="3"  Margin="10">
+                        <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
+                            <Label  Text="צירוף מסמכים עבור בן זוג רשום:" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                            <Grid FlowDirection="RightToLeft"  ColumnDefinitions="Auto, *, 44" RowDefinitions="*,*" Margin="10">
+                                <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 1024s" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1024" HeightRequest="44"/>
+                                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Tax1024File, Mode=TwoWay}" Margin="10" />
+                                <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1024" IsVisible="{Binding Tax1024File, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
 
-                    <Grid ColumnDefinitions="Auto, *, 44" RowDefinitions="*,*" RowSpacing="20" Margin="10">
-                        <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 1024s" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1024" HeightRequest="44"/>
-                        <Entry Grid.Row="0" Grid.Column="1"  Text="{Binding Tax1024File, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
-                        <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1024" IsVisible="{Binding Tax1024File, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
+                                <Button Grid.Row="1" Grid.Column="0" Text="בחר/י את מסמך Custom Transaction Summary " Command="{Binding PickFileCommand}" CommandParameter="CustomTransactionSummary" HeightRequest="44"/>
+                                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding CustomTransactionSummaryFile, Mode=TwoWay}" Margin="10"/>
+                                <Button Grid.Row="1" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="CustomTransactionSummary" IsVisible="{Binding CustomTransactionSummaryFile, Converter={StaticResource StringToBooleanConverter}}" MinimumWidthRequest="10" HeightRequest="44"/>
+                            </Grid>
 
-                        <Button Grid.Row="1" Grid.Column="0" Text="בחר/י את מסמך Custom Transaction Summary " Command="{Binding PickFileCommand}" CommandParameter="CustomTransactionSummary" HeightRequest="44" />
-                        <Entry Grid.Row="1" Grid.Column="1"  Text="{Binding CustomTransactionSummaryFile, Mode=TwoWay}" Margin="10" HorizontalOptions="FillAndExpand"/>
-                        <Button Grid.Row="1" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="CustomTransactionSummary" IsVisible="{Binding CustomTransactionSummaryFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
-                    </Grid>
-                    
-                    <Button Margin="10" Text="חשב" Command="{Binding CalcualteCommand}" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="{Binding IsCalculating, Converter={StaticResource InvertedBoolConverter}}"/>
-                    <ActivityIndicator Margin="10" IsRunning="{Binding IsCalculating}" IsVisible="{Binding IsCalculating}" HorizontalOptions="Center" VerticalOptions="Center" />
-                    <Label Text="{Binding CalcualteError}" Margin="5" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Red" IsVisible="{Binding CalcualteError, Converter={StaticResource StringToBooleanConverter}}"/>
-                </StackLayout>
+                            <Button Margin="10" Text="חשב" Command="{Binding CalcualteCommand}" CommandParameter="RegisteredPartner" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="{Binding IsCalculating, Converter={StaticResource InvertedBoolConverter}}"/>
+                            <ActivityIndicator Margin="10" IsRunning="{Binding IsCalculating}" IsVisible="{Binding IsCalculating}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Text="{Binding CalcualteError}" Margin="5" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Red" IsVisible="{Binding CalcualteError, Converter={StaticResource StringToBooleanConverter}}"/>
 
-                <StackLayout Grid.Row="2" Padding="5">
-                    
-                </StackLayout>
+                            <StackLayout IsVisible="{Binding ShouldDisplayValues}">
+                                <Label Text="תוצאות החישוב:" FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" TextColor="GreenYellow"/>
+                                    
+                                    <Label Text="דבידנט" VerticalOptions="Center"  FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" />
+                                    <Entry Text="{Binding Dividend, Mode=TwoWay} " FlowDirection="RightToLeft" Margin="10" />
+                                <Grid FlowDirection="RightToLeft"  ColumnDefinitions="Auto,Auto" RowDefinitions="*,*" Margin="10">
+                                    <Button Grid.Row="0" Grid.Column="0"  Text="לחץ להצגת דוח 1325 חציון 1" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_1" HeightRequest="44" Margin="10"/>
+                                    <Button Grid.Row="0" Grid.Column="1"  Text="לחץ להצגת דוח 1325 חציון 2" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_2" HeightRequest="44" Margin="10"/>
+                                </Grid>
+                            </StackLayout>
+                        </StackLayout>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                    </Border>
+
+                    <Border Grid.Column="1" StrokeThickness="3" IsVisible="{Binding IsMarried}"  Margin="10">
+                        <StackLayout Orientation="Vertical" FlowDirection="RightToLeft">
+                            <Label  Text="צירוף מסמכים עבור בן זוג:" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
+                            <Grid FlowDirection="RightToLeft"  ColumnDefinitions="Auto, *, 44" RowDefinitions="*,*" Margin="10">
+                                <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 1024s" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1024Partner" HeightRequest="44"/>
+                                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Tax1024PartnerFile, Mode=TwoWay}" Margin="10" />
+                                <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1024Partner" IsVisible="{Binding Tax1024PartnerFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
+
+                                <Button Grid.Row="1" Grid.Column="0" Text="בחר/י את מסמך Custom Transaction Summary " Command="{Binding PickFileCommand}" CommandParameter="CustomTransactionSummaryPartner" HeightRequest="44"/>
+                                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding CustomTransactionSummaryPartnerFile, Mode=TwoWay}" Margin="10"/>
+                                <Button Grid.Row="1" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="CustomTransactionSummaryPartner" IsVisible="{Binding CustomTransactionSummaryPartnerFile, Converter={StaticResource StringToBooleanConverter}}" MinimumWidthRequest="10" HeightRequest="44"/>
+                            </Grid>
+
+                            <Button Margin="10" Text="חשב" Command="{Binding CalcualteCommand}" CommandParameter="Partner" HorizontalOptions="Center" VerticalOptions="Center" IsEnabled="{Binding IsCalculatingPartner, Converter={StaticResource InvertedBoolConverter}}"/>
+                            <ActivityIndicator Margin="10" IsRunning="{Binding IsCalculatingPartner}" IsVisible="{Binding IsCalculatingPartner}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Text="{Binding CalcualteErrorPartner}" Margin="5" HorizontalOptions="Center" VerticalOptions="Center" TextColor="Red" IsVisible="{Binding CalcualteErrorPartner, Converter={StaticResource StringToBooleanConverter}}"/>
+
+                            <StackLayout IsVisible="{Binding ShouldDisplayValuesPartner}">
+                                <Label Text="תוצאות החישוב:" FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" TextColor="GreenYellow"/>
+
+                                <Label Text="דבידנט" VerticalOptions="Center"  FontAttributes="Bold" FlowDirection="RightToLeft" Margin="10" />
+                                <Entry Text="{Binding DividendPartner, Mode=TwoWay} " FlowDirection="RightToLeft" Margin="10" />
+                                <Grid FlowDirection="RightToLeft"  ColumnDefinitions="Auto,Auto" RowDefinitions="*,*" Margin="10">
+                                    <Button Grid.Row="0" Grid.Column="0"  Text="לחץ להצגת דוח 1325 חציון 1" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_1_Partner" HeightRequest="44" Margin="10"/>
+                                    <Button Grid.Row="0" Grid.Column="1"  Text="לחץ להצגת דוח 1325 חציון 2" Command="{Binding OpenPdfFileCommand}" VerticalOptions="Center" CommandParameter="1325_2_Partner" HeightRequest="44" Margin="10"/>
+                                </Grid>
+                            </StackLayout>
+                        </StackLayout>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                    </Border>
+                </Grid>
             </Grid>
         </ScrollView>
         
