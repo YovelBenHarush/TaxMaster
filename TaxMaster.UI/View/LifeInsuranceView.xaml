@@ -24,7 +24,7 @@
                 <!-- User Section -->
                 <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" MinimumWidthRequest="600" MaximumWidthRequest="900">
                     <StackLayout>
-                            <Label Text="ביטוחי החיים שלי" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
+                            <Label Text="{Binding RegisteredPartnerDisplayName, StringFormat='ביטוחי החיים של {0}'}" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
 
                         <!-- ListView for multiple insurances -->
                             <CollectionView x:Name="UserInsuranceList" ItemsSource="{Binding UserInsurances}" Margin="10">
@@ -57,7 +57,7 @@
                 <!-- Partner Section -->
                     <Frame BorderColor="LightGray" CornerRadius="10" Padding="10" MinimumWidthRequest="600" MaximumWidthRequest="900" IsVisible="{Binding IsNotSingle}">
                     <StackLayout>
-                            <Label Text="ביטוחי החיים של בן\בת הזוג" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
+                            <Label Text="{Binding PartnerDisplayName, StringFormat='ביטוחי החיים של {0}'}"  FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft"/>
 
                             <!-- ListView for multiple insurances -->
                             <CollectionView x:Name="PartnerInsuranceList" ItemsSource="{Binding PartnerInsurances}" Margin="10">

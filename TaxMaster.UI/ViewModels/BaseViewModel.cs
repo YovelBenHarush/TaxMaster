@@ -7,10 +7,7 @@ namespace TaxMaster
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
-        private string title = string.Empty;
-
         private bool isPreviousEnabled = true;
-
         public Command NextCommand { get; }
         public Command PreviousCommand { get; }
 
@@ -24,6 +21,8 @@ namespace TaxMaster
             PreviousCommand = new Command(OnPrevious);
         }
 
+        private string title = string.Empty;
+
         public virtual string Title
         {
             get => title;
@@ -35,6 +34,10 @@ namespace TaxMaster
                 OnPropertyChanged();
             }
         }
+
+        public string RegisteredPartnerDisplayName => ReportSettings.Configuration.RegisteredPartner.DisplayName;
+        public string PartnerDisplayName => ReportSettings.Configuration.Partner.DisplayName;
+
 
         public bool IsPreviousEnabled
         {
