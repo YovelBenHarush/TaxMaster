@@ -76,20 +76,26 @@ namespace TaxMaster
         {
             for (int i = 0; i < RegisteredPartnerDonations.Count; i++)
             {
-                var copy = ReportSettings.SaveToOutputDir(RegisteredPartnerDonations[i].ReciptPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_donation_{i}.pdf");
-                if (!string.IsNullOrEmpty(copy))
+                if (ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList.Count <= i || Donations[i] != ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList[i])
                 {
-                    RegisteredPartnerDonations[i].ReciptPath = copy;
+                    var copy = ReportSettings.SaveToOutputDir(RegisteredPartnerDonations[i].ReciptPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_donation_{i}.pdf");
+                    if (!string.IsNullOrEmpty(copy))
+                    {
+                        RegisteredPartnerDonations[i].ReciptPath = copy;
+                    }
                 }
             }
             ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList = [.. RegisteredPartnerDonations];
 
             for (int i = 0; i < PartnerDonations.Count; i++)
             {
-                var copy = ReportSettings.SaveToOutputDir(PartnerDonations[i].ReciptPath, $"{ReportSettings.Configuration.Partner.ID}_donation_{i}.pdf");
-                if (!string.IsNullOrEmpty(copy))
+                if (ReportSettings.Configuration.Partner.Donations.DonationsList.Count <= i || Donations[i] != ReportSettings.Configuration.Partner.Donations.DonationsList[i])
                 {
-                    PartnerDonations[i].ReciptPath = copy;
+                    var copy = ReportSettings.SaveToOutputDir(PartnerDonations[i].ReciptPath, $"{ReportSettings.Configuration.Partner.ID}_donation_{i}.pdf");
+                    if (!string.IsNullOrEmpty(copy))
+                    {
+                        PartnerDonations[i].ReciptPath = copy;
+                    }
                 }
             }
             ReportSettings.Configuration.Partner.Donations.DonationsList = [.. PartnerDonations];

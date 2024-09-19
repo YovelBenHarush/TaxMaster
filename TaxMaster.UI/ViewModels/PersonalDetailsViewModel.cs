@@ -100,12 +100,15 @@ namespace TaxMaster
                 Partner.UpdateUser(ReportSettings.Configuration.Partner);
             }
 
-            var copy = ReportSettings.SaveToOutputDir(BankManagementApprovalFile, $"{ReportSettings.Configuration.RegisteredPartner.ID}_bank_management_approval.pdf");
-            if (!string.IsNullOrEmpty(copy))
+            if (ReportSettings.Configuration.BankManagementApprovalFile != BankManagementApprovalFile)
             {
-                BankManagementApprovalFile = copy;
+                var copy = ReportSettings.SaveToOutputDir(BankManagementApprovalFile, $"{ReportSettings.Configuration.RegisteredPartner.ID}_bank_management_approval.pdf");
+                if (!string.IsNullOrEmpty(copy))
+                {
+                    BankManagementApprovalFile = copy;
+                }
+                ReportSettings.Configuration.BankManagementApprovalFile = BankManagementApprovalFile;
             }
-            ReportSettings.Configuration.BankManagementApprovalFile = BankManagementApprovalFile;
 
             base.OnNext();
             await Shell.Current.GoToAsync(nameof(DefinitionOfForm106View));

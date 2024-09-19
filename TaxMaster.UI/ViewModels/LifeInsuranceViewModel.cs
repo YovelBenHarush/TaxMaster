@@ -76,19 +76,25 @@ namespace TaxMaster
         {
             for (int i = 0; i < UserInsurances.Count; i++)
             {
-                var copy = ReportSettings.SaveToOutputDir(UserInsurances[i].PolicyPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_life_insurance_policy_{i}.pdf");
-                if (!string.IsNullOrEmpty(copy))
+                if (ReportSettings.Configuration.RegisteredPartner.LifeInsurences.InsurencesList.Count <= i || UserInsurances[i].PolicyPath != ReportSettings.Configuration.RegisteredPartner.LifeInsurences.InsurencesList[i].PolicyPath)
                 {
-                    UserInsurances[i].PolicyPath = copy;
+                    var copy = ReportSettings.SaveToOutputDir(UserInsurances[i].PolicyPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_life_insurance_policy_{i}.pdf");
+                    if (!string.IsNullOrEmpty(copy))
+                    {
+                        UserInsurances[i].PolicyPath = copy;
+                    }
                 }
             }
 
             for (int i = 0; i < PartnerInsurances.Count; i++)
             {
-                var copy = ReportSettings.SaveToOutputDir(PartnerInsurances[i].PolicyPath, $"{ReportSettings.Configuration.Partner.ID}_life_insurance_policy_{i}.pdf");
-                if (!string.IsNullOrEmpty(copy))
+                if (ReportSettings.Configuration.Partner.LifeInsurences.InsurencesList.Count <= i || PartnerInsurances[i].PolicyPath != ReportSettings.Configuration.Partner.LifeInsurences.InsurencesList[i].PolicyPath)
                 {
-                    PartnerInsurances[i].PolicyPath = copy;
+                    var copy = ReportSettings.SaveToOutputDir(PartnerInsurances[i].PolicyPath, $"{ReportSettings.Configuration.Partner.ID}_life_insurance_policy_{i}.pdf");
+                    if (!string.IsNullOrEmpty(copy))
+                    {
+                        PartnerInsurances[i].PolicyPath = copy;
+                    }
                 }
             }
 

@@ -23,6 +23,7 @@
             Routing.RegisterRoute(nameof(AnnualReportGeneralDetailsView), typeof(AnnualReportGeneralDetailsView));
             Routing.RegisterRoute(nameof(AnnualReportIncomeDetailsView), typeof(AnnualReportIncomeDetailsView));
             Routing.RegisterRoute(nameof(AnnualReportPersonalDetailsView), typeof(AnnualReportPersonalDetailsView));
+            Routing.RegisterRoute(nameof(AnnualReportAdditionalDocsUploadView), typeof(AnnualReportAdditionalDocsUploadView));
         }
     }
 }
