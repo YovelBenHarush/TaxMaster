@@ -17,12 +17,13 @@ namespace TaxMaster.BL
 
         }
 
-        public async Task<EsppObject> EsppFidelityAsync(string tax1042sFilePath, string customTransactionSummaryFilePath)
+        public async Task<EsppObject> EsppFidelityAsync(bool isRegisteredPartner, string tax1042sFilePath, string customTransactionSummaryFilePath)
         {
             var esppFidelityClient = new ESPPFidelityParser();
+            var user= isRegisteredPartner ? ReportSettings.Configuration.RegisteredPartner : ReportSettings.Configuration.Partner;
             if (!string.IsNullOrEmpty(tax1042sFilePath))
             {
-                var tax1042sFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.Report1042s + ".pdf";
+                var tax1042sFileName = user.ID + "_" + ConstNamesConfiguration.Report1042s + ".pdf";
                 SaveToOutputDir(tax1042sFilePath, tax1042sFileName);
             }
 
@@ -33,16 +34,16 @@ namespace TaxMaster.BL
 
                 var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
                 var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
-                ReportSettings.Configuration.EsppObject.TransactionWithTaxMetadata = sellTransactionsWithTaxMetadata;
+                user.EsppObject.TransactionWithTaxMetadata = sellTransactionsWithTaxMetadata;
                 var parser = new Form1325Parser();
-                var outputPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata, GetOutputDir());
+                var outputPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user.ID, GetOutputDir());
 
-                ReportSettings.Configuration.EsppObject.FirstHalfOfYearStockSaleReport = outputPaths.FirstHalfFormPath;
-                ReportSettings.Configuration.EsppObject.SecondHalfOfYearStockSaleReport = outputPaths.SecondHalfFormPath;
-                ReportSettings.Configuration.EsppObject.DividendInUsd = esppDivident;
+                user.EsppObject.FirstHalfOfYearStockSaleReport = outputPaths.FirstHalfFormPath;
+                user.EsppObject.SecondHalfOfYearStockSaleReport = outputPaths.SecondHalfFormPath;
+                user.EsppObject.DividendInUsd = esppDivident;
             }
 
-            return ReportSettings.Configuration.EsppObject;
+            return user.EsppObject;
         }
     }
 }

@@ -35,6 +35,6 @@ public static class Program
         var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax([sellTransaction1, sellTransaction2]);
 
         var parser = new Form1325Parser();
-        parser.Generate1325Forms(sellTransactionsWithTaxMetadata, Directory.GetCurrentDirectory());
+        parser.Generate1325Forms(sellTransactionsWithTaxMetadata, "123", Directory.GetCurrentDirectory());
     }
 }
