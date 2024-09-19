@@ -9,9 +9,14 @@
     <ContentPage.BindingContext>
         <local:FidelityEsppViewModel />
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid RowDefinitions="9*, 1*">
         <ScrollView Grid.Row="0">
-            <Grid RowDefinitions="10*, 5*, 5*" >
+            <Grid RowDefinitions="*, *, *" >
                 <StackLayout Grid.Row="0" Padding="5" FlowDirection="RightToLeft">
                     <Label VerticalOptions="Center" HorizontalOptions="Start" Margin="20,0,5,5">
                         <Label.FormattedText>
@@ -31,12 +36,15 @@
                                 <Span Text="בסיום שלב זה יופקו טופסי 1325 (אחד לכל חצי שנה) עבור רשות המיסים." TextDecorations="Underline"/>
                                 <Span Text="&#x0a;"/>
                                 <Span Text="&#x0a;"/>
-                                <Span Text="המידע קיים בטפסי Custom transaction summary ו1042S אותם יש לצרף בעזרת ההנחיות המצורפות:"/>
-
+                                <Span Text="המידע קיים בטפסי Custom transaction summary ו1042S אותם יש לצרף בעזרת ההנחיות המצורפות."/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <ScrollView>
+                    <HorizontalStackLayout FlowDirection="RightToLeft" Margin="15,0,5,5">
+                        <CheckBox VerticalOptions="Center" x:Name="showDirectionsCheckbox" />
+                        <Label Text="הצג הנחיות" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <ScrollView IsVisible="{Binding Source={x:Reference showDirectionsCheckbox}, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}">
                         <WebView Source="{Binding EsppFidelityGuide}" HeightRequest="500" Margin="40,10,40,10" FlowDirection="LeftToRight" />
                     </ScrollView>
                 </StackLayout>
