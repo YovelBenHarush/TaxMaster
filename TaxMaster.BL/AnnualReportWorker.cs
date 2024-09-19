@@ -43,9 +43,6 @@ namespace TaxMaster.BL
             // Add _158_172
             AddIncomeDetail("158", "172", registeredPartner106?._158_172, partner106?._158_172, "חלק מטופס 106", incomeDetails);
 
-            // Add _042
-            AddIncomeDetail("042", "042", registeredPartner106?._042, partner106?._042, "חלק מטופס 106", incomeDetails);
-
             // Add _244_245
             AddIncomeDetail("244", "245", registeredPartner106?._244_245, partner106?._244_245, "חלק מטופס 106", incomeDetails);
 
@@ -72,8 +69,21 @@ namespace TaxMaster.BL
             AddIncomeDetail("250", "270", registeredPartnerBirthPayment?.Amount, partnerBirthPayment?.Amount, "דמי לידה מחושבים מטופס דמי הלידה", incomeDetails);
 
             // Life Insurances
+            var registeredPartnerLifeInsurences = registeredPartner?.LifeInsurences;
+            var partnerLifeInsurences = partner?.LifeInsurences;
+            AddIncomeDetail("036", "081", registeredPartnerLifeInsurences?.TotalInsurencesValue, partnerLifeInsurences?.TotalInsurencesValue, "חישוב סכום ביטוח חיים מבוסס על סך כל רשומות ביטוחי החיים אותן העלת בשלב המקדים", incomeDetails);
+
 
             // Donations
+            var registeredPartnerDonations = registeredPartner?.Donations;
+            var partnerDonationss = partner?.Donations;
+            AddIncomeDetail("037", "237", registeredPartnerDonations?.TotalDonations, partnerDonationss?.TotalDonations, "חישוב סכום התרומות מבוסס על סך כל רשומות התרומות אותן העלת בשלב המקדים", incomeDetails);
+
+
+            // Add _042
+            (long? registeredPartnerTax, string registeredPartnerExplanation) = Total42(registeredPartner106, registeredPartnerBirthPayment);
+            (long? partnerTax, string partnerExplanation) = Total42(partner106, partnerBirthPayment);
+            AddIncomeDetail("042", "042", registeredPartnerTax , partnerTax, registeredPartnerExplanation, partnerExplanation, incomeDetails);
 
             return incomeDetails;
         }
@@ -108,9 +118,58 @@ namespace TaxMaster.BL
             incomeDetails.Add(incomeDetailsProperties);
         }
 
+        private void AddIncomeDetail<T>(string registeredKey, string partnerKey, T? registeredValue, T? partnerValue, string registeredExplanation, string partnerExplanation, List<IncomeDetailsProperties> incomeDetails)
+           where T : struct, IComparable
+        {
+            var incomeDetailsProperties = new IncomeDetailsProperties();
+
+            // Handle the registered partner income details
+            if (registeredValue.HasValue && !IsZero(registeredValue.Value))
+            {
+                incomeDetailsProperties.RegisteredPartnerIncomeDetails = new IncomeDetails
+                {
+                    Key = $"סעיף {registeredKey}",
+                    Value = registeredValue.Value.ToString() ?? string.Empty,
+                    Explanation = registeredExplanation
+                };
+            }
+
+            // Handle the partner income details
+            if (partnerValue.HasValue && !IsZero(partnerValue.Value))
+            {
+                incomeDetailsProperties.PartnerIncomeDetails = new IncomeDetails
+                {
+                    Key = $"סעיף {partnerKey}",
+                    Value = partnerValue.Value.ToString() ?? string.Empty,
+                    Explanation = partnerExplanation
+                };
+            }
+
+            incomeDetails.Add(incomeDetailsProperties);
+        }
+
         private bool IsZero<T>(T value) where T : IComparable
         {
             return value.CompareTo(default(T)) == 0;
+        }
+
+        private (long?, string) Total42(Tax106File merged106, TaxBirthPaymentFile taxBirthPayment)
+        {
+            string explanation = "סעיף 42 מתאר את סך כל המס ששולם השנה והוא מורכב מ: ";
+            long total42 = 0;
+            if (merged106 != null && merged106._042 > 0)
+            {
+                total42 = merged106._042;
+                explanation += " חלק מטופס 106";
+            }
+
+            if (taxBirthPayment != null && taxBirthPayment.Tax > 0)
+            {
+                total42 += (long)taxBirthPayment.Tax;
+                explanation += "חלק מהמס ששולם מדמי לידה ";
+            }
+
+            return (total42, explanation);
         }
     }
 

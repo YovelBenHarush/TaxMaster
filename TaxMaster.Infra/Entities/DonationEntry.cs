@@ -3,6 +3,8 @@
 public class Donations
 {
     public List<DonationEntry> DonationsList { get; set; } = [];
+
+    public long TotalDonations => (DonationsList != null && DonationsList.Count > 0) ? DonationsList.Sum(d => long.Parse(d.DonationAmount)) : 0;
 }
 
 public class DonationEntry
