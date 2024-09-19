@@ -74,6 +74,24 @@ namespace TaxMaster
 
         public override async void OnNext()
         {
+            for (int i = 0; i < UserInsurances.Count; i++)
+            {
+                var copy = ReportSettings.SaveToOutputDir(UserInsurances[i].PolicyPath, $"{ReportSettings.Configuration.RegisteredPartner.ID}_life_insurance_policy_{i}.pdf");
+                if (!string.IsNullOrEmpty(copy))
+                {
+                    UserInsurances[i].PolicyPath = copy;
+                }
+            }
+
+            for (int i = 0; i < PartnerInsurances.Count; i++)
+            {
+                var copy = ReportSettings.SaveToOutputDir(PartnerInsurances[i].PolicyPath, $"{ReportSettings.Configuration.Partner.ID}_life_insurance_policy_{i}.pdf");
+                if (!string.IsNullOrEmpty(copy))
+                {
+                    PartnerInsurances[i].PolicyPath = copy;
+                }
+            }
+
             ReportSettings.Configuration.RegisteredPartner.LifeInsurences.InsurencesList = [.. UserInsurances];
             ReportSettings.Configuration.Partner.LifeInsurences.InsurencesList = [.. PartnerInsurances];
 
