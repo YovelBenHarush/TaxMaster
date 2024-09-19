@@ -5,43 +5,27 @@ namespace TaxMaster
 {
     public class AnnualReportFirstStepViewModel : BaseViewModel
     {
-        private int _year;
-        public int Year
+        private string _guide;
+        public string Guide
         {
-            get => _year;
+            get => _guide;
             set
             {
-                if (_year != value)
+                if (_guide != value)
                 {
-                    _year = value;
+                    _guide = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string _id;
-        public string ID
-        {
-            get => _id;
-            set
-            {
-                if (_id != value)
-                {
-                    _id = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
 
         public AnnualReportFirstStepViewModel()
         {
-            OpenLinkCommand = new Command<string>(OpenLink);
-            Year = ReportSettings.Configuration.Year;
-            ID = ReportSettings.Configuration.RegisteredPartner.ID;
 
+            Guide = GuidesConfigurations.AnnualReportFirstStepGuidePdfUrl;
         }
 
-        public ICommand OpenLinkCommand { get; }
 
         public async override void OnNext()
         {
