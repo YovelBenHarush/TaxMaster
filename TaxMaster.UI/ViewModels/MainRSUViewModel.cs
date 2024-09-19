@@ -20,6 +20,20 @@ namespace TaxMaster
             }
         }
 
+        private string _esopTransactionsReportPartnerFile;
+        public string EsopTransactionsReportPartnerFile
+        {
+            get => _esopTransactionsReportPartnerFile;
+            set
+            {
+                if (_esopTransactionsReportPartnerFile != value)
+                {
+                    _esopTransactionsReportPartnerFile = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string _tax867File;
         public string Tax867File
         {
@@ -34,6 +48,20 @@ namespace TaxMaster
             }
         }
 
+        private string _tax867PartnerFile;
+        public string Tax867PartnerFile
+        {
+            get => _tax867PartnerFile;
+            set
+            {
+                if (_tax867PartnerFile != value)
+                {
+                    _tax867PartnerFile = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private bool _isCalculating;
         public bool IsCalculating
         {
@@ -41,6 +69,17 @@ namespace TaxMaster
             set
             {
                 _isCalculating = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isCalculatingPartner;
+        public bool IsCalculatingPartner
+        {
+            get => _isCalculatingPartner;
+            set
+            {
+                _isCalculatingPartner = value;
                 OnPropertyChanged();
             }
         }
@@ -59,16 +98,109 @@ namespace TaxMaster
             }
         }
 
+        private string _calcualteErrorPartner;
+        public string CalcualteErrorPartner
+        {
+            get => _calcualteErrorPartner;
+            set
+            {
+                if (_calcualteErrorPartner != value)
+                {
+                    _calcualteErrorPartner = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        private bool _shouldDisplayValues;
+        public bool ShouldDisplayValues
+        {
+            get => _shouldDisplayValues;
+            set
+            {
+                _shouldDisplayValues = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _shouldDisplayValuesPartner;
+        public bool ShouldDisplayValuesPartner
+        {
+            get => _shouldDisplayValuesPartner;
+            set
+            {
+                _shouldDisplayValuesPartner = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _dividend;
+        public double Dividend
+        {
+            get => _dividend;
+            set
+            {
+                if (_dividend != value)
+                {
+                    _dividend = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private double _dividendPartner;
+        public double DividendPartner
+        {
+            get => _dividendPartner;
+            set
+            {
+                if (_dividendPartner != value)
+                {
+                    _dividendPartner = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private double _dividendTax;
+        public double DividendTax
+        {
+            get => _dividendTax;
+            set
+            {
+                if (_dividendTax != value)
+                {
+                    _dividendTax = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private double _dividendTaxPartner;
+        public double DividendTaxPartner
+        {
+            get => _dividendTaxPartner;
+            set
+            {
+                if (_dividendTaxPartner != value)
+                {
+                    _dividendTaxPartner = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         private readonly RsuWorker rsuWorker;
-        public ICommand CalcualteCommand { get; }
+        public Command<string> CalcualteCommand { get; }
         public Command<object> PickFileCommand { get; }
         public Command<object> ResetFileCommand { get; }
+        public bool IsMarried => ReportSettings.Configuration.FamilyStatus != Infra.Entities.FamilyStatus.Single;
 
         public MainRSUViewModel()
         {
             PickFileCommand = new Command<object>(async (parameter) => await PickPdfFile(parameter));
             ResetFileCommand = new Command<object>((parameter) => ResetSelection(parameter));
-            CalcualteCommand = new Command(Calcualte);
+            CalcualteCommand = new Command<string>(Calcualte);
 
             IsCalculating = false;
             CalcualteError = string.Empty;
@@ -82,23 +214,86 @@ namespace TaxMaster
             set => base.Title = value;
         }
 
-        private async void Calcualte()
+        private async void Calcualte(string userType)
         {
-            Application.Current.Dispatcher.Dispatch(() =>
+            var isRegisteredPartner = userType.Equals("RegisteredPartner");
+            if (isRegisteredPartner)
             {
-                CalcualteError = string.Empty;
-                IsCalculating = true;
-            });
-
-
-            var results = await rsuWorker.RsuEsopAsync(EsopTransactionsReportFile, Tax867File);
-
-            Application.Current.Dispatcher.Dispatch(() =>
+                Application.Current.Dispatcher.Dispatch(() =>
+                {
+                    CalcualteError = string.Empty;
+                    IsCalculating = true;
+                    ShouldDisplayValues = false;
+                });
+            }
+            else
             {
-                IsCalculating = false;
-            });
+                Application.Current.Dispatcher.Dispatch(() =>
+                {
+                    CalcualteErrorPartner = string.Empty;
+                    IsCalculatingPartner = true;
+                    ShouldDisplayValuesPartner = false;
+                });
+            }
 
-            CalcualteError = (DateTime.Now.Millisecond % 2 == 0) ? "יש שגיאה נא לתקן" : string.Empty;
+            try
+            {
+                if (isRegisteredPartner)
+                {
+                    var results = await rsuWorker.RsuEsopAsync(isRegisteredPartner, EsopTransactionsReportFile, Tax867File);
+                    Dividend = results.DividendInNis;
+                    DividendTax = results.DividendTaxInNis;
+                }
+                else
+                {
+                    var results = await rsuWorker.RsuEsopAsync(isRegisteredPartner, EsopTransactionsReportFile, Tax867File);
+                    DividendPartner = results.DividendInNis;
+                    DividendTaxPartner = results.DividendTaxInNis;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = "יש שגיאה בקריאת הקובץ, טען קובץ מחדש ונסה שנית";
+
+                if (isRegisteredPartner)
+                {
+                    Application.Current.Dispatcher.Dispatch(() =>
+                    {
+                        IsCalculating = false;
+                        CalcualteError = errorMessage;
+                        ShouldDisplayValues = false;
+                    });
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Dispatch(() =>
+                    {
+                        IsCalculatingPartner = false;
+                        CalcualteErrorPartner = errorMessage;
+                        ShouldDisplayValuesPartner = false;
+                    });
+                }
+
+                return;
+            }
+
+            if (isRegisteredPartner)
+            {
+                Application.Current.Dispatcher.Dispatch(() =>
+                {
+                    IsCalculating = false;
+                    ShouldDisplayValues = true;
+                });
+            }
+            else
+            {
+                Application.Current.Dispatcher.Dispatch(() =>
+                {
+                    IsCalculatingPartner = false;
+                    ShouldDisplayValuesPartner = true;
+                });
+            }
         }
 
         public async override void OnNext()
@@ -133,7 +328,15 @@ namespace TaxMaster
             else if (fileType.Equals("EsopTransactionsReport"))
             {
                 EsopTransactionsReportFile = value;
-            };
+            }
+            else if (fileType.Equals("867Partner"))
+            {
+                Tax867PartnerFile = value;
+            }
+            else if (fileType.Equals("EsopTransactionsReportPartner"))
+            {
+                EsopTransactionsReportPartnerFile = value;
+            }
         }
     }
 }
