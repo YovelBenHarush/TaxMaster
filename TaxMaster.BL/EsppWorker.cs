@@ -17,15 +17,10 @@ namespace TaxMaster.BL
 
         }
 
-        public async Task<EsppObject> EsppFidelityAsync(bool isRegisteredPartner, string tax1042sFilePath, string customTransactionSummaryFilePath)
+        public async Task<EsppObject> EsppFidelityAsync(bool isRegisteredPartner, string customTransactionSummaryFilePath)
         {
             var esppFidelityClient = new ESPPFidelityParser();
             var user= isRegisteredPartner ? ReportSettings.Configuration.RegisteredPartner : ReportSettings.Configuration.Partner;
-            if (!string.IsNullOrEmpty(tax1042sFilePath))
-            {
-                var tax1042sFileName = user.ID + "_" + ConstNamesConfiguration.Report1042s + ".pdf";
-                SaveToOutputDir(tax1042sFilePath, tax1042sFileName);
-            }
 
             if (!string.IsNullOrEmpty(customTransactionSummaryFilePath))
             {
