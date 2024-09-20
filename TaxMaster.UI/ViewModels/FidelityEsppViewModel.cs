@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using TaxMaster.BL;
 using TaxMaster.Infra;
+using TaxMaster.Infra.Configuration;
 
 namespace TaxMaster
 {
@@ -52,29 +53,29 @@ namespace TaxMaster
             }
         }
 
-        private string _tax1024File;
-        public string Tax1024File
+        private string _tax1042File = ReportSettings.Configuration.RegisteredPartner.EsppObject.Tax1042sFilePath;
+        public string Tax1042File
         {
-            get => _tax1024File;
+            get => _tax1042File;
             set
             {
-                if (_tax1024File != value)
+                if (_tax1042File != value)
                 {
-                    _tax1024File = value;
+                    _tax1042File = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string _tax1024PartnerFile;
-        public string Tax1024PartnerFile
+        private string _tax1042PartnerFile = ReportSettings.Configuration.Partner.EsppObject.Tax1042sFilePath;
+        public string Tax1042PartnerFile
         {
-            get => _tax1024PartnerFile;
+            get => _tax1042PartnerFile;
             set
             {
-                if (_tax1024PartnerFile != value)
+                if (_tax1042PartnerFile != value)
                 {
-                    _tax1024PartnerFile = value;
+                    _tax1042PartnerFile = value;
                     OnPropertyChanged();
                 }
             }
@@ -309,14 +310,14 @@ namespace TaxMaster
             {
                 if (isRegisteredPartner)
                 {
-                    var results = await esppWorker.EsppFidelityAsync(isRegisteredPartner, Tax1024File, CustomTransactionSummaryFile);
+                    var results = await esppWorker.EsppFidelityAsync(isRegisteredPartner, CustomTransactionSummaryFile);
                     Report_1325_1_File = results.FirstHalfOfYearStockSaleReport;
                     Report_1325_2_File = results.SecondHalfOfYearStockSaleReport;
                     Dividend = results.DividendInUsd;
                 }
                 else
                 {
-                    var results = await esppWorker.EsppFidelityAsync(isRegisteredPartner, Tax1024PartnerFile, CustomTransactionSummaryPartnerFile);
+                    var results = await esppWorker.EsppFidelityAsync(isRegisteredPartner, CustomTransactionSummaryPartnerFile);
                     Report_1325_1_PartnerFile = results.FirstHalfOfYearStockSaleReport;
                     Report_1325_2_PartnerFile = results.SecondHalfOfYearStockSaleReport;
                     DividendPartner = results.DividendInUsd;
@@ -369,7 +370,27 @@ namespace TaxMaster
 
         public async override void OnNext()
         {
-            ReportSettings.SaveConfiguration();
+            if (!string.IsNullOrEmpty(Tax1042File))
+            {
+                var tax1042sFileName = ReportSettings.Configuration.RegisteredPartner.ID + "_" + ConstNamesConfiguration.Report1042s + ".pdf";
+                var copy = ReportSettings.SaveToOutputDir(Tax1042File, tax1042sFileName);
+                if (!string.IsNullOrEmpty(copy))
+                {
+                    ReportSettings.Configuration.RegisteredPartner.EsppObject.Tax1042sFilePath = copy;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(Tax1042PartnerFile))
+            {
+                var tax1042sFileName = ReportSettings.Configuration.Partner.ID + "_" + ConstNamesConfiguration.Report1042s + ".pdf";
+                var copy = ReportSettings.SaveToOutputDir(Tax1042PartnerFile, tax1042sFileName);
+                if (!string.IsNullOrEmpty(copy))
+                {
+                    ReportSettings.Configuration.Partner.EsppObject.Tax1042sFilePath = copy;
+                }
+            }
+
+            base.OnNext();
             await Shell.Current.GoToAsync(nameof(MainRSUView));
         }
 
@@ -424,9 +445,9 @@ namespace TaxMaster
 
         private void UpdateValue(string fileType, string value)
         {
-            if (fileType.Equals("1024"))
+            if (fileType.Equals("1042"))
             {
-                Tax1024File = value;
+                Tax1042File = value;
             }
             else if (fileType.Equals("CustomTransactionSummary"))
             {
@@ -437,9 +458,9 @@ namespace TaxMaster
                     ShouldDisplayValues = false;
                 }
             }
-            else if (fileType.Equals("1024Partner"))
+            else if (fileType.Equals("1042Partner"))
             {
-                Tax1024PartnerFile = value;
+                Tax1042PartnerFile = value;
             }
             else if (fileType.Equals("CustomTransactionSummaryPartner"))
             {

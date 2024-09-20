@@ -62,9 +62,9 @@
                                 </Label.FormattedText>
                             </Label>
                             <Grid FlowDirection="RightToLeft"  ColumnDefinitions="Auto, *, 44" RowDefinitions="*,*" Margin="10">
-                                <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 1024s" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1024" HeightRequest="44"/>
-                                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Tax1024File, Mode=TwoWay}" Margin="10" />
-                                <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1024" IsVisible="{Binding Tax1024File, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
+                                <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 1042s" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1042" HeightRequest="44"/>
+                                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Tax1042File, Mode=TwoWay}" Margin="10" />
+                                <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1042" IsVisible="{Binding Tax1042File, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
 
                                 <Button Grid.Row="1" Grid.Column="0" Text="בחר/י את מסמך Custom Transaction Summary " Command="{Binding PickFileCommand}" CommandParameter="CustomTransactionSummary" HeightRequest="44"/>
                                 <Entry Grid.Row="1" Grid.Column="1" Text="{Binding CustomTransactionSummaryFile, Mode=TwoWay}" Margin="10"/>
@@ -104,9 +104,9 @@
                                 </Label.FormattedText>
                             </Label>
                             <Grid FlowDirection="RightToLeft"  ColumnDefinitions="Auto, *, 44" RowDefinitions="*,*" Margin="10">
-                                <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 1024s" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1024Partner" HeightRequest="44"/>
-                                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Tax1024PartnerFile, Mode=TwoWay}" Margin="10" />
-                                <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1024Partner" IsVisible="{Binding Tax1024PartnerFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
+                                <Button Grid.Row="0" Grid.Column="0" Text="בחר/י את מסמך 1042s" Command="{Binding PickFileCommand}" VerticalOptions="Center" CommandParameter="1042Partner" HeightRequest="44"/>
+                                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Tax1042PartnerFile, Mode=TwoWay}" Margin="10" />
+                                <Button Grid.Row="0" Grid.Column="2" Text="X" Command="{Binding ResetFileCommand}" CommandParameter="1042Partner" IsVisible="{Binding Tax1042PartnerFile, Converter={StaticResource StringToBooleanConverter}}" HeightRequest="44"/>
 
                                 <Button Grid.Row="1" Grid.Column="0" Text="בחר/י את מסמך Custom Transaction Summary " Command="{Binding PickFileCommand}" CommandParameter="CustomTransactionSummaryPartner" HeightRequest="44"/>
                                 <Entry Grid.Row="1" Grid.Column="1" Text="{Binding CustomTransactionSummaryPartnerFile, Mode=TwoWay}" Margin="10"/>
