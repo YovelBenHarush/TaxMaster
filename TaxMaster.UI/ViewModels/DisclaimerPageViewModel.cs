@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using TaxMaster.Infra;
+using TaxMaster.Infra.Configuration;
 
 namespace TaxMaster
 {
@@ -79,6 +80,17 @@ namespace TaxMaster
 
         public override async void OnNext()
         {
+            var killSwitchClient = new KillSwitchClient();
+            var killSwitchResponse = await killSwitchClient.GetkillSwitchInfo(ConstNamesConfiguration.SystemVersion);
+            if (!killSwitchResponse.canRun)
+            {
+                if (Application.Current?.MainPage != null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("תקלה", killSwitchResponse.Text, "OK");
+                    Application.Current.Quit();
+                }
+            }
+
             ReportSettings.SaveConfiguration();
 
             if (!DisclaimerModel.DisclaimerApproval)
