@@ -21,14 +21,14 @@ namespace TaxMaster.BL
         {
             if (isFiller)
             {
-                var tax106OutputNameFiller = ReportSettings.Configuration.RegisteredPartner.ID + "_" + "106";
+                var tax106OutputNameFiller = ReportSettings.Configuration.RegisteredPartner.ID;
                 SaveToOutputDir(tax106FilePaths, tax106OutputNameFiller);
 
                 ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper = new() { taxFiles = tax106Files };
             }
             else
             {
-                var tax106OutputNamePartner = ReportSettings.Configuration.Partner.ID + "_" + "106";
+                var tax106OutputNamePartner = ReportSettings.Configuration.Partner.ID;
                 SaveToOutputDir(tax106FilePaths, tax106OutputNamePartner);
 
                 ReportSettings.Configuration.Partner.Tax106FilesWrapper = new() { taxFiles = tax106Files };
@@ -40,7 +40,7 @@ namespace TaxMaster.BL
             for (int i = 0; i < filePaths.Count; i++)
             {
                 var filePath = filePaths[i];
-                SaveToOutputDir(filePath, outputName + "_" + (i + 1));
+                SaveToOutputDir(filePath, outputName + "_106_" + (i + 1));
             }
         }
     }

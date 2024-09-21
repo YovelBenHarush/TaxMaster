@@ -1,52 +1,64 @@
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Language="1033" Id="*" Name="Hackathon2024TaxMaster" Version="1.0.0.0" Manufacturer="YourCompanyName" UpgradeCode="D1C5B6A9-7A49-4D74-A065-B12A8D98743D">
-        <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
-
-        <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
-
-        <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="LocalAppDataFolder">
-                <Directory Id="INSTALLFOLDER" Name="Hackathon2024TaxMaster">
-                    <Component Id="MainExecutable" Guid="E2A852DF-456B-40D4-97B5-2C3C34EA60E8">
-                        <File Id="MainExecutableFile" Source="$(var.HarvestPath)\TaxMaster.UI.exe" />
-                    </Component>
-                </Directory>
-            </Directory>
-
-            <Directory Id="StartMenuFolder" />
-
-            <Directory Id="ApplicationProgramsFolder" Name="Hackathon2024 TaxMaster"/>
-        </Directory>
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+    <Package Language="1033" Name="Hackathon2024TaxMaster" Version="1.0.0.0" Manufacturer="Accelerators" UpgradeCode="D1C5B6A9-7A49-4D74-A065-B12A8D987439" InstallerVersion="200" Scope="perUser">
+        
+        <MediaTemplate EmbedCab="yes" />
 
         <Feature Id="DefaultFeature" Level="1">
             <ComponentRef Id="MainExecutable" />
-            <ComponentGroupRef Id="TaxMasterFiles" />
+            <!--<Files Include="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\**">
+                <Exclude Files="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\Output\**" />
+            </Files>-->
+            <Files Include="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\**">
+                <Exclude Files="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\Output" />
+            </Files>
         </Feature>
 
+        <StandardDirectory Id="LocalAppDataFolder">
+            <Directory Id="INSTALLFOLDER" Name="Hackathon2024TaxMaster">
+                <Component Id="MainExecutable" Guid="E2A852DF-456B-40D4-97B5-2C3C34EA60E9">
+                    <File Id="MainExecutableFile" Source="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\TaxMaster.UI.exe" />
+
+                    <Shortcut Name="TaxMaster" Directory="DesktopFolder"
+                              Advertise="yes" WorkingDirectory="INSTALLFOLDER" />
+
+                    <Shortcut Name="TaxMaster" Directory="ProgramMenuFolder"
+                              Advertise="yes" WorkingDirectory="INSTALLFOLDER" />
+                </Component>
+            </Directory>
+        </StandardDirectory>
+
         <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
-        <UIRef Id="WixUI_InstallDir" />
         <WixVariable Id="WixUILicenseRtf" Value="..\LicenseAgreement.rtf" />
 
-        <CustomAction Id="EXECUTE_AFTER_FINALIZE"
-                      Execute="immediate"
-                      Impersonate="yes"
-                      Return="asyncNoWait"
-                      FileKey="MainExecutableFile"
-                      ExeCommand="" />
+        <UI Id="UI">
+            <!-- Creates a basic UI for the installer -->
+            <ui:WixUI Id="WixUI_InstallDir" />
 
+            <!-- Shows launch application on last screen -->
+            <Publish Dialog="ExitDialog"
+                Control="Finish"
+                Event="DoAction"
+                Value="LaunchApplication"
+                Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed"/>
+        </UI>
 
-        <DirectoryRef Id="ApplicationProgramsFolder">
-            <Component Id="ApplicationShortcut" Guid="f31df8a4-19ee-49e7-a64e-b2573dfc3875">
-                <Shortcut Id="ApplicationStartMenuShortcut"
-                          Name="Hackathon2024 TaxMaster"
-                          Description="Hackathon2024 TaxMaster"
-                          Target="[#MainExecutableFile]"
-                          WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
-                <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
-                <RegistryValue Root="HKCU" Key="Software\MicrosoftHackathon2024\TaxMaster" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
-            </Component>
-        </DirectoryRef>
+        <!-- Checkbox checked by default -->
+        <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1"/>
 
-    </Product>
+        <!-- Checkbox text message -->
+        <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Application On Exit" />
+
+        <Property Id="WIXUI_EXITDIALOGOPTIONALTEXT" Value="TaxMaster has been successfully installed! Who said taxes couldn't be fun?" />
+
+        <!-- Set our executable (its ID) as custom action target -->
+        <Property Id="WixShellExecTarget" Value="[#MainExecutableFile]"/>
+
+        <!-- Run custom action -->
+        <CustomAction Id="LaunchApplication"
+            BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+            DllEntry="WixShellExec"
+            Impersonate="yes" />
+
+    </Package>
 
 </Wix>

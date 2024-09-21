@@ -3,7 +3,7 @@
 	<PropertyGroup>
         <WindowsPackageType>None</WindowsPackageType>
 		<!--<TargetFrameworks>net8.0-android</TargetFrameworks>-->
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net8.0-windows10.0.19041.0</TargetFrameworks>
 		<!--<TargetFrameworks>$(TargetFrameworks);net8.0-android;net8.0-windows10.0.19041.0</TargetFrameworks>-->
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
@@ -47,13 +47,21 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<AppInstallerUri>http://localhost</AppInstallerUri>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-	</PropertyGroup>
+		<PackageIcon></PackageIcon>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <Target Name="GetTargetPath" Returns="@(_RealOutputPath)">
+        <ItemGroup>
+            <_RealOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\net8.0-windows10.0.19041.0\win10-x64\$(AssemblyName).exe" />
+        </ItemGroup>
+    </Target>
 
-		<!-- Splash Screen -->
+    <ItemGroup>
+        <!-- App Icon -->
+        <!--<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />-->
+        <MauiIcon Include="Resources\AppIcon\appicon.png" />
+
+        <!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
 		<!-- Images -->
@@ -66,6 +74,7 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
+
 
 	<ItemGroup>
 	  <AndroidResource Remove="NewFolder1\**" />
@@ -198,6 +207,10 @@
 	  </None>
 	  <None Update="Guides\tax_annual_report_connect.pdf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Resources\AppIcon\appicon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
 	  </None>
 	</ItemGroup>
 
