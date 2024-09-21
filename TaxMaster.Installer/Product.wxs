@@ -5,24 +5,27 @@
 
         <Feature Id="DefaultFeature" Level="1">
             <ComponentRef Id="MainExecutable" />
-            <!--<Files Include="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\**">
-                <Exclude Files="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\Output\**" />
-            </Files>-->
-            <Files Include="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\**">
-                <Exclude Files="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\Output" />
+            <Files Include="$(SolutionDir)TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\**">
+                <Exclude Files="$(SolutionDir)TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\Output" />
             </Files>
         </Feature>
+
+        <Icon Id="appicon.ico" SourceFile="$(SolutionDir)TaxMaster.UI\Resources\AppIcon\appicon.ico" />
 
         <StandardDirectory Id="LocalAppDataFolder">
             <Directory Id="INSTALLFOLDER" Name="Hackathon2024TaxMaster">
                 <Component Id="MainExecutable" Guid="E2A852DF-456B-40D4-97B5-2C3C34EA60E9">
-                    <File Id="MainExecutableFile" Source="$(SolutionDir)\TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\TaxMaster.UI.exe" />
+                    <File Id="MainExecutableFile" Source="$(SolutionDir)TaxMaster.UI\bin\$(Configuration)\net8.0-windows10.0.19041.0\win10-x64\TaxMaster.UI.exe" />
+
+                    <!--<File Id="Icon" Source="$(SolutionDir)TaxMaster.UI\Resources\AppIcon\appicon.ico" />-->
 
                     <Shortcut Name="TaxMaster" Directory="DesktopFolder"
-                              Advertise="yes" WorkingDirectory="INSTALLFOLDER" />
+                              Advertise="yes" WorkingDirectory="INSTALLFOLDER" 
+                              Icon="appicon.ico" />
 
                     <Shortcut Name="TaxMaster" Directory="ProgramMenuFolder"
-                              Advertise="yes" WorkingDirectory="INSTALLFOLDER" />
+                              Advertise="yes" WorkingDirectory="INSTALLFOLDER"
+                              Icon="appicon.ico" />
                 </Component>
             </Directory>
         </StandardDirectory>
