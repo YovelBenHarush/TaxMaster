@@ -22,7 +22,10 @@
                 </StackLayout>
                 <StackLayout Orientation="Vertical">
                     <Label Text="בחלון שנפתח יש להעלות את כל קבצי ה PDF בתיקייה:" FontSize="Small" FontAttributes="None" FlowDirection="RightToLeft" Margin="2"/>
-                    <Label Text="{Binding OutputPath}" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft" Margin="2" />
+                    <StackLayout  FlowDirection="RightToLeft" Orientation="Horizontal" Padding="10" Margin="0,20,0,20">
+                        <Button Margin="5" Text="פתח תיקייה" Command="{Binding OpenFileExplorerCommand}" />
+                        <Entry Margin="5" IsReadOnly="True" Text="{Binding OutputPath}" FontSize="Small" FontAttributes="Bold" FlowDirection="RightToLeft" />
+                    </StackLayout>
                     <Image Source="additional_docs_upload_3.png" Aspect="Center"/>
                 </StackLayout>
                 <Label  Text="לבסוף לחץ על 'אישור'" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
