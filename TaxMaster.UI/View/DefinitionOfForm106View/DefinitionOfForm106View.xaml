@@ -76,10 +76,26 @@
         <!-- Main content area for the step -->
         <ScrollView Grid.Row="0">
             <Grid RowDefinitions="1*, 9*">
-                <StackLayout Grid.Row="0" Orientation="Vertical">
+                <StackLayout Grid.Row="0" Orientation="Vertical" FlowDirection="RightToLeft">
+                    <Label VerticalOptions="Center" HorizontalOptions="Start" Margin="20,0,5,5">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="טופס 106 מרכז ומסכם את הנתונים והרכיבים של כל המשכורות שקיבל עובד מהמעסיק במהלך שנת מס"/>
+                                <Span Text="&#x0a;"/>
+                                <Span Text="הטופס כולל, בין היתר, פירוט של התשלומים, ההפקדות והניכויים שהופיעו בתלושי השכר."/>
+                                <Span Text="&#x0a;"/>
+                                <Span Text="מעסיק חייב למסור לעובד את הטופס עד ה- 31.03 של כל שנה (עבור שנת המס הקודמת)."/>
+                                <Span Text="&#x0a;"/>
+                                <Span Text="בטופס 106 נעשה שימוש לצורך החזר מס, תיאום מס והגשת תביעות למוסד לביטוח לאומי"/>
+                                <Span Text="&#x0a;"/>
+                                <Span Text="&#x0a;"/>
+                                <Span Text="בחלק זה נסביר איך ניתן להוריד את טופס 106 מאתר רשות המיסים ונטען את הנתונים למערכת ." TextDecorations="Underline"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
                     <HorizontalStackLayout FlowDirection="RightToLeft" Margin="15,0,5,5">
                         <CheckBox VerticalOptions="Center" x:Name="showDirectionsCheckbox" />
-                        <Label Text="הצג הנחיות" VerticalOptions="Center"/>
+                        <Label Text=" הצג הנחיות להורדת טופס 106" VerticalOptions="Center"/>
                     </HorizontalStackLayout>
                     <ScrollView IsVisible="{Binding Source={x:Reference showDirectionsCheckbox}, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}">
                         <WebView Source="{Binding Tax106Guide}" HeightRequest="500" Margin="40,10,40,10" FlowDirection="LeftToRight" />
