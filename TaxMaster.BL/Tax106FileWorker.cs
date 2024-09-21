@@ -37,10 +37,12 @@ namespace TaxMaster.BL
 
         private void SaveToOutputDir(List<string> filePaths, string outputName)
         {
+            var random = new Random();
             for (int i = 0; i < filePaths.Count; i++)
             {
                 var filePath = filePaths[i];
-                SaveToOutputDir(filePath, outputName + "_106_" + (i + 1));
+                var randomHex = random.Next(0x100000, 0x1000000).ToString("X5");
+                SaveToOutputDir(filePath, outputName + "_106_" + randomHex);
             }
         }
     }
