@@ -18,5 +18,7 @@ namespace TaxMaster.Infra.Configuration
 
         public const string EsopTransactionsReport = "esopTransactions.pdf";
 
+        public const string SystemVersion = "V1";
+
     }
 }
