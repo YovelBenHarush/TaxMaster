@@ -202,6 +202,9 @@
 	  <None Update="Guides\fidelity_espp_guide.pdf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Guides\tax_106_guide.pdf">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Guides\tax_annual_personal_data.pdf">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>

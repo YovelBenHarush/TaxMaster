@@ -22,8 +22,37 @@ namespace TaxMaster
         public LifeInsuranceViewModel()
         {
             Title = "נתוני ביטוחי חיים";
-            UserInsurances = new ObservableCollection<InsuranceEntry>(ReportSettings.Configuration.RegisteredPartner.LifeInsurences.InsurencesList);
-            PartnerInsurances = new ObservableCollection<InsuranceEntry>(ReportSettings.Configuration.Partner.LifeInsurences.InsurencesList);
+
+            UserInsurances =
+                [
+                    new()
+                ];
+            PartnerInsurances =
+                [
+                new()
+                ];
+
+            if (ReportSettings.Configuration?.RegisteredPartner?.LifeInsurences?.InsurencesList != null)
+            {
+                UserInsurances = new ObservableCollection<InsuranceEntry>(ReportSettings.Configuration.RegisteredPartner.LifeInsurences.InsurencesList);
+                PartnerInsurances = new ObservableCollection<InsuranceEntry>(ReportSettings.Configuration.Partner.LifeInsurences.InsurencesList);
+            }
+
+            if (UserInsurances.Count == 0)
+            {
+                UserInsurances =
+                [
+                    new()
+                ];
+            }
+
+            if (PartnerInsurances.Count == 0)
+            {
+                PartnerInsurances =
+                [
+                    new()
+                ];
+            }
 
             AddInsuranceCommand = new Command<string>(AddInsurance);
             RemoveInsuranceCommand = new Command<object>(RemoveInsurance);

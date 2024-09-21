@@ -17,6 +17,20 @@ namespace TaxMaster
             set => base.Title = value;
         }
 
+        private string _tax106Guide;
+        public string Tax106Guide
+        {
+            get => _tax106Guide;
+            set
+            {
+                if (_tax106Guide != value)
+                {
+                    _tax106Guide = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private bool _shouldShowTax106FileDetailsFiller = false;
         public bool ShouldShowTax106FileDetailsFiller
         {
@@ -205,6 +219,8 @@ namespace TaxMaster
 
         public DefinitionOfForm106ViewModel()
         {
+            Tax106Guide = GuidesConfigurations.Tax106GuidePdfUrl;
+
             Tax106FilesFiller = new ObservableCollection<Tax106File>(ReportSettings.Configuration.RegisteredPartner.Tax106FilesWrapper.taxFiles ?? new List<Tax106File>());
             PickFileCommandFiller = new Command(Add106FormFiller);
             SubmitFileFiller = new Command(Submit106FormFiller);
