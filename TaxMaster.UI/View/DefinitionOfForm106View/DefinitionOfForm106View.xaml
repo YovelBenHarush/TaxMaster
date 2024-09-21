@@ -14,6 +14,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <Style TargetType="Frame">
                 <Setter Property="HasShadow" Value="True" />
                 <Setter Property="CornerRadius" Value="8" />
@@ -36,9 +37,9 @@
                 <Setter Property="PlaceholderColor" Value="#9E9E9E" />
                 <Setter Property="FlowDirection" Value="RightToLeft" />
             </Style>
-            <Style x:Key="MaterialButtonStyle" TargetType="Button">
+            <!--<Style x:Key="MaterialButtonStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="#2196F3" />
-                <!-- Material Blue -->
+                --><!-- Material Blue --><!--
                 <Setter Property="TextColor" Value="White" />
                 <Setter Property="CornerRadius" Value="5" />
                 <Setter Property="Padding" Value="15,5" />
@@ -67,7 +68,7 @@
                         </VisualStateGroupList>
                     </Setter.Value>
                 </Setter>
-            </Style>
+            </Style>-->
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -133,7 +134,7 @@
                         <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,2,0,0">
                             <ActivityIndicator IsRunning="{Binding IsSubmittingFiller}" IsVisible="{Binding IsSubmittingFiller}" />
                             <Button Text="{Binding SubmitButtonTextFiller}" Command="{Binding SubmitFileFiller}" HorizontalOptions="Center" 
-                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsSubmittingFiller, Converter={StaticResource InvertedBoolConverter}} ">
+                                        VerticalOptions="Center" IsVisible="{Binding IsSubmittingFiller, Converter={StaticResource InvertedBoolConverter}} ">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsFillerSubmitted}" Value="True">
                                         <Setter Property="BackgroundColor" Value="Gray" />
@@ -165,7 +166,7 @@
                             </Button>
                         </StackLayout>
                     </StackLayout>
-                    <Button Text="{Binding FillerName, Converter={StaticResource Tax106NameTitleConverter}}" Command="{Binding PickFileCommandFiller}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" Margin="0,9,0,0" />
+                    <Button Text="{Binding FillerName, Converter={StaticResource Tax106NameTitleConverter}}" Command="{Binding PickFileCommandFiller}" HorizontalOptions="Center" Margin="0,9,0,0" />
                 </VerticalStackLayout>
 
 
@@ -217,7 +218,7 @@
                         <StackLayout Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,2,0,0">
                             <ActivityIndicator IsRunning="{Binding IsSubmittingPartner}" IsVisible="{Binding IsSubmittingPartner}" />
                             <Button Text="{Binding SubmitButtonTextPartner}" Command="{Binding SubmitFilePartner}" HorizontalOptions="Center" 
-                                        VerticalOptions="Center" Style="{StaticResource MaterialButtonStyle}" IsVisible="{Binding IsSubmittingPartner, Converter={StaticResource InvertedBoolConverter}} ">
+                                        VerticalOptions="Center" IsVisible="{Binding IsSubmittingPartner, Converter={StaticResource InvertedBoolConverter}} ">
                                 <Button.Triggers>
                                     <DataTrigger TargetType="Button" Binding="{Binding IsPartnerSubmitted}" Value="True">
                                         <Setter Property="BackgroundColor" Value="Gray" />
@@ -249,7 +250,7 @@
                             </Button>
                         </StackLayout>
                     </StackLayout>
-                    <Button Text="{Binding PartnerName, Converter={StaticResource Tax106NameTitleConverter}}" Command="{Binding PickFileCommandPartner}" HorizontalOptions="Center" Style="{StaticResource MaterialButtonStyle}" Margin="0,9,0,0" />
+                    <Button Text="{Binding PartnerName, Converter={StaticResource Tax106NameTitleConverter}}" Command="{Binding PickFileCommandPartner}" HorizontalOptions="Center" Margin="0,9,0,0" />
                 </VerticalStackLayout>
             </Grid>
             </Grid>
