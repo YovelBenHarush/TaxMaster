@@ -22,8 +22,36 @@ namespace TaxMaster
         public DonationsViewModel()
         {
             Title = "תרומות";
-            RegisteredPartnerDonations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList);
-            PartnerDonations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.Partner.Donations.DonationsList);
+            RegisteredPartnerDonations =
+               [
+                   new()
+               ];
+            PartnerDonations =
+                [
+                new()
+                ];
+
+            if (ReportSettings.Configuration?.RegisteredPartner?.Donations?.DonationsList != null)
+            {
+                RegisteredPartnerDonations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.RegisteredPartner.Donations.DonationsList);
+                PartnerDonations = new ObservableCollection<DonationEntry>(ReportSettings.Configuration.Partner.Donations.DonationsList);
+            }
+
+            if (RegisteredPartnerDonations.Count == 0)
+            {
+                RegisteredPartnerDonations =
+                [
+                    new()
+                ];
+            }
+
+            if (PartnerDonations.Count == 0)
+            {
+                PartnerDonations =
+                [
+                    new()
+                ];
+            }
 
             AddDonationCommand = new Command<string>(AddDonation);
             RemoveDonationCommand = new Command<object>(RemoveDonation);
