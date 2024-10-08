@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TaxMaster.ReportSelectionView"
-              xmlns:local="clr-namespace:TaxMaster">
+             xmlns:local="clr-namespace:TaxMaster"
+              xmlns:local2="clr-namespace:TaxMaster.BL;assembly=TaxMaster.BL">
     <Shell.TitleView>
         <local:PageTitle />
     </Shell.TitleView>
@@ -34,18 +35,18 @@
                     <VerticalStackLayout Padding="20,10,0,0">
                         <Label Text="בחר/י סוג דוח" VerticalOptions="Center" FontAttributes="Bold" Margin="10" TextDecorations="Underline" />
                         <HorizontalStackLayout FlowDirection="RightToLeft">
-                            <RadioButton IsChecked="{Binding ReportType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ReportType.AnnualReport}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportType"/>
+                            <RadioButton IsChecked="{Binding ReportType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local2:ReportType.AnnualReport}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportType"/>
                             <Label Text="דוח שנתי" VerticalOptions="Center">
                                 <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding ToggleReportTypeCommand}" CommandParameter="{x:Static local:ReportType.AnnualReport}" />
+                                    <TapGestureRecognizer Command="{Binding ToggleReportTypeCommand}" CommandParameter="{x:Static local2:ReportType.AnnualReport}" />
                                 </Label.GestureRecognizers>
                             </Label>
                         </HorizontalStackLayout>
                         <HorizontalStackLayout FlowDirection="RightToLeft">
-                            <RadioButton IsChecked="{Binding ReportType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local:ReportType.HalfAnnualReport}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportType" IsEnabled="False"/>
+                            <RadioButton IsChecked="{Binding ReportType, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static local2:ReportType.HalfAnnualReport}, Mode=TwoWay}" VerticalOptions="Center" GroupName="ReportType" IsEnabled="False"/>
                             <Label Text="דוח חצי שנתי (מניות)" VerticalOptions="Center" IsEnabled="False">
                                 <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding ToggleReportTypeCommand}" CommandParameter="{x:Static local:ReportType.HalfAnnualReport}" />
+                                    <TapGestureRecognizer Command="{Binding ToggleReportTypeCommand}" CommandParameter="{x:Static local2:ReportType.HalfAnnualReport}" />
                                 </Label.GestureRecognizers>
                             </Label>
                         </HorizontalStackLayout>
