@@ -108,7 +108,7 @@ namespace TaxMaster
 
         private void OnSelectedYearChanged()
         {
-            var reports = _annualReportWorker.GetExistingAnnualReports(SelectedYear);
+            var reports = _annualReportWorker.GetExistingReports(SelectedYear, ReportType);
             Reports = (reports == null || reports.Count == 0) ? new ObservableCollection<string>() : new ObservableCollection<string>(reports.Select(r => r.DisplayName));
             OnPropertyChanged(nameof(Reports));
             SelectedReport = Reports.Count == 0 ? "" : Reports[0];
