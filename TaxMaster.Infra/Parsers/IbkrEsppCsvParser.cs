@@ -62,8 +62,8 @@ public class IbkrEsppCsvParser
                         var sellTransaction = new SellTransaction
                         {
                             ShareIndex = record.Symbol,
-                            PurchasePriceInUSD = record.Basis,
-                            SellPriceInUSD = record.TradePrice,
+                            PurchasePriceInUSD = lotRecord.Basis,
+                            SellPriceInUSD = lotRecord.Basis + lotRecord.RealizedPL,
                             PurchaseDate = lotRecord.DateTime, // Assuming DateTime is the purchase date
                             SellDate = record.DateTime // Assuming DateTime is the sell date
                         };
