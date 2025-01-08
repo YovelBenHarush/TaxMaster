@@ -72,6 +72,9 @@ public static class Program
                 return;
         }
 
+        Console.WriteLine("\nParsed file successfully.");
+        Console.WriteLine("Generating 1325 forms...");
+
         var user = GetUser();
 
         var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
