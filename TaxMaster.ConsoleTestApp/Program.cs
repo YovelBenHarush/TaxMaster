@@ -24,7 +24,7 @@ public static class Program
             else if (brokerSelection == "2")
             {
                 broker = Broker.IB;
-                Console.WriteLine("Enter the path to the IBKR CSV file (intsructions on how to generate the proper file can be found here: 'https://fintranslator.com/2022/07/11/ib-annual-statement-for-israel-tax-reporting/?fbclid=IwAR3nAZBwsx4xyYD1bn0o_A5Sqvboj3JzajbQeF2fSS0svoB6uDCv-Z6fpsE'");
+                Console.WriteLine("Enter the path to the IBKR CSV file (instructions on how to generate the proper file can be found here: 'https://fintranslator.com/2022/07/11/ib-annual-statement-for-israel-tax-reporting/?fbclid=IwAR3nAZBwsx4xyYD1bn0o_A5Sqvboj3JzajbQeF2fSS0svoB6uDCv-Z6fpsE'");
             }
             else
             {
