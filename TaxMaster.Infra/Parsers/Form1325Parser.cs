@@ -1,9 +1,4 @@
-﻿using PdfSharpCore.Drawing;
-using PdfSharpCore.Pdf.IO;
-using PdfSharpCore.Pdf;
-using TaxMaster.Infra.Interfaces;
-using PdfSharpCore.Pdf.Content.Objects;
-using PdfSharpCore.Pdf.Content;
+﻿using TaxMaster.Infra.Interfaces;
 using Spire.Xls;
 using TaxMaster.Infra.Entities;
 

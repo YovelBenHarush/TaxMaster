@@ -10,6 +10,8 @@
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>    
 </PropertyGroup>
 <ItemGroup>
+  <PackageReference Include="CsvHelper" Version="33.0.1" />
+  <PackageReference Include="FileHelpers" Version="3.5.2" />
   <PackageReference Include="itext7" Version="8.0.5" />
   <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
   <PackageReference Include="PdfSharpCore" Version="1.3.65" />
