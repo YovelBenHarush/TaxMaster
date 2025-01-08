@@ -13,6 +13,9 @@ public static class Program
         //var sellTransactions = esppFidelityClient.ParseStockSalesTranscations(CustomTransactionSummaryFilePath);
         //var esppDivident = esppFidelityClient.ParseDividend(CustomTransactionSummaryFilePath);
 
+        var ibkrEsppCsvParser = new IbkrEsppCsvParser();
+        var sellTransactions = ibkrEsppCsvParser.ParseCsv("C:\\Users\\ybenharosh\\Downloads\\U9629674_20240101_20241231.csv");
+
         var sellTransaction1 = new SellTransaction
         {
             ShareIndex = "MSFT",
@@ -40,7 +43,7 @@ public static class Program
 
         var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
 
-        var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax([sellTransaction1, sellTransaction2]);
+        var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
 
         var parser = new Form1325Parser();
         parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user, Directory.GetCurrentDirectory());
