@@ -10,7 +10,7 @@ namespace TaxMaster.Infra.Parsers;
 
 public class IbkrEsppCsvParser
 {
-    public List<ISellTransaction> ParseCsv(string filePath)
+    public List<ISellTransaction> ParseStockSalesTranscations(string filePath)
     {
         var sellTransactions = new List<ISellTransaction>();
 
@@ -75,6 +75,39 @@ public class IbkrEsppCsvParser
         }
 
         return sellTransactions;
+    }
+
+    public double ParseDividend(string filePath)
+    {
+        double dividend = 0;
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HasHeaderRecord = true,
+            MissingFieldFound = null,
+            BadDataFound = null
+        };
+        using (var reader = new StreamReader(filePath))
+        using (var csv = new CsvReader(reader, config))
+        {
+            // Skip lines until the row starts with "Trades"
+            int headersRow = 0;
+            while (reader.Peek() > 0 && headersRow++ < 2)
+            {
+                var line = reader.ReadLine();
+            }
+            // Read the header row
+            csv.Read();
+            csv.ReadHeader();
+            var records = csv.GetRecords<TradeRecord>().ToList();
+            foreach (var record in records)
+            {
+                if (record.DataDiscriminator == "Dividend")
+                {
+                    dividend += record.Proceeds;
+                }
+            }
+        }
+        return dividend;
     }
 }
 

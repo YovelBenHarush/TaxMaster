@@ -14,7 +14,7 @@ public static class Program
 
         if (args.Length == 0)
         {
-            Console.WriteLine("Select Broker: [1] Fidelity, [2] IB");
+            Console.WriteLine("Select Broker: [1] Fidelity, [2] Interactive Brokers");
             var brokerSelection = Console.ReadLine();
             if (brokerSelection == "1")
             {
@@ -24,7 +24,7 @@ public static class Program
             else if (brokerSelection == "2")
             {
                 broker = Broker.IB;
-                Console.WriteLine("Enter the path to the IB Excel file");
+                Console.WriteLine("Enter the path to the IBKR CSV file (intsructions on how to generate the proper file can be found here: 'https://fintranslator.com/2022/07/11/ib-annual-statement-for-israel-tax-reporting/?fbclid=IwAR3nAZBwsx4xyYD1bn0o_A5Sqvboj3JzajbQeF2fSS0svoB6uDCv-Z6fpsE'");
             }
             else
             {
@@ -63,8 +63,10 @@ public static class Program
                 esppDivident = esppFidelityClient.ParseDividend(filePath);
                 break;
             case Broker.IB:
-                Console.WriteLine("IB broker not yet supported");
-                return;
+                var IbkrClient = new IbkrEsppCsvParser();
+                sellTransactions = IbkrClient.ParseStockSalesTranscations(filePath);
+                esppDivident = IbkrClient.ParseDividend(filePath);
+                break;
             default:
                 Console.WriteLine("Invalid broker");
                 return;
@@ -75,7 +77,17 @@ public static class Program
         var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
         var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
         var parser = new Form1325Parser();
-        parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user, Directory.GetCurrentDirectory());
+        var genratedFilesPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user, Directory.GetCurrentDirectory());
+
+        Console.WriteLine("\n=========================================================================================");
+        Console.WriteLine("=========================================================================================\n");
+        Console.WriteLine("Genaerated 1325 forms successfully!!!\n");
+        Console.WriteLine("Generated 1325 forms:");
+        Console.WriteLine($"[*] {genratedFilesPaths.FirstHalfFormPath}");
+        Console.WriteLine($"[*] {genratedFilesPaths.SecondHalfFormPath}");
+        Console.WriteLine("\n=========================================================================================");
+        Console.WriteLine("=========================================================================================");
+
     }
 
     private static User GetUser()
