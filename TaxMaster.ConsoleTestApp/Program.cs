@@ -9,76 +9,89 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
-        Broker broker = Broker.Unknown;
-        var filePath = string.Empty;
+        Console.WriteLine("Welcome to TaxMaster console app. Follow instructions to prepare 1325 files.");
 
-        if (args.Length == 0)
+        Broker broker = Broker.Unknown;
+        var fidelityFilePath = string.Empty;
+        var ibFilePath = string.Empty;
+
+        Console.WriteLine("Select Broker: [1] Fidelity, [2] Interactive Brokers, [3] Both");
+        var brokerSelection = Convert.ToInt32(Console.ReadLine());
+        switch (brokerSelection)
         {
-            Console.WriteLine("Select Broker: [1] Fidelity, [2] Interactive Brokers");
-            var brokerSelection = Console.ReadLine();
-            if (brokerSelection == "1")
-            {
+            case 1:
                 broker = Broker.Fidelity;
                 Console.WriteLine("Enter the path to the Fidelity PDF file");
-            }
-            else if (brokerSelection == "2")
-            {
+                fidelityFilePath = Console.ReadLine();
+                break;
+            case 2:
                 broker = Broker.IB;
                 Console.WriteLine("Enter the path to the IBKR CSV file (instructions on how to generate the proper file can be found here: 'https://fintranslator.com/2022/07/11/ib-annual-statement-for-israel-tax-reporting/?fbclid=IwAR3nAZBwsx4xyYD1bn0o_A5Sqvboj3JzajbQeF2fSS0svoB6uDCv-Z6fpsE')");
-            }
-            else
-            {
-                Console.WriteLine("Invalid broker");
+                ibFilePath = Console.ReadLine();
+                break;
+            case 3:
+                broker = Broker.Both;
+                Console.WriteLine("Enter the path to the Fidelity PDF file");
+                fidelityFilePath = Console.ReadLine();
+                Console.WriteLine("Enter the path to the IBKR CSV file (instructions on how to generate the proper file can be found here: 'https://fintranslator.com/2022/07/11/ib-annual-statement-for-israel-tax-reporting/?fbclid=IwAR3nAZBwsx4xyYD1bn0o_A5Sqvboj3JzajbQeF2fSS0svoB6uDCv-Z6fpsE')");
+                ibFilePath = Console.ReadLine();
+                break;
+            default:
+                Console.WriteLine("Invalid broker or selection");
                 return;
-            }
-
-            filePath = Console.ReadLine();
-            if (!Path.Exists(filePath))
-            {
-                Console.WriteLine("Invalid file path");
-                return;
-            }
         }
 
-        if (args.Length == 1)
+        IEnumerable<ISellTransaction> fidelitySellTransactions = [];
+        IEnumerable<ISellTransaction> ibSellTransactions = [];
+        double fidelityDivident = 0;
+        double ibDivident = 0;
+        var esppFidelityClient = new ESPPFidelityParser();
+        var IbkrClient = new IbkrEsppCsvParser();
+
+        switch (broker)
         {
-            Console.WriteLine("Tax Master Console usage:");
-            Console.WriteLine("Broker");
-            Console.WriteLine("File path");
-            return;
-        }
-
-        if (args.Length > 2)
-        {
-            Console.WriteLine("Invalid number of arguments");
-            return;
-        }
-
-        IEnumerable<ISellTransaction> sellTransactions;
-        double esppDivident = 0;
-        switch (broker) {
             case Broker.Fidelity:
-                var esppFidelityClient = new ESPPFidelityParser();
-                sellTransactions = esppFidelityClient.ParseStockSalesTranscations(filePath);
-                esppDivident = esppFidelityClient.ParseDividend(filePath);
+                if (!ValidFilePath(fidelityFilePath))
+                {
+                    Console.WriteLine("Invalid file path");
+                    return;
+                }
+                fidelitySellTransactions = esppFidelityClient.ParseStockSalesTranscations(fidelityFilePath);
+                fidelityDivident = esppFidelityClient.ParseDividend(fidelityFilePath);
                 break;
             case Broker.IB:
-                var IbkrClient = new IbkrEsppCsvParser();
-                sellTransactions = IbkrClient.ParseStockSalesTranscations(filePath);
-                esppDivident = IbkrClient.ParseDividend(filePath);
+                if (!ValidFilePath(ibFilePath))
+                {
+                    Console.WriteLine("Invalid file path");
+                    return;
+                }
+                ibSellTransactions = IbkrClient.ParseStockSalesTranscations(ibFilePath);
+                ibDivident = IbkrClient.ParseDividend(ibFilePath);
+                break;
+            case Broker.Both:
+                if (!ValidFilePath(fidelityFilePath) || !ValidFilePath(ibFilePath))
+                {
+                    Console.WriteLine("Invalid file path");
+                    return;
+                }
+                fidelitySellTransactions = esppFidelityClient.ParseStockSalesTranscations(fidelityFilePath);
+                fidelityDivident = esppFidelityClient.ParseDividend(fidelityFilePath);
+                ibSellTransactions = IbkrClient.ParseStockSalesTranscations(ibFilePath);
+                ibDivident = IbkrClient.ParseDividend(ibFilePath);
                 break;
             default:
                 Console.WriteLine("Invalid broker");
                 return;
         }
 
-        Console.WriteLine("\nParsed file successfully.");
-        Console.WriteLine("Generating 1325 forms...");
+        Console.WriteLine("\nParsed file(s) successfully.");
 
         var user = GetUser();
 
+        Console.WriteLine("Generating 1325 forms...");
+
         var capitalGainTaxCaclulator = new CapitalGainTaxCaclulator();
-        var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(sellTransactions);
+        var sellTransactionsWithTaxMetadata = await capitalGainTaxCaclulator.CalculateTax(fidelitySellTransactions.Concat(ibSellTransactions));
         var parser = new Form1325Parser();
         var genratedFilesPaths = parser.Generate1325Forms(sellTransactionsWithTaxMetadata, user, Directory.GetCurrentDirectory());
 
@@ -93,13 +106,34 @@ public static class Program
 
     }
 
+    private static bool ValidFilePath(string filePath)
+    {
+        if (string.IsNullOrEmpty(filePath) || !Path.Exists(filePath))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     private static User GetUser()
     {
-        return new User
-        {
-            ID = "12345678",
-            FirstName = "Test",
-            LastName = "Test",
-        };
+        Console.WriteLine("Gathering user information...");
+        Console.WriteLine("Enter user id:");
+        var id = Console.ReadLine();
+        Console.WriteLine("Enter user first Name:");
+        var firstName = Console.ReadLine();
+        Console.WriteLine("Enter user last Name:");
+        var lastName = Console.ReadLine();
+
+        // Test code, to prevent it from crashing at the moments in case of bad user input.
+        // Need to add an error handling for case of bad user info
+
+        id = id ?? "123456789";
+        firstName = firstName ?? "Israel";
+        lastName = lastName ?? "Israeli";
+
+        Console.WriteLine("Gathered user information successfully.");
+        return new User(id, firstName, lastName);
     }
 }

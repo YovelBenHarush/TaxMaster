@@ -13,6 +13,17 @@
 
     public class User
     {
+        public User()
+        {
+        }
+
+        public User(string id, string firstName, string lastName)
+        {
+            ID = id;
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string ID { get; set; } = string.Empty;

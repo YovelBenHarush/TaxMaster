@@ -4,5 +4,6 @@ public enum Broker
 {
     Unknown,
     Fidelity,
-    IB
+    IB,
+    Both
 }
