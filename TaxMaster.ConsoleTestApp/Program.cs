@@ -21,7 +21,7 @@ public static class Program
         {
             case 1:
                 broker = Broker.Fidelity;
-                Console.WriteLine("Enter the path to the Fidelity PDF file");
+                Console.WriteLine("Enter the path to the Fidelity PDF file (instructions on how to generate the proper file can be found here: 'https://github.com/YovelBenHarush/TaxMaster/blob/main/TaxMaster.UI/Guides/fidelity_espp_guide.pdf')");
                 fidelityFilePath = Console.ReadLine();
                 break;
             case 2:
