@@ -1,4 +1,5 @@
-﻿using TaxMaster.BL;
+﻿using System.Text;
+using TaxMaster.BL;
 using TaxMaster.Infra;
 using TaxMaster.Infra.Contracts;
 using TaxMaster.Infra.Entities;
@@ -9,6 +10,9 @@ public static class Program
 {
     public static async Task Main(string[] args)
     {
+        Console.InputEncoding = Encoding.UTF8;
+        Console.OutputEncoding = Encoding.UTF8;
+
         Console.WriteLine("Welcome to TaxMaster console app. Follow instructions to prepare 1325 files.");
 
         Broker broker = Broker.Unknown;
@@ -119,12 +123,15 @@ public static class Program
     private static User GetUser()
     {
         Console.WriteLine("Gathering user information...");
-        Console.WriteLine("Enter user id:");
+
+        WriteLineRtl("הכנס תעודת זהות: ");
         var id = Console.ReadLine();
-        Console.WriteLine("Enter user first Name:");
-        var firstName = Console.ReadLine();
-        Console.WriteLine("Enter user last Name:");
-        var lastName = Console.ReadLine();
+
+        WriteLineRtl("הכנס שם פרטי: ");
+        var firstName = ReadLineRtl();
+
+        WriteLineRtl("הכנס שם משפחה: ");
+        var lastName = ReadLineRtl();
 
         // Test code, to prevent it from crashing at the moments in case of bad user input.
         // Need to add an error handling for case of bad user info
@@ -135,5 +142,34 @@ public static class Program
 
         Console.WriteLine("Gathered user information successfully.");
         return new User(id, firstName, lastName);
+    }
+
+    private static void WriteLineRtl(string input)
+    {
+        Console.CursorLeft = Console.WindowWidth - input.Length;
+        for (int i = input.Length - 1; i >= 0; i--)
+            Console.Write(input[i]);
+        Console.WriteLine();
+    }
+
+    private static string ReadLineRtl()
+    {
+        Console.CursorVisible = false;
+        int i = 0;
+        string str = string.Empty;
+
+        Console.CursorLeft = Console.WindowWidth - 1 - i;
+        var input = Console.ReadKey().KeyChar;
+        while (input != '\r')
+        {
+            var inputChar = (char)input;
+            str += inputChar;
+            i++;
+            Console.CursorLeft = Console.WindowWidth - 1 - i;
+            input = Console.ReadKey().KeyChar;
+        }
+
+        Console.WriteLine();
+        return str;
     }
 }
