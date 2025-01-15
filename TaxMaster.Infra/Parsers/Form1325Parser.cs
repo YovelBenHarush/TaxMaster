@@ -6,7 +6,7 @@ namespace TaxMaster.Infra.Parsers
 {
     public class Form1325Parser
     {
-        private const int startRow = 5;
+        private const int startRow = 7;
         private const string ShareIndexCol = "B";
         private const string SellPriceInUSDCol = "D";
         private const string PurchaseDateCol = "E";
@@ -17,10 +17,11 @@ namespace TaxMaster.Infra.Parsers
         private const string SellPriceInILSCol = "J";
         private const string TaxableProfitInILSCol = "K";
         private const string LossinILSCol = "L";
-        private const string TotalTaxableProfitCol = "K27";
-        private const string TotalSellPriceCol = "K28";
-        private const string NameCol = "E2";
-        private const string IDCol = "G2";
+        private const string TotalTaxableProfitCol = "K29";
+        private const string TotalLossCol = "L29";
+        private const string TotalSellPriceCol = "K30";
+        private const string NameCol = "E4";
+        private const string IDCol = "G4";
 
         private const string Form1325Path = "Assets\\1325Form.xlsx";
         private const string Pdf1325PathTemaplate = "{0}_1325_{1}.pdf";
@@ -67,7 +68,6 @@ namespace TaxMaster.Infra.Parsers
             {
                 var transaction = transactions.ElementAt(i);
 
-                // Edit cell A1
                 sheet.Range[Col(ShareIndexCol, i)].Text = transaction.ShareIndex;
                 sheet.Range[Col(SellPriceInUSDCol, i)].NumberValue = transaction.SellPriceInUSD;
                 sheet.Range[Col(PurchaseDateCol, i)].DateTimeValue = transaction.PurchaseDate;
@@ -87,7 +87,8 @@ namespace TaxMaster.Infra.Parsers
                 }
             }
 
-            sheet.Range[Col(TotalTaxableProfitCol)].NumberValue = transactions.Sum(t => t.TaxableProfitInILS);
+            sheet.Range[Col(TotalTaxableProfitCol)].NumberValue = transactions.Where(t => t.TaxableProfitInILS > 0).Sum(t => t.TaxableProfitInILS);
+            sheet.Range[Col(TotalLossCol)].NumberValue = transactions.Where(t => t.TaxableProfitInILS < 0).Sum(t => t.TaxableProfitInILS);
             sheet.Range[Col(TotalSellPriceCol)].NumberValue = transactions.Sum(t => t.SellPriceInILS);
 
             sheet.Range[Col(NameCol)].Text = $"{user.FirstName} {user.LastName}";
