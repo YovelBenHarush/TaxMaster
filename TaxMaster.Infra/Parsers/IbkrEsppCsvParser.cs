@@ -126,7 +126,7 @@ public class TradeRecord
     public string Symbol { get; set; }
 
     [Name("Date/Time")]
-    [Format(["yyyy-MM-dd, HH:mm:ss", "MM/dd/yyyy", "yyyy-MM-dd"])]
+    [Format(["yyyy-MM-dd, HH:mm:ss", "MM/dd/yyyy", "yyyy-MM-dd", "M/dd/yyyy"])]
     [Default("1900-01-01")]
     public DateTime DateTime { get; set; }
 
@@ -176,6 +176,8 @@ public class TradeRecordMap : ClassMap<TradeRecord>
         AutoMap(CultureInfo.InvariantCulture);
         Map(x => x.DateTime).TypeConverterOption.Format("yyyy-MM-dd, HH:mm:ss");
         Map(x => x.DateTime).TypeConverterOption.Format("MM-dd-yyyy");
+        Map(x => x.DateTime).TypeConverterOption.Format("MM/dd/yyyy");
+        Map(x => x.DateTime).TypeConverterOption.Format("M/dd/yyyy");
     }
 }
 
