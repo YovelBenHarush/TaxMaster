@@ -12,7 +12,7 @@ public class KillSwitchClient
         int cntr = 0;
         HttpResponseMessage response;
 
-        string url = $"https://prod-16.centralus.logic.azure.com/workflows/a7138d58064b499a873e128b5e5544da/triggers/manual/paths/invoke/taxmater?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=mXkivBBIzx-nJsjZXXB0EXt-aawH9lvp8mThZzn10WE";
+        string url = $"https://prod-16.centralus.logic.azure.com/workflows/a7138d58064b499a873e128b5e5544da/triggers/manual/paths/invoke/taxmater?api-version=2016-10-01&sp=<SP>";
         var request = new HttpRequestMessage(HttpMethod.Post, url);
         request.Content = new StringContent(JsonSerializer.Serialize(new { version }), System.Text.Encoding.UTF8, "application/json");
         response = await client.SendAsync(request, CancellationToken.None);
