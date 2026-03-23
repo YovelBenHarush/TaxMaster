@@ -13,11 +13,12 @@ public class ExchangeCurrencyClient
     public async Task<double> GetExchangeRate(DateTime date)
     {
         int cntr = 0;
+        var originalDate = date;
         HttpResponseMessage response;
         do
         {
-            date = date.AddDays(-cntr);
-            string formattedDate = date.ToString("yyyy-MM-dd");
+            var queryDate = originalDate.AddDays(-cntr);
+            string formattedDate = queryDate.ToString("yyyy-MM-dd");
             string url = $"https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/EXR/1.0/RER_USD_ILS?c%5BDATA_TYPE%5D=OF00&startperiod={formattedDate}&endperiod={formattedDate}&format=csv";
 
             response = await client.GetAsync(url);
