@@ -56,7 +56,7 @@ public class IbkrEsppCsvParser
                 var record = records[i];
                 if (record.DataDiscriminator == "Trade")
                 {
-                    while (i + 1 < records.Count && records[i + 1].DataDiscriminator?.StartsWith("ClosedLot") == true)
+                    while (i + 1 < records.Count && records[i + 1].DataDiscriminator.StartsWith("ClosedLot"))
                     {
                         var lotRecord = records[++i];
                         var sellTransaction = new SellTransaction
